@@ -69,6 +69,7 @@ const Map<String, (String base, String attendu)> ancien = {
   'caisse.avoirs': ('', 'AV-2026-0012'),
   'caisse.pieces': ('', 'CAI-2026-00012'),
   'caisse.remboursements': ('', 'RB-00012'),
+  'caisse.versements': ('', 'VRS-2026-00012'),
   'caisse.tickets': ('', 'T-00012'),
   'assurances.relances': ('', 'REL-0012'),
   'assurances.factures-meres': ('', 'FM-2026-0012'),

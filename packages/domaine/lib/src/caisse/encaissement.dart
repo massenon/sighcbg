@@ -329,8 +329,15 @@ String numeroPieceCaisse(Map<String, Object?> facture, String date,
 /// Écriture d'encaissement : débit 571 de la part réglée, débit 411 de la part assureur (au premier versement seulement),
 /// crédit 706 du total. Contrôlée ÉQUILIBRÉE avant d'exister (RG-10) : un déséquilibre rend une liste vide. Brouillon.
 List<Map<String, Object?>> ecritureEncaissement(
-    Map<String, Object?> facture, double montantRegle, String aujourdhui,
-    [List<Map<String, Object?>> ecritures = const []]) {
+        Map<String, Object?> facture, double montantRegle, String aujourdhui,
+        [List<Map<String, Object?>> ecritures = const []]) =>
+    ecritureEncaissementSur(facture, montantRegle, aujourdhui, ecritures);
+
+/// L'écriture d'un versement sur le compte de TRÉSORERIE [compteTresorerie] (le compte du TYPE de versement choisi : caisse 571, banque, Mobile Money…). Sans compte, la
+/// caisse (571000) : le comportement d'avant les versements. Même contrôle d'équilibre (RG-10), même brouillon.
+List<Map<String, Object?>> ecritureEncaissementSur(
+    Map<String, Object?> facture, double montantRegle, String aujourdhui, List<Map<String, Object?>> ecritures,
+    {String? compteTresorerie, String? complementLibelle}) {
   // L'EN-TÊTE d'une facture porte `partAssurance` ; `partAssureur` n'existe que sur les LIGNES (E2260) : lire ce dernier sur l'en-tête donnait zéro,
   // et la créance de l'assureur (débit 411, crédit 706) n'entrait jamais au journal.
   final partAssureur = creanceAssureurConstatee(facture, ecritures)
@@ -346,7 +353,7 @@ List<Map<String, Object?>> ecritureEncaissement(
     'date': aujourdhui,
     'journal': 'CAI',
     'journalLibelle': 'Journal de caisse-dépenses',
-    'libelle': 'Encaissement facture $ref — ${facture['patient'] ?? ''}',
+    'libelle': 'Encaissement facture $ref — ${facture['patient'] ?? ''}${complementLibelle == null || complementLibelle.isEmpty ? '' : ' — $complementLibelle'}',
     'pieceId': facture['id'],
     'pieceNumero': facture['numero'],
     'origine': 'Automatique — Caisse',
@@ -356,7 +363,7 @@ List<Map<String, Object?>> ecritureEncaissement(
   if (montantRegle > 0)
     l.add({
       ...base,
-      'compte': compteCaisse,
+      'compte': (compteTresorerie == null || compteTresorerie.isEmpty) ? compteCaisse : compteTresorerie,
       'debit': montantRegle,
       'credit': 0.0
     });

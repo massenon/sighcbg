@@ -111,7 +111,8 @@ void main() {
       expect(cfbParamsNotifDefaut, {...obj(c['defautsNotif']), 'volume': 0.8});
       // Le vecteur date de la maquette. Décision de la Direction du 14/11/2026 : les prestataires externes voyagent comme les natures de facture (jeu d'import « direct et demande »),
       // donc de la configuration de la mère, donc essentielles : le vidage les conserve. Seul écart avec le vecteur, nommé ici.
-      expect(cfbEssentielles, unorderedEquals([...(c['essentielles'] as List).cast<String>(), 'prestataires', 'confirmationsFiscales']));
+      // Décision du 20/11/2026 : les types et les modalités de versement sont de la configuration de la mère (famille R), donc essentielles : le vidage les conserve.
+      expect(cfbEssentielles, unorderedEquals([...(c['essentielles'] as List).cast<String>(), 'prestataires', 'confirmationsFiscales', 'typesVersement', 'modalitesVersement']));
       final lib = obj(c['libelles']);
       // Lot PTA (Direction de Baguidi, 17/11/2026) : `planAnnuel` porte désormais les ACTIONS du plan de travail annuel ; son libellé le dit. Seul écart avec le vecteur, nommé ici.
       for (final k in lib.keys) {

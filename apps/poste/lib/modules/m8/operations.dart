@@ -86,7 +86,7 @@ class _EcranOperationsState extends State<EcranOperations> {
     final c = ContexteEcran.of(context);
     final col = c.magasin.collection('factures');
     return ListenableBuilder(
-      listenable: col,
+      listenable: Listenable.merge([col, c.magasin.collection(colVersements)]),
       builder: (context, _) {
         final b = _b();
         final ops = [
@@ -97,16 +97,13 @@ class _EcranOperationsState extends State<EcranOperations> {
         num som(Iterable<Fiche> r, String k) =>
             r.fold<num>(0, (a, x) => a + n(x[k]));
         final encaisse = som(ops, 'montantPaye');
-        final parMode = <String, num>{};
-        for (final f in ops) {
-          final k = '${f['modePaiement'] ?? 'non_precise'}';
-          parMode[k] = (parMode[k] ?? 0) + n(f['montantPaye']);
-        }
+        // La ventilation par mode lit les VERSEMENTS (Direction, 20/11/2026), non le mode unique de la pièce.
+        final parMode = repartitionParType(ops, c.magasin.collection(colVersements).toutes);
         final ventilation = [
           for (final e
               in (parMode.entries.toList()
                 ..sort((a, b) => b.value.compareTo(a.value))))
-            <String, Object?>{'mode': modeLabel(e.key), 'montant': e.value}
+            <String, Object?>{'mode': libelleDeType(c.magasin.collection(colTypesVersement).toutes, e.key, repli: modeLabel), 'montant': e.value}
         ];
         return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -269,7 +266,7 @@ class _EcranOperationsState extends State<EcranOperations> {
                   ColonneTableau(
                       cle: 'modePaiement',
                       libelle: 'Règlement',
-                      texte: (f) => modeLabel(f['modePaiement'])),
+                      texte: (f) => modeDeFacture(c.magasin, f)),
                 ],
               ),
             ]);
@@ -280,9 +277,12 @@ class _EcranOperationsState extends State<EcranOperations> {
   /// L'inventaire arrête la caisse et confronte le THÉORIQUE (espèces encaissées sur la période) au COMPTÉ.
   void _inventaire(BuildContext ctx, Bornes b, List<Fiche> ops) {
     final c = ContexteEcran.of(ctx);
-    final theorique = ops
-        .where((f) => (f['modePaiement'] ?? 'especes') == 'especes')
-        .fold<num>(0, (a, x) => a + n(x['montantPaye']));
+    // Le THÉORIQUE est ce que les VERSEMENTS ont déposé dans la CAISSE : le type dont le compte de trésorerie est celui de la caisse (réglage du type), jamais un code écrit ici.
+    final types = c.magasin.collection(colTypesVersement).toutes;
+    final theorique = repartitionParType(ops, c.magasin.collection(colVersements).toutes)
+        .entries
+        .where((e) => typeVersementDe(types, e.key)?.compte == compteCaisse)
+        .fold<num>(0, (a, e) => a + e.value);
     final form = ControleurFormulaire(const [
       ChampDef(
           nom: 'compte',

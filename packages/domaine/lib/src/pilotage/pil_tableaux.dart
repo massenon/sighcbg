@@ -12,6 +12,7 @@ library;
 import 'dart:convert';
 
 import '../comptabilite/cpc_bfr.dart';
+import '../caisse/versements.dart' show repartitionParType, libelleDeType;
 import '../comptabilite/cpc_donnees.dart' show cpcObjectifsPilotageJson;
 import '../format/format_fr.dart';
 import '../format/js.dart';
@@ -247,6 +248,8 @@ PilDirection pilDirection({
   required Iterable<PilFiche> objectifs,
   required DateTime auj,
   required String Function(String) libelleMode,
+  Iterable<Map<String, Object?>> versements = const [],
+  Iterable<Map<String, Object?>> typesVersement = const [],
   required DateTime refMois,
   MethodeValorisation methode = MethodeValorisation.prixVente,
 }) {
@@ -298,8 +301,9 @@ PilDirection pilDirection({
   v.graphiques.add(PilGraphique('anneau', parType.keys.toList(), [PilSerie('', [for (final l in parType.values) pilSomme(l, 'montantTTC')])], titre: 'Recettes par activité'));
   final c = pilParMois(consultations, 'date', ref: refMois), a = pilParMois(admissions, 'dateEntree', ref: refMois);
   v.graphiques.add(PilGraphique('barres', c.etiquettes, [PilSerie('Consultations', c.valeurs), PilSerie('Hospitalisations', a.valeurs)], titre: 'Activité — consultations et hospitalisations'));
-  final parMode = pilGrouper(factures, (x) => pilCle(x['modePaiement']));
-  v.graphiques.add(PilGraphique('anneau', [for (final k in parMode.keys) libelleMode(k)], [PilSerie('', [for (final l in parMode.values) pilSomme(l, 'montantPaye')])], titre: 'Répartition des modes de paiement'));
+  // La répartition par mode lit les VERSEMENTS (20/11/2026) ; une facture d'avant les versements compte pour son mode unique.
+  final parMode = repartitionParType(factures, versements);
+  v.graphiques.add(PilGraphique('anneau', [for (final k in parMode.keys) libelleDeType(typesVersement, k, repli: libelleMode)], [PilSerie('', parMode.values.toList())], titre: 'Répartition des modes de paiement'));
   v.classements.add(PilClassement([for (final k in pilTriDesc(parType.entries, (x) => pilSomme(x.value, 'montantTTC'))) (k.key, pilSomme(k.value, 'montantTTC'))]));
   return PilDirection(
     vue: v,

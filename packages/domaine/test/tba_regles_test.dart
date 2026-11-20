@@ -180,7 +180,10 @@ void main() {
     final d = tbaCaissier(taches: jeu('taches'), factures: jeu('factures'), auj: auj);
     premier(d.premier, v);
     kpis(d.kpis, v);
-    graphique(d.parMode, carte(v, 'Encaissements par mode de paiement'));
+    // 20/11/2026 : la répartition par mode lit les VERSEMENTS ; les factures non réglées (bucket « undefined » de la maquette, valeur nulle) n'y figurent plus.
+    final att = liste(carte(v, 'Encaissements par mode de paiement')['graphiques']).first;
+    final attendu = {for (final (k, l) in (att['etiquettes'] as List).cast<String>().indexed) l: ((liste(att['series']).first['donnees'] as List)[k] as num).toDouble()}..removeWhere((_, x) => x == 0);
+    expect({for (final (k, l) in d.parMode.etiquettes.indexed) l: d.parMode.series.first.donnees[k].toDouble()}, attendu, reason: 'modes (versements)');
     graphique(d.recettesQuotidiennes, carte(v, 'Recettes quotidiennes du mois'));
     final lignes = liste(carte(v, 'Dernières factures')['tables'])[0]['lignes'] as List;
     for (var i = 0; i < lignes.length; i++) {

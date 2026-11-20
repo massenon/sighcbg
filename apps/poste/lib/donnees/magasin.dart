@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:sigh_domaine/sigh_domaine.dart' as dom show metaMigree;
-import 'package:sigh_domaine/sigh_domaine.dart' show Agent, DocumentsFiscaux, colDocumentsFiscaux, gardeFicheAide, AssMigrationGaranties, RapportMigrationConstantes, assGardeGarantie, assFactureSousGrille, assMigrerGaranties, hosMigrerConstantes, cpaDoublonsDuPlan, cpcGardeArchives, cpcGardeClotures, cpcGardeEcritures, cpcGardeJournalReserve, gardePresenceValideeRh, gardeRegimeIndividuelRh, gardeSeuil, tarChampsPrixLecture, tarGardeLecture, tarGardeProduitRg02, tarGardeVersion, cpcGardeBudgets, ptaCollectionActions, ptaCollectionPlans, ptaGardeAction, ptaGardePlan, planningCollectionsSync, DroitsGestes, ContenuDonnees, migrerDonnees, schemaCleMeta;
+import 'package:sigh_domaine/sigh_domaine.dart' show Agent, colVersements, gardeVersement, DocumentsFiscaux, colDocumentsFiscaux, gardeFicheAide, AssMigrationGaranties, RapportMigrationConstantes, assGardeGarantie, assFactureSousGrille, assMigrerGaranties, hosMigrerConstantes, cpaDoublonsDuPlan, cpcGardeArchives, cpcGardeClotures, cpcGardeEcritures, cpcGardeJournalReserve, gardePresenceValideeRh, gardeRegimeIndividuelRh, gardeSeuil, tarChampsPrixLecture, tarGardeLecture, tarGardeProduitRg02, tarGardeVersion, cpcGardeBudgets, ptaCollectionActions, ptaCollectionPlans, ptaGardeAction, ptaGardePlan, planningCollectionsSync, DroitsGestes, ContenuDonnees, migrerDonnees, schemaCleMeta;
 
 import 'persistance.dart';
 
@@ -487,6 +487,9 @@ class Magasin {
     'demandesImagerie': 'M2',
     'ecritures': 'M12',
     'naturesFacture': 'CFG',
+    'typesVersement': 'CFG',
+    'modalitesVersement': 'CFG',
+    'versements': 'M8',
     'actes': 'CFG',
     'produits': 'M6',
     'mouvements': 'M6',
@@ -720,8 +723,10 @@ class Magasin {
             module: _modules[nom] ?? '—');
         // Une fiche d'aide VALIDÉE ne se réécrit pas, tenu AU MOTEUR (masquer un bouton ne protège rien) ; la réception d'une fiche de la mère ne passe pas par les gardes.
         if (nom == 'fichesAide') c.garder((op, f) => gardeFicheAide(op, f, c.parId(f['id'])));
+        // Un versement est une ligne de journal : jamais modifié, jamais archivé (la contre-passation est une autre ligne). Son identifiant porte l'étiquette du poste (deux postes, deux identités).
+        if (nom == colVersements) c.garder(gardeVersement);
         // Les fiches d'aide (17/11/2026) portent, comme le planning, l'étiquette du poste dans leur identifiant.
-        if (planningCollectionsSync.contains(nom) || nom == 'fichesAide') c.prefixePoste = () => etiquettePoste;
+        if (planningCollectionsSync.contains(nom) || nom == 'fichesAide' || nom == colVersements) c.prefixePoste = () => etiquettePoste;
         if (_persistance != null) c.addListener(() => _marquerSale(nom));
         // `S.garder('ecritures', …)` de la maquette : la lecture seule d'un exercice clos est tenue AU MOTEUR, sur la collection — masquer un bouton ne
         // protège rien. La garde relit les exercices À CHAQUE écriture (une clôture validée ferme aussitôt).
@@ -1004,6 +1009,10 @@ class Magasin {
     'identiteLegale',
     'obligationsFiscales',
     'historiqueObligations',
-    'support'
+    'support',
+    // Le règlement en plusieurs versements (Direction, 20/11/2026) : le journal des versements (famille B) et les deux paramètres (types, modalités).
+    'versements',
+    'typesVersement',
+    'modalitesVersement',
   ];
 }

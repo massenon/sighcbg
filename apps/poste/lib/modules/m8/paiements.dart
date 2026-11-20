@@ -8,10 +8,12 @@ import '../../donnees/magasin.dart';
 import '../../donnees/parcours_caisse.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
+import '../../shell/gestes_ecran.dart';
 import 'annonce_normalisation.dart';
 import 'commun.dart';
 import 'factures.dart';
 import 'impression.dart';
+import 'saisie_versements.dart';
 
 /// `m8-paiements` — écran de travail de la caisse : il ne crée pas de facture, il ENCAISSE celles qui sont dues.
 class EcranPaiements extends StatefulWidget with EcranMaquette {
@@ -31,6 +33,7 @@ class EcranPaiements extends StatefulWidget with EcranMaquette {
 
 class _EcranPaiementsState extends State<EcranPaiements> {
   CollectionMagasin? _col;
+  CollectionMagasin? _versements;
 
   @override
   void didChangeDependencies() {
@@ -39,12 +42,15 @@ class _EcranPaiementsState extends State<EcranPaiements> {
     if (!identical(col, _col)) {
       _col?.removeListener(_maj);
       _col = col..addListener(_maj);
+      _versements?.removeListener(_maj);
+      _versements = ContexteEcran.of(context).magasin.collection(colVersements)..addListener(_maj);
     }
   }
 
   @override
   void dispose() {
     _col?.removeListener(_maj);
+    _versements?.removeListener(_maj);
     super.dispose();
   }
 
@@ -60,19 +66,16 @@ class _EcranPaiementsState extends State<EcranPaiements> {
     final c = ContexteEcran.of(context);
     final actives = _col!.actives;
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+      // LES KPI PAR MODE lisent les VERSEMENTS (Direction, 20/11/2026) : un règlement 5 000 Mobile Money + 3 000 espèces compte 5 000 d'un côté et 3 000 de l'autre.
       KpiGrilleSigh(kpis: [
-        for (final mode in modesPaiementPatient)
+        for (final t in typesParMode(c.magasin, actives))
           () {
-            final f = [
-              for (final x in actives)
-                if (x['modePaiement'] == mode.$1) x
-            ];
+            final vs = [for (final f in actives) ...versementsDeFacture(f, c.magasin.collection(colVersements).toutes).where((v) => v.type == t.$1)];
             return KpiSigh(
-                libelle: mode.$2,
-                valeur:
-                    money(f.fold<num>(0, (a, r) => a + n(r['montantPaye']))),
-                icone: icone(mode.$3),
-                indice: '${nombre(f.length)} opération(s)');
+                libelle: t.$2,
+                valeur: money(vs.fold<num>(0, (a, v) => a + v.montant)),
+                icone: icone(iconeDeMode(t.$1)),
+                indice: '${nombre(vs.length)} versement(s)');
           }(),
       ]),
       const SizedBox(height: 16),
@@ -122,8 +125,8 @@ class _EcranPaiementsState extends State<EcranPaiements> {
                     ColonneTableau(
                         cle: 'modePaiement',
                         libelle: 'Mode de règlement',
-                        texte: (f) => modeLabel(f['modePaiement']),
-                        rendu: (_, f) => BadgeSigh(modeLabel(f['modePaiement']),
+                        texte: (f) => modeDeFacture(c.magasin, f),
+                        rendu: (_, f) => BadgeSigh(modeDeFacture(c.magasin, f),
                             ton: TonSigh.navy)),
                     ColonneTableau(
                         cle: 'montantPaye',
@@ -155,56 +158,89 @@ class _EcranPaiementsState extends State<EcranPaiements> {
                         nom: 'modePaiement',
                         libelle: 'Mode',
                         options: [
-                          for (final x in modesPaiement) OptionChamp(x.$1, x.$2)
+                          for (final t in typesParMode(c.magasin, actives)) OptionChamp(t.$1, t.$2),
+                          OptionChamp(modeMixte, modeLabel(modeMixte)),
                         ])
                   ],
                   actionsLigne: (context, f) => [
                     BoutonIcone(
                         icone: LucideIcons.printer,
                         libelle: 'Reçu de paiement',
-                        onPressed: () => imprimerRecu(context, f))
+                        onPressed: () => imprimerRecu(context, f)),
+                    // ANNULER UN RÈGLEMENT : un geste RÉSERVÉ (la commande est ABSENTE sans le droit, le caissier n'annule pas) ; le moteur le revérifie.
+                    if (gestesEcran(c).peut(c.role, gesteVersementAnnuler) && versementsDeFacture(f, c.magasin.collection(colVersements).toutes).any((v) => !v.implicite))
+                      BoutonIcone(icone: LucideIcons.undo2, libelle: 'Annuler un règlement', onPressed: () => _annulerReglement(context, f))
                   ],
                 )),
       ]),
     ]);
   }
 
+  /// Annuler un règlement (contre-passation) : le versement choisi et ceux du même règlement reçoivent une contre-passation tracée ; le motif est obligatoire.
+  void _annulerReglement(BuildContext ctx, Fiche f) {
+    final c = ContexteEcran.of(ctx);
+    final vs = [for (final v in versementsDeFacture(f, c.magasin.collection(colVersements).toutes)) if (!v.implicite) v];
+    final types = c.magasin.collection(colTypesVersement).toutes;
+    final form = ControleurFormulaire([
+      ChampDef(
+          nom: 'versement',
+          libelle: 'Versement à annuler (avec ceux du même règlement)',
+          type: TypeChamp.select,
+          requis: true,
+          col: ColChamp.plein,
+          options: [for (final v in vs) OptionChamp('${v.id}', '${libelleDeType(types, v.type, repli: modeLabel)} — ${money(v.montant)} — ${dateDe(v.date)}${v.reference.isEmpty ? '' : ' — réf. ${v.reference}'}')]),
+      const ChampDef(nom: 'motif', libelle: 'Motif de l’annulation', type: TypeChamp.textarea, requis: true, lignes: 2, col: ColChamp.plein),
+    ]);
+    afficherModale<void>(ctx,
+        titre: 'Annuler un règlement',
+        sousTitre: '${f['numero']} — ${f['patient']}',
+        corps: Column(crossAxisAlignment: CrossAxisAlignment.stretch, mainAxisSize: MainAxisSize.min, children: [
+          const NoteSigh(
+              'Un versement ne se supprime jamais : l’annulation écrit une CONTRE-PASSATION par versement du règlement (motif obligatoire, écriture comptable inverse en brouillon) et remet les prestations en attente de règlement. Refusée si une prestation est déjà exécutée ou si la facture est normalisée.',
+              ton: TonSigh.attention),
+          const SizedBox(height: 12),
+          FormulaireSigh(controleur: form),
+        ]),
+        pied: (fermer) => [
+              BoutonSigh(libelle: 'Fermer', variante: VarianteBouton.secondaire, onPressed: fermer),
+              BoutonSigh(
+                  libelle: 'Contre-passer le règlement',
+                  icone: LucideIcons.undo2,
+                  onPressed: () {
+                    final v = form.valider();
+                    if (v == null) {
+                      ToastsSigh.afficher(ctx, 'Le formulaire comporte des erreurs.', type: TypeToast.erreur);
+                      return;
+                    }
+                    try {
+                      final r = contrepasserVersement(c.magasin, '${v['versement']}',
+                          motif: '${v['motif']}', maintenant: c.aujourdhui, droit: () => gestesEcran(c).peut(c.role, gesteVersementAnnuler));
+                      fermer();
+                      ToastsSigh.afficher(ctx, 'Règlement annulé : ${nombre(r.contrepassations.length)} contre-passation(s).',
+                          type: TypeToast.succes, detail: 'Reste dû ${money(r.facture['reliquat'])}. Écriture inverse posée en brouillon.');
+                    } on RefusCaisse catch (e) {
+                      ToastsSigh.afficher(ctx, 'Annulation refusée.', type: TypeToast.erreur, detail: e.motif, duree: const Duration(seconds: 10));
+                    }
+                  }),
+            ]);
+  }
+
   void _encaisser(BuildContext ctx, Fiche f) {
     final reste = n(f['reliquat']);
     final cx = ContexteEcran.of(ctx);
+    // LES VERSEMENTS (Direction, 20/11/2026) : « Montant à encaisser » est la somme que les versements doivent totaliser ; le caissier la répartit en un ou plusieurs versements.
     final form = ControleurFormulaire(const [
-      ChampDef(
-          nom: 'montant',
-          libelle: 'Montant encaissé (FCFA)',
-          type: TypeChamp.nombre,
-          requis: true),
-      ChampDef(
-          nom: 'modePaiement',
-          libelle: 'Mode de règlement',
-          type: TypeChamp.select,
-          requis: true,
-          options: [
-            OptionChamp('especes', 'Espèces'),
-            OptionChamp('tpe', 'TPE (carte bancaire)'),
-            OptionChamp('mtn', 'MTN Mobile Money'),
-            OptionChamp('moov', 'Moov Money'),
-          ]),
-      ChampDef(
-          nom: 'reference',
-          libelle: 'Référence de la transaction',
-          aide:
-              'N° de transaction Mobile Money ou ticket TPE, le cas échéant.'),
-      ChampDef(
-          nom: 'observation',
-          libelle: 'Observation',
-          type: TypeChamp.textarea,
-          lignes: 2,
-          col: ColChamp.plein),
+      ChampDef(nom: 'montant', libelle: 'Montant à encaisser (FCFA)', type: TypeChamp.nombre, requis: true),
+      ChampDef(nom: 'observation', libelle: 'Observation', type: TypeChamp.textarea, lignes: 2, col: ColChamp.plein),
     ], {
       'montant': '${reste.round()}',
-      'modePaiement':
-          '${f['modePaiement']}' == 'assurance' ? 'especes' : f['modePaiement'],
     });
+    num montantSaisi() => n(num.tryParse('${form['montant']}'.replaceAll(RegExp(r'\s'), '').replaceAll(',', '.')) ?? 0);
+    final sv = SaisieVersements(
+        magasin: cx.magasin,
+        aRepartir: montantSaisi,
+        toast: (titre, detail) => ToastsSigh.afficher(ctx, titre, type: TypeToast.erreur, detail: detail));
+    form.addListener(() => sv.version.value++);
     afficherModale<void>(ctx,
         titre: 'Encaissement',
         sousTitre: '${f['numero']} — ${f['patient']}',
@@ -222,6 +258,8 @@ class _EcranPaiementsState extends State<EcranPaiements> {
               ]),
               const SizedBox(height: 12),
               FormulaireSigh(controleur: form),
+              const SizedBox(height: 12),
+              sv.construire(),
               const SizedBox(height: 12),
               // Facture d'un PATIENT : normalisée sans acheteur ni AIB (Direction de Baguidi, 16/11/2026, E3770) — plus de fenêtre « Facture normalisée ».
               if (mecefEnService(cx.magasin)) const NoteSigh(mecefMentionFacturePatient, icone: LucideIcons.receipt),
@@ -256,6 +294,8 @@ class _EcranPaiementsState extends State<EcranPaiements> {
                           type: TypeToast.erreur);
                       return;
                     }
+                    final saisis = sv.finaliser();
+                    if (saisis == null) return;
                     // L'encaissement passe par le MOTEUR (E2260) : lignes réglées, analyses et imagerie libérées, tâches d'aval, base MECeF et ÉCRITURE
                     // comptable (571, 411 de la part assureur, 706). Un encaissement ne s'annule pas : remboursement ou avoir.
                     final c = ContexteEcran.of(ctx);
@@ -263,7 +303,7 @@ class _EcranPaiementsState extends State<EcranPaiements> {
                     try {
                       res = encaisserFacture(c.magasin, '${f['id']}',
                           montant: montant,
-                          mode: '${v['modePaiement']}',
+                          versements: saisis,
                           maintenant: c.aujourdhui);
                     } on RefusCaisse catch (e) {
                       ToastsSigh.afficher(ctx, 'Encaissement refusé.',
@@ -280,13 +320,9 @@ class _EcranPaiementsState extends State<EcranPaiements> {
                     }
                     // La référence de la transaction et l'observation s'ÉCRIVENT sur la facture (même champ que m8-caisse) : elles ne
                     // vivaient que sur le reçu imprimé une fois, et la réimpression affichait un tiret.
-                    final ref = '${v['reference'] ?? ''}'.trim();
                     final obs = '${v['observation'] ?? ''}'.trim();
-                    if (ref.isNotEmpty || obs.isNotEmpty) {
-                      c.magasin.collection('factures').mettreAJour('${f['id']}', {
-                        if (ref.isNotEmpty) 'referenceTransaction': ref,
-                        if (obs.isNotEmpty) 'observationReglement': obs,
-                      });
+                    if (obs.isNotEmpty) {
+                      c.magasin.collection('factures').mettreAJour('${f['id']}', {'observationReglement': obs});
                     }
                     fermer();
                     annoncerNormalisation(ctx, res.normalisation);
@@ -299,8 +335,7 @@ class _EcranPaiementsState extends State<EcranPaiements> {
                             (res.ecritures.isNotEmpty
                                 ? ' Écriture comptable posée en brouillon.'
                                 : ''));
-                    imprimerRecu(ctx, _col!.parId(f['id'])!,
-                        versement: {'montant': montant, ...v});
+                    imprimerRecu(ctx, _col!.parId(f['id'])!);
                   }),
             ]);
   }

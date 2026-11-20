@@ -86,6 +86,7 @@ const List<SerieNumerotation> seriesNumerotationSemence = [
   SerieNumerotation(code: 'caisse.factures-tiers', libelle: 'Factures à une entreprise (tiers payeur)', module: 'M8', prefixe: 'FT', annee: anneeLongue, largeur: 5, remiseAnnuelle: true, champ: 'numero', note: 'Série créée le 17/11/2026 pour la facture à une entreprise (proposition à valider) : distincte de la facture du patient (FN).'),
   SerieNumerotation(code: 'caisse.avoirs', libelle: 'Avoirs', module: 'M8', prefixe: 'AV', annee: anneeLongue, largeur: 4, remiseAnnuelle: true, note: _n),
   SerieNumerotation(code: 'caisse.pieces', libelle: 'Pièces de caisse (journal CAI)', module: 'M8', prefixe: 'CAI', annee: anneeLongue, largeur: 5, remiseAnnuelle: true, champ: 'numero', note: _n),
+  SerieNumerotation(code: 'caisse.versements', libelle: 'Versements (règlement d’une facture en plusieurs versements)', module: 'M8', prefixe: 'VRS', annee: anneeLongue, largeur: 5, remiseAnnuelle: true, champ: 'numero', note: 'Série créée le 20/11/2026 pour les versements (proposition à valider) : un versement est une ligne de journal, la contre-passation en prend aussi un numéro.'),
   SerieNumerotation(code: 'caisse.remboursements', libelle: 'Remboursements', module: 'M8', prefixe: 'RB', largeur: 5, note: _n),
   SerieNumerotation(code: 'caisse.tickets', libelle: 'Tickets de caisse (aperçu)', module: 'M8', prefixe: 'T', largeur: 5, champ: 'numero', note: _n),
   // M9 Assurances & créances

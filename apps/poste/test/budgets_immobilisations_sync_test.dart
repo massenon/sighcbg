@@ -33,7 +33,7 @@ void main() {
     expect(collectionsActivite, containsAll(['budgets', 'immobilisations']));
     final dart = File('../../packages/sync_dart/lib/src/mere.dart').readAsStringSync();
     expect(dart, contains("'budgets': 'A', 'immobilisations': 'A'"), reason: 'la mère Dart déclare la famille A');
-    expect(dart, contains("collectionsFinanceJamaisMobile = {'budgets', 'immobilisations'}"));
+    expect(dart, contains("collectionsFinanceJamaisMobile = {'budgets', 'immobilisations', 'versements'}"), reason: 'les versements (E5500) rejoignent les collections financières exclues du mobile');
     expect(dart, contains('...collectionsFinanceJamaisMobile'), reason: 'exclue au chemin de lecture du mobile');
     final js = File('../../packages/sync/banc/mere.js').readAsStringSync();
     expect(RegExp(r"budgets: 'A', immobilisations: 'A'").hasMatch(js), isTrue, reason: 'le banc Node déclare la même famille');

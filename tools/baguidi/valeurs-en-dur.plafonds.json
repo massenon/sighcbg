@@ -18,10 +18,6 @@
         "plafond": 1,
         "motif": "STRUCTUREL, justifié site par site (lot « famille D », 18/11/2026) : `evolution` (Favorable | Référée | Décédée) : la valeur ENREGISTRÉE est le libellé et le ton du badge (succès / danger) se décide dessus ; la rendre réglable sans migrer les fiches et la règle d'affichage changerait leur sens. À porter avec des codes le jour où l'évolution maternelle alimentera une statistique."
       },
-      "apps/poste/lib/modules/m8/commun.dart": {
-        "plafond": 1,
-        "motif": "STRUCTUREL, justifié site par site (lot « famille D », 18/11/2026) : `_codesModesPatient` : les modes que le PATIENT règle au guichet (espèces, TPE, MTN, Moov) — la prise en charge de l'assurance n'est pas un règlement du patient ; sous-ensemble de codes de `enumModesPaiement` (UNE définition), libellés au réglage `libelles.m8.modesPaiement`. Remplace « les quatre premiers » d'une liste dont l'ordre se règle."
-      },
       "packages/domaine/lib/src/caisse/remboursement.dart": {
         "plafond": 1,
         "motif": "STRUCTUREL, justifié site par site (lot « famille D », 18/11/2026) : `naturesOperation` (Facture avoir | Remboursement | Annulation) : la règle compare la valeur ENREGISTRÉE (`nature == 'Facture avoir'`, `'Annulation'`) et les fiches `remboursements` la portent en toutes lettres ; passer à des codes est une migration des fiches et des essais, à mener avec l'écran des remboursements."

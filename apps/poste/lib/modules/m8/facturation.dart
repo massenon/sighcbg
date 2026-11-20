@@ -190,7 +190,8 @@ class _EtatFacturation extends State<EcranFacturation> {
           requis: true,
           col: ColChamp.plein,
           options: [
-            for (final x in modesPaiementPatient) OptionChamp(x.$1, x.$2)
+            // Les types de versement EN SERVICE (paramètres de la caisse), jamais une liste écrite ici.
+            for (final t in typesVersementEnService(m.collection(colTypesVersement).toutes)) OptionChamp(t.code, t.libelle)
           ]),
       const ChampDef(
           nom: 'regle',
@@ -481,8 +482,22 @@ class _EtatFacturation extends State<EcranFacturation> {
       // équilibrée (RG-10), en brouillon. Une pro-forma n'est pas une pièce comptable. Annuler l'émission archive ses écritures (RG-14).
       if (!proforma) {
         final ecrs = m.collection('ecritures');
-        final lignesEcr = ecritureEncaissement(ins.fiche, n(ins.fiche['montantPaye']).toDouble(),
-            iso(c.aujourdhui), ecrs.actives);
+        // Le règlement saisi à l'émission est UN versement du type choisi (journal), avec son écriture sur le compte de ce type ; un mode que nul type en service ne désigne retombe sur l'ancienne écriture.
+        final vers = versementALEmission(ins.fiche,
+            type: '${_reglement['mode']}',
+            aujourdhui: iso(c.aujourdhui),
+            maintenant: c.aujourdhui.toIso8601String(),
+            utilisateur: m.utilisateur,
+            typesFiches: m.collection(colTypesVersement).toutes,
+            versementsExistants: m.collection(colVersements).toutes,
+            ecritures: ecrs.actives);
+        if (vers != null) {
+          final colV = m.collection(colVersements);
+          final v = colV.inserer(vers.versement, prefixe: 'VRS');
+          annulations.add(() => colV.sansGardes(v.annuler));
+        }
+        final lignesEcr = vers?.ecritures ??
+            ecritureEncaissement(ins.fiche, n(ins.fiche['montantPaye']).toDouble(), iso(c.aujourdhui), ecrs.actives);
         for (final e in lignesEcr) {
           final pose = ecrs.inserer(e, prefixe: 'ECR');
           annulations.add(pose.annuler);

@@ -7,10 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sigh_domaine/sigh_domaine.dart' show AccParametresHachage, DroitsGestes, creerFicheAide, epRoleFileul, epRoleMere;
+import 'package:sigh_domaine/sigh_domaine.dart' show AccParametresHachage, DroitsGestes, VersementSaisi, creerFicheAide, epRoleFileul, epRoleMere;
 import 'package:sigh_poste/donnees/base_portable_poste.dart';
 import 'package:sigh_poste/donnees/cle_clinique_poste.dart';
 import 'package:sigh_poste/donnees/maj_poste.dart';
+import 'package:sigh_poste/donnees/parcours_caisse.dart' show encaisserFacture;
 import 'package:sigh_poste/donnees/persistance.dart';
 import 'package:sigh_poste/mere/client_mere.dart' show Appareil, CodeReprise;
 import 'package:sigh_poste/modules/mere/mrd_reprise_poste.dart' show SourceReprise, sourceRepriseInjectee;
@@ -460,6 +461,66 @@ void _journalSmsExpire(Magasin _) {
   ]);
 }
 
+
+/// Une facture FICTIVE de 8 000 FCFA (patient de démonstration, deux analyses, aucune assurance) et sa tâche d'encaissement : l'écran « Encaisser » à plusieurs versements (exemple de la Direction :
+/// 5 000 Mobile Money puis 3 000 espèces). Le numéro appartient à une série d'exemple, hors de celles du jeu.
+void _factureAVersements(Magasin m, {String id = 'FAC-DEMO-V1', String numero = 'FC-2026-09001', String code = 'CBG/9001/26'}) {
+  m.collection('factures').inserer({
+    'id': id,
+    'numero': numero,
+    'patient': 'PATIENT Démonstration',
+    'patientCode': code,
+    'date': '2026-11-16',
+    'type': 'Analyses',
+    'montantHT': 8000,
+    'montantTTC': 8000,
+    'partAssurance': 0,
+    'partPatient': 8000,
+    'montantPaye': 0,
+    'reliquat': 8000,
+    'statutPaiement': 'impayee',
+    'statut': 'actif',
+    'lignes': [
+      {'id': '$id-L1', 'categorie': 'analyse', 'designation': 'Numération formule sanguine', 'quantite': 1, 'prixUnitaire': 5000, 'prixUnitaireNet': 5000, 'montantBrut': 5000, 'remise': 0, 'montant': 5000, 'partAssureur': 0, 'partPersonnel': 0, 'partPatient': 5000, 'statutPaiement': 'du'},
+      {'id': '$id-L2', 'categorie': 'analyse', 'designation': 'Glycémie', 'quantite': 1, 'prixUnitaire': 3000, 'prixUnitaireNet': 3000, 'montantBrut': 3000, 'remise': 0, 'montant': 3000, 'partAssureur': 0, 'partPersonnel': 0, 'partPatient': 3000, 'statutPaiement': 'du'},
+    ],
+  });
+  m.collection('taches').inserer({
+    'id': 'TCH-$id',
+    'type': 'encaissement',
+    'poste': 'caisse',
+    'libelle': 'Analyses — PATIENT Démonstration',
+    'detail': '$numero — 8 000',
+    'reference': numero,
+    'factureId': id,
+    'patient': 'PATIENT Démonstration',
+    'montant': 8000,
+    'statut': 'en_attente',
+    'creeLe': '2026-11-16T09:30:00.000Z',
+  });
+}
+
+/// La même facture, DÉJÀ réglée en deux versements (5 000 Mobile Money — MTN — puis 3 000 espèces) : le reçu détaillé et l'annulation d'un règlement.
+void _factureReglee(Magasin m) {
+  _factureAVersements(m, id: 'FAC-DEMO-V2', numero: 'FC-2026-09002', code: 'CBG/9002/26');
+  encaisserFacture(m, 'FAC-DEMO-V2',
+      lignes: ['FAC-DEMO-V2-L1', 'FAC-DEMO-V2-L2'],
+      versements: const [
+        VersementSaisi(montant: 5000, type: 'mobile_money', modalite: 'MV01', reference: 'MP261116.0042'),
+        VersementSaisi(montant: 3000, type: 'especes'),
+      ],
+      maintenant: _le);
+}
+
+/// La saisie du premier versement de l'exemple : Mobile Money, opérateur MTN, référence saisie à la main, 5 000 FCFA, puis « Ajouter un versement ».
+final _premierVersement = <Geste>[
+  choisir('versement_type', 'Mobile Money'),
+  choisir('versement_modalite_mobile_money', 'MTN'),
+  champ('versement_montant', '5000'),
+  champ('versement_reference', 'MP261116.0042'),
+  toucherBouton('Ajouter un versement'),
+];
+
 final _captures = <_Cap>[
   _Cap('01-connexion', 'index', session: () => SessionPoste(exigeConnexion: true, horloge: () => _le)),
   _Cap('02-verrou', 'auth-lock', session: () => SessionPoste(exigeConnexion: true, horloge: () => _le)),
@@ -617,6 +678,16 @@ final _captures = <_Cap>[
   _Cap('217-admission-nouvelle', 'm3-admissions', role: 'medecin', taille: Size(1440, 1100), gestes: [toucherBouton('Nouveau')]),
   _Cap('218-accouchement-nouvel', 'm4-accouchements', role: 'medecin', taille: Size(1440, 1100), gestes: [toucherBouton('Nouveau')]),
   _Cap('208-factures-demonstration', 'm8-factures', taille: Size(1440, 1000)),
+  _Cap('219-versement-premier', 'm8-caisse', role: 'caissier', taille: Size(1440, 1400), preparer: _factureAVersements, gestes: [toucherIconeN('Encaisser', 0), ..._premierVersement]),
+  _Cap('220-versements-deux', 'm8-caisse', role: 'caissier', taille: Size(1440, 1400), preparer: _factureAVersements, gestes: [toucherIconeN('Encaisser', 0), ..._premierVersement, choisir('versement_type', 'Espèces'), toucherBouton('Ajouter un versement')]),
+  _Cap('221-versements-valides', 'm8-caisse', role: 'caissier', taille: Size(1440, 1400), preparer: _factureAVersements, gestes: [toucherIconeN('Encaisser', 0), ..._premierVersement, choisir('versement_type', 'Espèces'), toucherBouton('Ajouter un versement'), toucherBouton('Valider l’encaissement'), attendre(4)]),
+  _Cap('222-versement-refuse', 'm8-caisse', role: 'caissier', taille: Size(1440, 1400), preparer: _factureAVersements, gestes: [toucherIconeN('Encaisser', 0), choisir('versement_type', 'Mobile Money'), choisir('versement_modalite_mobile_money', 'MTN'), champ('versement_montant', '5000'), toucherBouton('Ajouter un versement')]),
+  _Cap('223-recu-versements', 'm8-caisse', role: 'caissier', taille: Size(1440, 1500), preparer: _factureReglee, gestes: [toucherIconeN('Réimprimer le reçu détaillé', 0)]),
+  _Cap('224-paiements-historique', 'm8-paiements', role: 'comptable', taille: Size(1440, 1000), preparer: _factureReglee, gestes: [toucherTexte('Historique des règlements')]),
+  _Cap('225-reglement-annuler', 'm8-paiements', role: 'comptable', taille: Size(1440, 1000), preparer: _factureReglee, gestes: [toucherTexte('Historique des règlements'), toucherIconeN('Annuler un règlement', 0), champ('motif', 'Mode de paiement saisi par erreur')]),
+  _Cap('226-versements-types', 'cfg-natures-facture', role: 'admin', taille: Size(1440, 1000), gestes: [toucherTexte('Types de versement')]),
+  _Cap('227-versements-modalites', 'cfg-natures-facture', role: 'admin', taille: Size(1440, 1000), gestes: [toucherTexte('Modalités de versement')]),
+  _Cap('228-versement-type-nouveau', 'cfg-natures-facture', role: 'admin', taille: Size(1440, 1000), gestes: [toucherTexte('Types de versement'), toucherBouton('Nouveau type')]),
   _Cap('209-paie-vacations-attente', 'm11-calcul', role: 'comptable', preparer: _vacationsMixtes, taille: Size(1440, 1500)),
   _Cap('210-planning-registre-refusee', 'm10-planning', preparer: _vacationsMixtes, taille: Size(1440, 3500)),
   _Cap('211-patient-consentement-sms', 'm1-patient-nouveau', role: 'reception', taille: Size(1440, 1500)),
@@ -762,7 +833,7 @@ void main() {
         }));
       });
       await t.pumpWidget(const SizedBox());
-      await t.pump(const Duration(seconds: 10));
+      await t.pump(const Duration(seconds: 20));
     });
   }
 }

@@ -1,0 +1,5 @@
+[
+{"id":"MV01","type":"mobile_money","libelle":"MTN","actif":true,"ordre":1,"aConfirmer":true,"source":"Valeur d’attente — la liste des opérateurs n’est pas une liste officielle ; à confirmer par la Direction."},
+{"id":"MV02","type":"mobile_money","libelle":"Moov","actif":true,"ordre":2,"aConfirmer":true,"source":"Valeur d’attente — la liste des opérateurs n’est pas une liste officielle ; à confirmer par la Direction."},
+{"id":"MV03","type":"mobile_money","libelle":"Celtiis","actif":true,"ordre":3,"aConfirmer":true,"source":"Valeur d’attente — la liste des opérateurs n’est pas une liste officielle ; à confirmer par la Direction."}
+]

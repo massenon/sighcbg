@@ -29,6 +29,7 @@ import '../labo/cat_regles.dart' show catReactifs;
 import '../labo/res_etats.dart' show etatResultat;
 import '../labo/res_habilitations.dart' show peutVoirResultat;
 import '../caisse/prise_en_charge.dart' show carteValide, couvertureALaDate;
+import '../caisse/versements.dart' show libelleDeType, versementsDeFacture;
 import '../referentiels/regles.dart' show lireCodePatient, resultatRendu;
 import '../configuration/cfb_donnees.dart' show cfbGroupesArticles;
 import '../stock/points.dart' show familleDe, groupePrestation, secteursDesActes;
@@ -345,6 +346,22 @@ ReponseAst _i14(ContexteAst cx, ReconnaissanceAst r, String q) {
 
   num encaisse(String debut, String fin, Map<String, num> parAxe, Set<Object?> factures) {
     var t = 0.0;
+    // PAR MODE (20/11/2026) : l'encaissé se ventile par les VERSEMENTS (type), datés du jour où ils ont été reçus : un règlement 5 000 Mobile Money + 3 000 espèces compte 5 000 d'un côté et
+    // 3 000 de l'autre. Une facture d'avant les versements compte pour son mode unique (versement implicite, daté du dernier règlement).
+    if (axe == 'mode') {
+      final vs = cx.col('versements');
+      final types = cx.col('typesVersement');
+      for (final f in cx.col('factures')) {
+        for (final v in versementsDeFacture(f, vs)) {
+          if (!_dans(v.date, debut, fin)) continue;
+          t += v.montant;
+          final k = libelleDeType(types, v.type);
+          parAxe[k] = (parAxe[k] ?? 0) + v.montant;
+          factures.add(f['numero']);
+        }
+      }
+      return t;
+    }
     for (final f in cx.col('factures')) {
       for (final l in ((f['lignes'] as List?) ?? const [])) {
         if (l is Map && _dans(l['payeLe'], debut, fin)) {
@@ -420,7 +437,7 @@ ReponseAst _i14(ContexteAst cx, ReconnaissanceAst r, String q) {
       'Chiffre d’affaires (facturé) ${pl.libelle} : aucune facture n’est datée de cette période.');
   lignes.add('Les deux chiffres sont donnés ENSEMBLE (décision du 16/11/2026) : ce sont deux grandeurs différentes, qui ne s’additionnent pas.');
   if (axe == 'secteur') lignes.add('Ventilation par SECTEUR : le secteur de l’acte facturé (catalogue), sinon la catégorie de la ligne ; ce qui ne se classe pas est dit « hors secteur », jamais fondu dans un autre.');
-  if (axe == 'mode') lignes.add('Ventilation par MODE DE PAIEMENT : le mode porté par la facture (celui du dernier règlement) ; le montant facturé ne se ventile pas par mode.');
+  if (axe == 'mode') lignes.add('Ventilation par MODE DE PAIEMENT : le TYPE de chaque versement reçu dans la période (un règlement mixte compte pour chacun de ses types) ; le montant facturé ne se ventile pas par mode.');
   if (rien) return _vide('I14', 'Ni recettes ni chiffre d’affaires ${pl.libelle}', lignes, src);
   final cles = <String>{for (final m in [...parAxes.values, ...parAxesCmp.values]) ...m.keys}.toList()..sort();
   final enc = parAxes['Recettes (encaissé)'] ?? const <String, num>{};

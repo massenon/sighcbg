@@ -22,7 +22,7 @@
   </div>
   <div class="meta">
     <span>Version du poste : 0.1.0</span>
-    <span>Édition du 20 novembre 2026 — livraison v33</span>
+    <span>Édition du 21 novembre 2026 — livraison v34</span>
     <span>Document interne</span>
   </div>
 </section>
@@ -869,12 +869,12 @@
 <ol class="etapes">
   <li>Dans <strong>Prescriptions à encaisser</strong>, cliquez sur l’icône <strong>Encaisser</strong> de la ligne du patient.</li>
   <li>Dans la fenêtre, <strong>cochez les prestations</strong> que le patient règle. Pour tout prendre, cliquez sur <strong>Tout cocher</strong>.</li>
-  <li>Vérifiez le <strong>MONTANT À ENCAISSER</strong>, puis choisissez le <strong>Mode de règlement</strong> (espèces, terminal de paiement, MTN Mobile Money, Moov Money…). Saisissez la <strong>Référence de transaction</strong> si besoin.</li>
+  <li>Vérifiez le <strong>MONTANT À ENCAISSER</strong>, puis, dans le bloc <strong>VERSEMENTS</strong>, choisissez le <strong>Type de versement</strong> (espèces, TPE, Mobile Money…). Saisissez la <strong>Référence de la transaction</strong> si le type l’exige. Sans rien ajouter, le formulaire vaut <strong>un seul versement</strong> du reste à répartir. Pour régler en plusieurs modes, voir « Régler une facture en plusieurs versements » plus bas.</li>
   <li>La facture d’un patient est normalisée MECeF <strong>sans acheteur ni AIB</strong> : il n’y a ni IFU ni nom d’acheteur à saisir, le patient paie le total.</li>
   <li>Cliquez sur <strong>Valider l’encaissement</strong>, puis imprimez le reçu.</li>
 </ol>
-<figure class="capture" data-capture="captures/57-encaisser" data-recadrage="150,40,1140,720" data-cibles='[{"bouton":"Tout cocher","de":"haut","long":60,"num":2},{"rect":[173,555,540,36],"de":"bas","long":50,"num":3},{"rect":[173,605,1100,28],"de":"gauche","long":40,"num":4},{"bouton":"Valider l’encaissement","de":"haut","long":60,"num":5}]'>
-  <figcaption>La fenêtre <strong>Encaisser</strong> : une case par prestation.</figcaption>
+<figure class="capture" data-capture="captures/57-encaisser" data-recadrage="130,40,1180,860" data-cibles='[{"bouton":"Tout cocher","de":"haut","long":60,"num":2},{"rect":[164,454,1112,66],"de":"gauche","long":40,"num":3},{"cle":"kit:champ:versement_type","de":"gauche","long":40,"num":4},{"bouton":"Valider l’encaissement","de":"haut","long":60,"num":5}]'>
+  <figcaption>La fenêtre <strong>Encaisser</strong> : une case par prestation, puis le bloc <strong>VERSEMENTS</strong> (le <strong>Type de versement</strong> est repéré par la flèche 4).</figcaption>
 </figure>
 <div class="encadre info"><span class="titre">Information</span><p>Seules les prestations <strong>réglées</strong> passent au laboratoire, à l’imagerie et à la pharmacie. Une prestation non payée reste en attente, nommément : le patient peut revenir l’acquitter plus tard. Pour reprendre un règlement, utilisez <strong>Encaisser le reste</strong> dans le registre des pièces du jour.</p></div>
 <div class="encadre attention"><span class="titre">Attention</span><p>Une ligne <strong>au prix à valoriser</strong> ne s’encaisse pas : son prix n’est pas en vigueur à la date de la pièce. Par défaut, <strong>rien de la facture ne s’encaisse</strong> tant qu’une ligne attend son prix (voir « Une facture en attente de prix »). Ne remplacez jamais ce prix par un montant de votre choix.</p></div>
@@ -897,7 +897,7 @@
 <ol class="etapes">
   <li>Choisissez le <strong>Patient</strong> et la <strong>Nature de la facture</strong>. Pour une vente sans dossier, cochez <strong>Opération de caisse détachée du dossier patient (vente au comptoir)</strong>.</li>
   <li>Dans <strong>Prestations facturées</strong>, choisissez chaque prestation, la quantité et la remise éventuelle avec son motif, puis cliquez sur <strong>Ajouter</strong>.</li>
-  <li>Vérifiez le <strong>Récapitulatif</strong>, choisissez le <strong>Mode de règlement</strong> et le <strong>Montant réglé (FCFA)</strong>, puis enregistrez.</li>
+  <li>Vérifiez le <strong>Récapitulatif</strong>, choisissez le <strong>Mode de règlement</strong> (la liste est celle des types de versement en service) et le <strong>Montant réglé (FCFA)</strong>, puis enregistrez. Le règlement saisi à l’émission devient <strong>un seul versement</strong> du mode choisi. Pour un règlement en plusieurs modes, émettez la facture puis encaissez-la (voir plus bas).</li>
 </ol>
 <figure class="capture" data-capture="captures/50-facturation" data-recadrage="0,120,1440,780" data-cibles='[{"bouton":"Ajouter","de":"bas","long":60,"num":2},{"rect":[978,775,415,60],"de":"gauche","long":60,"num":3}]'>
   <figcaption>L’écran <strong>Nouvelle facture</strong> : la note rappelle qu’une facture de patient n’a ni acheteur ni AIB.</figcaption>
@@ -907,14 +907,66 @@
 
 <h2 id="paiements">Encaisser une facture due</h2>
 <p class="chemin">Financier ➔ Paiements</p>
-<p>L’onglet <strong>À encaisser</strong> liste les factures impayées ou partiellement réglées. Cliquez sur <strong>Encaisser</strong> sur la ligne, saisissez le <strong>Montant encaissé (FCFA)</strong>, le <strong>Mode de règlement</strong> et la référence, puis cliquez sur <strong>Valider l’encaissement</strong>. L’onglet <strong>Historique des règlements</strong> garde chaque règlement et son reçu.</p>
+<p>L’onglet <strong>À encaisser</strong> liste les factures impayées ou partiellement réglées. Cliquez sur <strong>Encaisser</strong> sur la ligne, saisissez le <strong>Montant à encaisser (FCFA)</strong> — la somme que les versements doivent totaliser —, puis répartissez-la dans le bloc <strong>VERSEMENTS</strong> (un seul versement, ou plusieurs : voir « Régler une facture en plusieurs versements ») et cliquez sur <strong>Valider l’encaissement</strong>. Les indicateurs du haut comptent, <strong>par type de versement</strong>, la somme encaissée et le nombre de versements. L’onglet <strong>Historique des règlements</strong> garde chaque règlement et son reçu ; son filtre <strong>Mode</strong> propose aussi « Plusieurs modes ».</p>
 <figure class="capture" data-capture="captures/52-paiements" data-recadrage="0,280,1440,620" data-cibles='[{"cle":"kit:onglet:aregler:actif","de":"bas","long":60},{"bouton":"Encaisser","de":"gauche","long":70}]'>
   <figcaption>L’écran <strong>Paiements</strong>.</figcaption>
 </figure>
-<div class="encadre alerte"><span class="titre">Alerte</span><p>Un règlement validé ne se retouche pas. Une erreur se corrige par une <strong>facture d’avoir</strong>, jamais en modifiant le règlement.</p></div>
+<div class="encadre alerte"><span class="titre">Alerte</span><p>Un règlement validé ne se retouche pas. Une erreur se corrige par l’<strong>annulation du règlement</strong> (contre-passation, geste réservé au comptable et à la Directrice administrative et financière) ou par une <strong>facture d’avoir</strong>, jamais en modifiant le règlement.</p></div>
+
+<h2 id="versements">Régler une facture en plusieurs versements</h2>
+<div class="tache">
+<p class="but">Un patient règle une même facture en plusieurs fois, avec des modes différents le même jour : par exemple 5 000 FCFA en Mobile Money, puis 3 000 FCFA en espèces.</p>
+<p class="prerequis">le droit de modifier la caisse.</p>
+<p class="chemin">Financier ➔ État de caisse journalier (ou Financier ➔ Paiements ➔ À encaisser)</p>
+<ol class="etapes">
+  <li>Ouvrez la fenêtre <strong>Encaisser</strong> de la facture et cochez les prestations que le patient règle. Le <strong>MONTANT À ENCAISSER</strong> est la somme à répartir entre les versements. Dans l’exemple, la facture porte deux analyses : « Numération formule sanguine » (5 000 FCFA) et « Glycémie » (3 000 FCFA).</li>
+  <li>Dans le bloc <strong>VERSEMENTS</strong>, choisissez le <strong>Type de versement</strong> : <strong>Mobile Money</strong>. Pour un type qui a des modalités, la liste <strong>Modalité (Mobile Money)</strong> apparaît : choisissez l’opérateur, ici <strong>MTN</strong>.</li>
+  <li>Saisissez le <strong>Montant du versement (FCFA)</strong> (laissé vide, il vaut le reste à répartir) et la <strong>Référence de la transaction</strong>, <strong>à la main</strong> : le numéro de transaction lu sur le téléphone du patient ou sur le reçu de l’opérateur. Le logiciel ne lit aucun numéro automatiquement et ne se connecte à aucun opérateur.</li>
+  <li>Cliquez sur <strong>Ajouter un versement</strong>. Le versement rejoint la liste (<em>Mobile Money — MTN · réf. …</em>) et <strong>RESTE À RÉPARTIR</strong> diminue. Une erreur : cliquez sur l’icône <strong>Retirer ce versement</strong> (×) de la ligne.</li>
+  <li>Choisissez le type suivant (ici <strong>Espèces</strong>, sans référence), laissez le montant vide pour prendre le reste, puis cliquez de nouveau sur <strong>Ajouter un versement</strong>. Quand <strong>RESTE À RÉPARTIR</strong> vaut <strong>0 FCFA</strong>, le bouton <strong>Ajouter un versement</strong> se grise.</li>
+  <li>Cliquez sur <strong>Valider l’encaissement</strong>. La fenêtre de résultat liste <strong>Versement 1</strong>, <strong>Versement 2</strong>…, les prestations réglées et le reste à payer ; cliquez sur <strong>Imprimer le reçu</strong>.</li>
+</ol>
+<figure class="capture" data-capture="captures/219-versement-premier" data-recadrage="130,40,1180,1040" data-cibles='[{"cle":"versements:ligne:0","de":"haut","long":50,"num":1},{"cle":"versements:reste","de":"haut","long":50,"num":2},{"cle":"kit:champ:versement_type","de":"gauche","long":40,"num":3},{"bouton":"Ajouter un versement","de":"gauche","long":40,"num":4}]'>
+  <figcaption>Après le premier versement : <span class="pastille">1</span> la ligne <em>Mobile Money — MTN · réf. …</em> de 5 000 FCFA, <span class="pastille">2</span> le <strong>RESTE À RÉPARTIR</strong> (3 000 FCFA), <span class="pastille">3</span> le <strong>Type de versement</strong> suivant à choisir, <span class="pastille">4</span> <strong>Ajouter un versement</strong>.</figcaption>
+</figure>
+<figure class="capture" data-capture="captures/220-versements-deux" data-recadrage="130,40,1180,1080" data-cibles='[{"cle":"versements:ligne:0:montant","de":"gauche","long":50,"num":1},{"cle":"versements:ligne:1:montant","de":"gauche","long":50,"num":2},{"cle":"versements:reste","de":"gauche","long":50,"num":3},{"bouton":"Valider l’encaissement","de":"haut","long":50,"num":4}]'>
+  <figcaption>Les deux versements sont saisis : <span class="pastille">1</span> Mobile Money 5 000, <span class="pastille">2</span> Espèces 3 000, <span class="pastille">3</span> <strong>RESTE À RÉPARTIR</strong> à 0 FCFA, <span class="pastille">4</span> <strong>Valider l’encaissement</strong>.</figcaption>
+</figure>
+<figure class="capture" data-capture="captures/221-versements-valides" data-recadrage="370,40,700,480" data-cibles='[{"bouton":"Imprimer le reçu","de":"haut","long":50,"num":1}]'>
+  <figcaption>La fenêtre de résultat : <strong>Versement 1</strong> et <strong>Versement 2</strong>, les prestations réglées, <strong>Reste à payer</strong> à 0 FCFA, puis <span class="pastille">1</span> <strong>Imprimer le reçu</strong>.</figcaption>
+</figure>
+<div class="encadre attention"><span class="titre">Attention</span><p><strong>Les règles du règlement mixte.</strong></p>
+<ul>
+  <li><strong>Le même jour.</strong> Le règlement mixte se fait dans une seule séance de caisse : la facture ne se solde pas sur plusieurs jours en un seul geste. Un reste dû d’un autre jour se règle par un nouveau geste (<strong>Encaisser le reste</strong>).</li>
+  <li><strong>La somme couvre exactement les prestations cochées.</strong> Les versements totalisent le <strong>MONTANT À ENCAISSER</strong> : ni plus (un versement ne dépasse jamais le dû), ni moins.</li>
+  <li><strong>Une prestation n’est libérée que si sa ligne est entièrement payée.</strong> Un examen ou une délivrance ne part au laboratoire, à l’imagerie ou à la pharmacie que lorsque <strong>sa</strong> ligne est réglée en entier : un demi-examen ne se prélève pas. Pour régler seulement la numération formule sanguine (5 000 FCFA), décochez la glycémie : les versements totalisent alors 5 000 FCFA, et la glycémie reste en attente, nommément.</li>
+  <li><strong>Assuré ou non, c’est la part du patient.</strong> Le règlement en plusieurs versements porte sur la colonne <strong>À PAYER</strong> (la part du patient). La part de l’assureur ne s’encaisse pas à la caisse : elle suit son circuit de créance.</li>
+  <li><strong>Un versement est une ligne de journal.</strong> Il porte son numéro (<em>VRS-AAAA-NNNNN</em>), son montant, son type, sa modalité, sa référence, la date et l’heure et le caissier. Il ne se modifie ni ne s’archive jamais. Chaque versement écrit sa propre écriture comptable <strong>en brouillon</strong>, sur le compte de trésorerie de <strong>son</strong> type (Espèces, Mobile Money…).</li>
+</ul></div>
+<div class="encadre info"><span class="titre">Information</span><p><strong>Les anciennes factures gardent leur mode unique.</strong> Une facture réglée avant cette version n’a aucun versement écrit : elle se lit comme un versement unique de son mode, sans rien changer à ses montants. Son icône <strong>Annuler un règlement</strong> n’existe pas (voir plus bas), et son reçu porte une seule ligne de versement.</p></div>
+<h3>Quand le logiciel refuse un versement</h3>
+<p>Chaque refus est <strong>nommé</strong> : rien n’est écrit tant que le règlement n’est pas valide. Le refus de la liste s’affiche en toast <strong>« Versement non ajouté. »</strong> ; les refus de la validation s’affichent à la validation.</p>
+<figure class="capture" style="width:92%" data-capture="captures/222-versement-refuse" data-recadrage="130,40,1310,500" data-cibles='[{"bouton":"Ajouter un versement","de":"bas","long":50,"num":1}]'>
+  <figcaption>Un versement Mobile Money sans référence : <span class="pastille">1</span> <strong>Ajouter un versement</strong> est refusé, le toast <strong>Versement non ajouté.</strong> dit « Le type « Mobile Money » exige la référence de la transaction (saisie à la main). »</figcaption>
+</figure>
+<table class="simple">
+  <tr><th style="width:42%">Le message dit…</th><th>Cause et geste à faire</th></tr>
+  <tr><td>« Le type « Mobile Money » exige la référence de la transaction (saisie à la main). »</td><td>Le type est réglé avec « référence exigée ». Saisissez le numéro de transaction.</td></tr>
+  <tr><td>« La référence « … » est déjà saisie pour ce type » ou « a déjà servi pour un versement… une transaction ne règle qu’une fois. »</td><td>Ce numéro a déjà réglé un versement du même type (sur cette liste ou sur une autre facture). Vérifiez le numéro sur le téléphone du patient ; une transaction ne règle qu’une fois.</td></tr>
+  <tr><td>« Ce versement … dépasse le reste à répartir : un versement ne dépasse jamais le dû. »</td><td>Baissez le montant, ou laissez-le vide pour prendre le reste.</td></tr>
+  <tr><td>« Le montant du versement doit être supérieur à zéro (rien à répartir ?). »</td><td>Il n’y a plus rien à répartir ou le montant saisi est nul : validez, ou retirez un versement.</td></tr>
+  <tr><td>« Les versements totalisent … : les prestations cochées ne valent que … » ou « … valent … ajouter un versement de … ou décocher une prestation. » (VERSEMENTS_ECART_LIGNES)</td><td>La somme des versements ne couvre pas exactement les prestations cochées. Ajoutez le versement manquant, ou décochez une prestation.</td></tr>
+  <tr><td>« Les versements … couvrent entièrement … de prestations ; … ne règle aucune prestation en entier. » (VERSEMENTS_MONTANT_NON_ALLOUE)</td><td>Une somme ne règle aucune ligne en entier. Ajustez les montants ou cochez les prestations.</td></tr>
+  <tr><td>« …n’est pas un type de versement en service (Paramètres de la caisse › Types de versement) »</td><td>Le type a été archivé ou n’existe plus. Choisissez-en un autre ; « Paramètres de la caisse » désigne les onglets de l’écran <strong>Natures de facture</strong> (voir plus bas).</td></tr>
+</table>
+</div>
 
 <h2 id="recu">Imprimer le reçu et le ticket 80 mm</h2>
-<p>Après l’encaissement, cliquez sur <strong>Imprimer le reçu</strong>. Le reçu détaille chaque prestation payée, la part de l’assureur, la part du patient et le reste dû. Sur l’imprimante de caisse, le reçu sort au format <strong>ticket 80 mm</strong>.</p>
+<p>Après l’encaissement, cliquez sur <strong>Imprimer le reçu</strong>. Le reçu détaille chaque prestation payée, la part de l’assureur, la part du patient et le <strong>reste à payer</strong>. Depuis cette version, il liste aussi <strong>chaque versement</strong> : date, <strong>Mode</strong>, <strong>Modalité</strong>, <strong>Référence</strong> et <strong>Montant</strong>, puis la ligne <strong>TOTAL VERSÉ</strong>. Quand il y a plusieurs versements, l’en-tête dit « Mode de règlement : Plusieurs modes (voir les versements) ». Sur l’imprimante de caisse, le reçu sort au format <strong>ticket 80 mm</strong>.</p>
+<figure class="capture" data-capture="captures/223-recu-versements" data-recadrage="300,140,840,1150" data-cibles='[{"rect":[368,686,704,84],"de":"gauche","long":40,"num":1}]'>
+  <figcaption>L’aperçu du <strong>Reçu de paiement</strong> d’une facture réglée en deux versements (5 000 FCFA en Mobile Money, 3 000 FCFA en espèces) : <span class="pastille">1</span> le bloc <strong>VERSEMENTS</strong> liste chaque versement, puis <strong>TOTAL VERSÉ</strong>.</figcaption>
+</figure>
+<div class="encadre info"><span class="titre">Information</span><p><strong>Le reçu détaille, la facture ne dit rien du mode.</strong> La <strong>facture normalisée MECeF</strong> et le <strong>ticket 80 mm</strong> ne portent <strong>ni le mode ni les versements</strong> : seulement le <strong>montant total</strong>, le libellé d’arrêté (« Arrêtée la présente facture à la somme de : … ») et le <strong>montant en lettres</strong>. Le mode de règlement ne se lit que sur le reçu et dans les registres de la caisse.</p></div>
 <div class="encadre attention"><span class="titre">Attention</span><p><strong>Un numéro MECeF peut n’être qu’un exemple.</strong> Le jeu de démonstration livré avec le poste porte des numéros « MECEF… » <strong>fabriqués</strong> : ils ne sortent d’aucun boîtier et n’ont aucune valeur fiscale. Chaque fois que l’un d’eux est montré, il est suivi de la mention <strong>« exemple de démonstration — numéro non fiscal »</strong>, et la pièce imprimée porte <strong>« EXEMPLE DE DÉMONSTRATION »</strong> en gras (voir « La facture normalisée MECeF »). Ne remettez jamais à un patient une pièce portant cette mention comme justificatif fiscal.</p></div>
 <p>Pour réimprimer un reçu plus tard, ouvrez le registre des pièces du jour de l’<strong>État de caisse journalier</strong> et cliquez sur l’icône <strong>Réimprimer le reçu détaillé</strong>. Dans la fenêtre d’une facture, le bouton <strong>Réimprimer le reçu</strong> fait de même.</p>
 <p>Sur l’écran <strong>Nouvelle facture</strong>, le bouton <strong>Ticket de caisse</strong> ouvre l’aperçu du ticket des prestations ajoutées (il faut au moins une prestation : sinon le logiciel affiche « Ajouter au moins une prestation. »). Le ticket s’ouvre en <strong>aperçu</strong> et s’enregistre en PDF, à la largeur réglée dans <strong>Imprimante de caisse</strong> (80 mm par défaut) : aucun pilote d’imprimante n’est branché dans cette version. Le ticket est destiné au boîtier ELTRADE CC300, qui est aussi l’imprimante de caisse.</p>
@@ -939,8 +991,54 @@
 <div class="encadre alerte"><span class="titre">Alerte</span><p>Un avoir est une pièce comptable et fiscale définitive. Le total des avoirs ne peut pas dépasser la facture d’origine. Vérifiez les lignes avant d’enregistrer.</p></div>
 </div>
 
+<h2 id="annuler-reglement">Annuler un règlement</h2>
+<div class="tache">
+<p class="but">Vous annulez un règlement saisi par erreur (mauvais mode, mauvaise facture) : le règlement entier est contre-passé, les prestations redeviennent dues.</p>
+<p class="prerequis">le geste réservé <strong>Annuler un règlement</strong> (d’origine : le comptable et la Directrice administrative et financière ; une fiche de rôle peut l’accorder ou le retirer). <strong>Le caissier n’annule pas</strong> : l’icône est absente de son écran.</p>
+<p class="chemin">Financier ➔ Paiements ➔ Historique des règlements</p>
+<ol class="etapes">
+  <li>Dans l’onglet <strong>Historique des règlements</strong>, repérez la facture et cliquez sur l’icône <strong>Annuler un règlement</strong> (flèche arrondie) de sa ligne. L’icône n’existe que pour une facture qui porte des versements écrits.</li>
+  <li>Dans <strong>Versement à annuler (avec ceux du même règlement)</strong>, choisissez le règlement : le versement choisi et <strong>tous ceux du même règlement</strong> sont annulés ensemble.</li>
+  <li>Saisissez le <strong>Motif de l’annulation</strong> : il est <strong>obligatoire</strong> et voyage avec la contre-passation.</li>
+  <li>Cliquez sur <strong>Contre-passer le règlement</strong>. Le toast « Règlement annulé : N contre-passation(s). » indique le <strong>reste dû</strong> et rappelle que l’écriture inverse est posée en brouillon.</li>
+</ol>
+<figure class="capture" data-capture="captures/224-paiements-historique" data-recadrage="0,280,1440,720" data-cibles='[{"bouton":"Annuler un règlement","de":"haut","long":60,"num":1},{"rect":[730,707,330,45],"de":"bas","long":50,"num":2}]'>
+  <figcaption>L’<strong>Historique des règlements</strong> d’un comptable : <span class="pastille">1</span> l’icône <strong>Annuler un règlement</strong> ; <span class="pastille">2</span> le mode d’une facture réglée en deux versements se lit « Mobile Money + Espèces ». Les indicateurs du haut comptent les versements par type.</figcaption>
+</figure>
+<figure class="capture" style="width:78%" data-capture="captures/225-reglement-annuler" data-recadrage="360,40,720,450" data-cibles='[{"cle":"kit:champ:versement","de":"droite","long":40,"num":1},{"cle":"kit:champ:motif","de":"droite","long":40,"num":2},{"bouton":"Contre-passer le règlement","de":"haut","long":40,"num":3}]'>
+  <figcaption>La fenêtre <strong>Annuler un règlement</strong> : <span class="pastille">1</span> le versement à annuler, <span class="pastille">2</span> le motif obligatoire, <span class="pastille">3</span> <strong>Contre-passer le règlement</strong>.</figcaption>
+</figure>
+<div class="encadre info"><span class="titre">Information</span><p>Un versement ne se supprime jamais : l’annulation <strong>écrit une contre-passation par versement</strong> (une nouvelle ligne de journal, avec le motif), pose l’<strong>écriture comptable inverse en brouillon</strong>, remet les prestations en <strong>attente de règlement</strong> et <strong>rebloque</strong> leurs examens ou leur délivrance. On annule le règlement <strong>entier</strong>, pas un versement isolé : annuler à moitié laisserait des prestations payées sans l’argent qui les porte.</p></div>
+<div class="encadre alerte"><span class="titre">Alerte</span><p>L’annulation est <strong>refusée</strong>, en le disant, dans trois cas : la facture est <strong>normalisée</strong> (numéro MECeF certifié) — une pièce émise ne se réécrit pas, passez par une <strong>facture d’avoir</strong> ; une prestation du règlement est <strong>déjà exécutée</strong> (examen au laboratoire ou à l’imagerie, médicament délivré) — passez aussi par un avoir ; le règlement est <strong>déjà annulé</strong>. Sans motif, ou sans le geste réservé, elle est refusée aussi.</p></div>
+</div>
+
+<h2 id="types-versement">Régler les types et les modalités de versement</h2>
+<div class="tache">
+<p class="but">Vous réglez la liste des modes de règlement proposés au guichet : les <strong>types de versement</strong> (Espèces, Mobile Money…) et leurs <strong>modalités</strong> (les opérateurs Mobile Money, les banques…).</p>
+<p class="prerequis">le geste réservé <strong>Régler les types et les modalités de versement</strong> (d’origine : l’administrateur et la Directrice administrative et financière). Sans lui, les commandes sont <strong>absentes</strong> et les onglets se lisent seulement.</p>
+<p class="chemin">Système ➔ Natures de facture ➔ onglets Types de versement et Modalités de versement</p>
+<ol class="etapes">
+  <li>Ouvrez l’onglet <strong>Types de versement</strong>. Le tableau montre, pour chaque type, son <strong>Code</strong>, son libellé (<strong>Type</strong>), le <strong>Compte de trésorerie</strong> débité par un versement, la <strong>Référence</strong> (<em>Exigée</em> ou <em>Facultative</em>) et l’<strong>État</strong>.</li>
+  <li>Pour ajouter un type, cliquez sur <strong>Nouveau type</strong> : saisissez le <strong>Libellé du type</strong>, le <strong>Code</strong> (minuscules, chiffres et tiret bas ; il ne se change plus), choisissez le <strong>Compte de trésorerie (débité par un versement)</strong>, cochez <strong>La référence de transaction est exigée</strong> si besoin et <strong>Proposé au guichet</strong>, puis cliquez sur <strong>Créer</strong>.</li>
+  <li>Ouvrez l’onglet <strong>Modalités de versement</strong>. Cliquez sur <strong>Nouvelle modalité</strong> : saisissez la <strong>Modalité (ex. nom de l’opérateur)</strong>, choisissez le <strong>Type de versement</strong> auquel elle se rattache, cochez <strong>Proposée au guichet</strong>.</li>
+  <li>Modifiez avec l’icône <strong>Modifier</strong>. Retirez du guichet avec l’icône <strong>Archiver</strong> : l’archivage est <strong>annulable</strong> (le type ou la modalité se retrouve sous <strong>Types archivés</strong> ou <strong>Modalités archivées</strong>, avec <strong>Restaurer</strong>) et ne supprime rien. Les versements déjà écrits gardent leur libellé et leurs montants.</li>
+</ol>
+<figure class="capture" data-capture="captures/226-versements-types" data-recadrage="0,270,1440,500" data-cibles='[{"cle":"kit:onglet:types-versement:actif","de":"bas","long":50,"num":1},{"bouton":"Nouveau type","de":"haut","long":50,"num":2}]'>
+  <figcaption>L’onglet <span class="pastille">1</span> <strong>Types de versement</strong> : <span class="pastille">2</span> <strong>Nouveau type</strong>. Tous les types portent l’état <strong>À confirmer</strong> : ce sont des valeurs d’attente.</figcaption>
+</figure>
+<figure class="capture" style="width:78%" data-capture="captures/228-versement-type-nouveau" data-recadrage="270,40,900,560" data-cibles='[{"bouton":"Créer","de":"haut","long":40,"num":3}]'>
+  <figcaption>La fenêtre <strong>Nouveau type</strong> : libellé, code, compte de trésorerie, référence exigée, proposé au guichet, puis <span class="pastille">3</span> <strong>Créer</strong>.</figcaption>
+</figure>
+<figure class="capture" data-capture="captures/227-versements-modalites" data-recadrage="0,270,1440,420" data-cibles='[{"cle":"kit:onglet:modalites-versement:actif","de":"bas","long":50,"num":1},{"bouton":"Nouvelle modalité","de":"haut","long":50,"num":2}]'>
+  <figcaption>L’onglet <span class="pastille">1</span> <strong>Modalités de versement</strong> : les opérateurs MTN, Moov et Celtiis sont rattachés au type <strong>Mobile Money</strong> ; <span class="pastille">2</span> <strong>Nouvelle modalité</strong>.</figcaption>
+</figure>
+<div class="encadre attention"><span class="titre">Attention</span><p><strong>Ce sont des valeurs d’attente, « à confirmer par la Direction ».</strong> Aucun document ne fixe les types de versement de la clinique, leurs comptes de trésorerie réels ni la liste officielle des opérateurs Mobile Money. Le compte de trésorerie réel de la clinique pour le Mobile Money et pour la carte n’est pas connu : le logiciel propose <strong>521000</strong> en attendant ; à régler à la fiche du type. <strong>MTN, Moov et Celtiis</strong> ne sont pas une liste officielle : ajoutez, retirez ou renommez. Corriger une valeur d’attente <strong>l’arrête</strong> : la mention « À confirmer » tombe.</p></div>
+<div class="encadre info"><span class="titre">Information</span><p>Les anciens types <strong>MTN Mobile Money</strong> et <strong>Moov Money</strong> subsistent à côté du type <strong>Mobile Money</strong> (qui porte les opérateurs en modalités) : la Direction archive ce qu’elle ne veut pas proposer. Sur un poste neuf, si la liste est vide, le bouton <strong>Enregistrer les valeurs d’attente</strong> les inscrit pour qu’elles puissent être réglées. Le détail d’une facture dans le registre des factures ne liste pas encore les versements : le reçu et l’<strong>Historique des règlements</strong> les montrent.</p></div>
+</div>
+
 <h2 id="arrete-caisse">Faire l’arrêté de caisse</h2>
 <p>En fin de journée, ouvrez <strong>Financier</strong> ➔ <strong>État de caisse journalier</strong>. Choisissez la <strong>Journée de caisse</strong>, vérifiez les indicateurs (<strong>Factures émises</strong>, <strong>Chiffre d’affaires</strong>, <strong>Total encaissé</strong>, <strong>Reliquats du jour</strong>) puis cliquez sur <strong>Éditer l’arrêté de caisse</strong>. Comptez la caisse physique et comparez-la au total par mode de règlement.</p>
+<p><strong>Les états par mode lisent les versements.</strong> Le tableau <strong>Ventilation par mode de règlement</strong>, les indicateurs de <strong>Paiements</strong>, le tableau de bord de la facturation, la ventilation des opérations et des recettes, le tableau de bord du caissier, le tableau de la Direction et l’<strong>Assistant</strong> (« par mode de paiement ») comptent chaque <strong>versement</strong> sous <strong>son</strong> type. Dans l’exemple, la facture de 8 000 FCFA réglée en 5 000 FCFA de Mobile Money et 3 000 FCFA d’espèces ajoute 5 000 FCFA à la ligne <strong>Mobile Money</strong> et 3 000 FCFA à la ligne <strong>Espèces</strong> : elle n’est plus comptée tout entière sous le dernier mode. Une facture d’avant cette version compte pour son mode unique. Le <strong>théorique</strong> de l’inventaire de caisse est la somme des versements dont le type porte le compte de la caisse (Espèces). Un type archivé depuis garde sa ligne tant qu’il porte un montant.</p>
 
 <h2 id="mecef">La facture normalisée MECeF</h2>
 <p>Toute vente est normalisée : la facture doit être certifiée par un dispositif fiscal MECeF. La clinique utilise un <strong>boîtier physique ELTRADE CC300</strong>. La <strong>facture d’un patient</strong> est normalisée <strong>sans acheteur ni AIB</strong> : ni IFU, ni nom d’acheteur, ni taux d’AIB ; le patient paie le total. La saisie de l’acheteur et de l’AIB ne reste que pour un assureur, une entreprise ou les achats.</p>
@@ -984,6 +1082,7 @@
   <figcaption>L’aperçu de la <strong>Facture de vente — normalisée</strong> d’une pièce de démonstration : <span class="pastille">1</span> la mention sous le titre, <span class="pastille">2</span> « EXEMPLE DE DÉMONSTRATION — pièce non fiscale », <span class="pastille">3</span> « le numéro et les codes ci-dessus ne sont pas fiscaux ».</figcaption>
 </figure>
 <div class="encadre info"><span class="titre">Information</span><p>Ces numéros n’ont pas été retirés du jeu : retirer les 262 numéros aurait laissé 262 pièces « Validée » sans numéro, ou les aurait toutes passées « En attente », et faussé les indicateurs de la caisse et de la MECeF. On les <strong>marque</strong> plutôt que de les cacher. Quand la clinique ouvrira sa vraie exploitation, ses factures n’en porteront aucun.</p></div>
+<div class="encadre info"><span class="titre">Information</span><p><strong>La facture normalisée ne mentionne ni mode de règlement ni versement.</strong> Elle ne porte que le <strong>montant total</strong>, le libellé d’arrêté (« Arrêtée la présente facture à la somme de : … ») et le <strong>montant en lettres</strong>. Une facture réglée en plusieurs versements de modes différents se normalise comme une facture réglée en un seul mode ; le détail des versements ne se lit que sur le <strong>reçu</strong> et dans l’<strong>Historique des règlements</strong>.</p></div>
 <div class="encadre info"><span class="titre">Information</span><p>Seule la part réglée par le patient entre dans la base MECeF : ni la part de l’assureur ni les remises. L’IFU d’un acheteur (assureur, entreprise), quand il se saisit, compte 13 chiffres.</p></div>
 
 <!-- ============================================================== 9. ASSURANCES -->
@@ -2082,6 +2181,7 @@
   <tr><td><strong>AIB</strong></td><td>Acompte sur impôt assis sur les bénéfices : retenue opérée sur certaines ventes, selon un barème daté dont le comptable choisit la ligne.</td></tr>
   <tr><td><strong>Archiver</strong></td><td>Retirer une fiche des listes sans la supprimer. Une fiche archivée se restaure. Le logiciel ne supprime jamais une donnée.</td></tr>
   <tr><td><strong>Avoir</strong></td><td>Facture qui annule tout ou partie d’une facture émise.</td></tr>
+  <tr><td><strong>Contre-passation</strong></td><td>Écriture et ligne de journal qui <strong>annulent</strong> un règlement sans rien effacer : le versement d’origine reste, une ligne inverse est ajoutée, avec son motif. Geste réservé au comptable et à la Directrice administrative et financière.</td></tr>
   <tr><td><strong>Consentement aux SMS</strong></td><td>Réponse du patient à la question « acceptez-vous de recevoir des SMS ? », notée à son dossier : <em>accepte</em>, <em>refuse</em> ou <em>non renseigné</em>. Sans accord, aucun SMS ne part ; « non renseigné » n’est jamais lu comme un accord.</td></tr>
   <tr><td><strong>Code de reprise</strong></td><td>Code à usage unique, généré sur la mère à l’écran <strong>Reprise d’un poste</strong> et saisi sur le poste neuf dans <strong>Rejoindre une clinique</strong>. Il s’affiche une seule fois et n’est jamais écrit au journal.</td></tr>
   <tr><td><strong>Code dossier</strong></td><td>Identifiant unique du patient, au format CBG/[n° d’ordre]/[année] ; l’année est celle de la création du dossier. Il ne se modifie jamais.</td></tr>
@@ -2105,6 +2205,7 @@
   <tr><td><strong>Plan de numérisation</strong></td><td>Suivi calculé de la reprise des dossiers papier : numérisés, actifs prioritaires, lots. Seul le fonds papier est un chiffre déclaré (réglage).</td></tr>
   <tr><td><strong>Réglage (de la clinique)</strong></td><td>Valeur, borne, durée ou liste de libellés que la clinique fixe elle-même, à partir d’une date d’effet, sans que le logiciel l’écrive en dur. Une <em>valeur d’attente</em> est livrée en attendant le réglage.</td></tr>
   <tr><td><strong>Mère (poste)</strong></td><td>Ordinateur central de la clinique, qui reçoit et redistribue les données des postes.</td></tr>
+  <tr><td><strong>Modalité de versement</strong></td><td>Précision rattachée à un type de versement : l’opérateur d’un règlement Mobile Money (MTN, Moov, Celtiis), une banque. Liste réglable dans <strong>Natures de facture</strong>.</td></tr>
   <tr><td><strong>Module</strong></td><td>Ensemble d’écrans d’un même métier (Laboratoire, Pharmacie &amp; Stocks…). Une ligne du panneau du ruban.</td></tr>
   <tr><td><strong>Plan de travail annuel (PTA)</strong></td><td>Programme des actions de la clinique pour un exercice : brouillon, soumis, adopté, en exécution, clôturé.</td></tr>
   <tr><td><strong>Pastille</strong></td><td>Bouton arrondi du ruban qui ouvre un écran ; ou voyant de la barre supérieure.</td></tr>
@@ -2117,7 +2218,9 @@
   <tr><td><strong>Révoqué (poste)</strong></td><td>Poste que la mère ne reconnaît plus pour synchroniser. Il reste au registre, jamais effacé, et peut encore être repris.</td></tr>
   <tr><td><strong>Ruban</strong></td><td>Menu horizontal en haut de l’écran.</td></tr>
   <tr><td><strong>Tiers payeur</strong></td><td>Entreprise qui prend en charge un patient et qui reçoit sa propre facture (distincte de celle du patient).</td></tr>
+  <tr><td><strong>Type de versement</strong></td><td>Mode de règlement proposé au guichet (Espèces, TPE, Mobile Money…), avec son compte de trésorerie et l’exigence ou non d’une référence de transaction. Liste réglable, jamais écrite dans le logiciel.</td></tr>
   <tr><td><strong>Vacation</strong></td><td>Période de travail posée au planning (garde, permanence, repos…). « À valider » tant que la mère ne l’a pas appliquée ; « Validée » ou « Refusée » ensuite. Une vacation « À valider » ou « Refusée » n’est pas payée.</td></tr>
+  <tr><td><strong>Versement</strong></td><td>Une part d’un règlement : un montant, d’un type (et d’une modalité), avec sa référence de transaction saisie à la main. Une facture se règle en autant de versements que nécessaire, le même jour. Un versement est une ligne de journal : il ne se modifie ni ne se supprime ; une erreur s’annule par contre-passation.</td></tr>
   <tr><td><strong>Schéma des données</strong></td><td>Numéro de version de la forme des données du poste et de la mère. Un logiciel refuse d’ouvrir des données d’un schéma plus récent que lui ; une mise à jour peut les convertir, après avoir rangé leur forme d’origine.</td></tr>
   <tr><td><strong>sghx (fichier .sghx)</strong></td><td>Export complet portable de la base : un seul fichier, manifeste lisible sans clé, contenu chiffré par la clé de la clinique. Il ne contient ni cette clé ni les mots de passe.</td></tr>
   <tr><td><strong>Synchronisation</strong></td><td>Échange automatique des données entre les postes et la mère.</td></tr>
@@ -2142,7 +2245,14 @@
   <tr><td>Un export est refusé.</td><td>Votre rôle n’a pas le droit d’exporter, ou le nombre de lignes dépasse la limite réglée. Le message indique la cause et le geste à faire.</td></tr>
   <tr><td>Un numéro MECeF est suivi de « exemple de démonstration — numéro non fiscal », ou la pièce imprimée porte « EXEMPLE DE DÉMONSTRATION ».</td><td>C’est un numéro fabriqué du jeu de démonstration : il ne vient d’aucun boîtier et n’a aucune valeur fiscale. Ne remettez pas cette pièce comme justificatif. Une pièce non certifiée n’affiche aucun numéro.</td></tr>
   <tr><td>Une facture MECeF reste « en attente ».</td><td>C’est normal dans cette version : l’adaptateur du boîtier ELTRADE CC300 n’est pas encore branché. Aucune action n’est demandée à la caisse.</td></tr>
-  <tr><td>Je me suis trompé dans une facture déjà réglée.</td><td>Ne retouchez pas le règlement. Demandez à un profil habilité d’émettre une <strong>facture d’avoir</strong>.</td></tr>
+  <tr><td>Je me suis trompé dans une facture déjà réglée.</td><td>Ne retouchez pas le règlement. Si le mode ou le montant est faux, demandez au comptable ou à la Directrice administrative et financière d’<strong>annuler le règlement</strong> (contre-passation, avec motif) ; sinon, à un profil habilité d’émettre une <strong>facture d’avoir</strong>.</td></tr>
+  <tr><td>« Versement non ajouté » : le type « Mobile Money » exige la référence de la transaction.</td><td>Saisissez à la main le numéro de transaction (lu sur le téléphone du patient ou le reçu de l’opérateur), puis cliquez de nouveau sur <strong>Ajouter un versement</strong>.</td></tr>
+  <tr><td>« La référence … a déjà servi pour un versement » ou « est déjà saisie pour ce type ».</td><td>Une transaction ne règle qu’une fois. Vérifiez le numéro avec le patient : s’il est exact, le règlement a déjà été saisi (cherchez-le dans l’<strong>Historique des règlements</strong>) ; sinon, corrigez-le.</td></tr>
+  <tr><td>L’encaissement est refusé : « Les versements totalisent … : les prestations cochées valent … ».</td><td>La somme des versements ne couvre pas exactement les prestations cochées. Ajoutez le versement manquant, retirez-en un, ou décochez une prestation. Une prestation n’est réglée que si sa ligne l’est en entier.</td></tr>
+  <tr><td>Il reste un montant dû après un règlement en plusieurs versements.</td><td>Une prestation n’a pas été cochée, ou le règlement n’a pas couvert sa ligne entière. Le <strong>reste à payer</strong> figure sur le reçu ; le règlement mixte se fait le même jour, et le reste d’un autre jour se règle par <strong>Encaisser le reste</strong>.</td></tr>
+  <tr><td>Je ne vois pas l’icône <strong>Annuler un règlement</strong>.</td><td>Ce geste est réservé au comptable et à la Directrice administrative et financière : le caissier n’annule pas. L’icône n’existe pas non plus sur une facture réglée avant cette version (aucun versement écrit).</td></tr>
+  <tr><td>« Annulation refusée » : la facture est normalisée, ou la prestation est déjà exécutée.</td><td>Un règlement ne s’annule plus une fois la facture certifiée MECeF, ni quand un examen est déjà au laboratoire, à l’imagerie ou qu’un médicament est délivré. Demandez une <strong>facture d’avoir</strong>.</td></tr>
+  <tr><td>La liste des types ou des modalités de versement n’a pas de bouton <strong>Nouveau type</strong>.</td><td>Vous n’avez pas le geste <strong>Régler les types et les modalités de versement</strong> (administrateur, Directrice administrative et financière). Les onglets se lisent seulement.</td></tr>
   <tr><td>Le plan de travail annuel n’a pas de bouton <strong>Adopter le plan</strong>, ou refuse l’adoption.</td><td>Le plan n’est pas encore <strong>soumis</strong>, ou vous n’avez pas le geste d’adoption, ou c’est vous qui l’avez soumis : celui qui soumet n’adopte pas. Faites adopter par un autre détenteur du geste.</td></tr>
   <tr><td>Une action ne peut pas être ajoutée au plan ou à son exercice suivant.</td><td>Un plan adopté ne se réécrit pas. Cliquez sur <strong>Réviser le plan</strong> ; pour la reconduction, retirez la soumission du plan suivant ou révisez-le d’abord.</td></tr>
   <tr><td>Un salaire, une catégorie ou un numéro CNSS d’agent est marqué « provisoire » ou « à renseigner ».</td><td>C’est une valeur d’attente. Saisissez la valeur remise (<strong>Modifier</strong> la fiche) ou, avec le droit, cliquez sur <strong>Confirmer</strong> sur la fiche, avec un motif.</td></tr>

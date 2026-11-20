@@ -2,16 +2,16 @@
 
 Pour reprendre le chantier dans une session neuve sans relire l'historique. Lire dans cet ordre : ce fichier, `docs/prd/PRD-replique-baguidi.md` (spécification, questions tranchées barrées), `docs/prd/JEU-DEMONSTRATION-BAGUIDI.md` (version 2 validée), `docs/audit/INVENTAIRE-AUDITS-PAYES.md`.
 
-## 1. Où est le code (mis à jour le 20/11/2026)
+## 1. Où est le code (mis à jour le 21/11/2026)
 
 | Quoi | Où |
 |---|---|
-| **Code de travail à jour (livraison v33)** | cette branche, `claude/eager-archimedes-e8whyx` de `massenon/sighcbg`, **poussée** : un commit qui pose l'arbre complet de la v33 par-dessus les notes de la Direction, SANS l'historique de `baguidi-lot1` |
-| Livraisons figées (un seul commit chacune, sans historique) | branches `livraison/baguidi-v19` à `livraison/baguidi-v33` ; la plus récente est **`livraison/baguidi-v33`** |
+| **Code de travail à jour (livraison v34)** | cette branche, `claude/eager-archimedes-e8whyx` de `massenon/sighcbg`, **poussée** : un commit qui pose l'arbre complet de la v33 par-dessus les notes de la Direction, SANS l'historique de `baguidi-lot1` |
+| Livraisons figées (un seul commit chacune, sans historique) | branches `livraison/baguidi-v19` à `livraison/baguidi-v34` ; la plus récente est **`livraison/baguidi-v34`** |
 | Sources Baguidi (logo, charte, maquette) | branche `baguidi-sources` |
 | Base d'origine | `massenon/sighcnt`, branche `claude/sighcnt-monorepo-offline-first-i0v3v9` |
 
-**`baguidi-lot1` (l'historique complet) reste LOCAL et ne se pousse pas** : son historique contient des données d'une autre clinique. Ce qui est publié ici est l'état du code SANS cet historique (contrôle d'identité à 0 trace). Pour cloner et tester : `git clone https://github.com/massenon/sighcbg.git`, puis `git checkout claude/eager-archimedes-e8whyx` ou `git checkout livraison/baguidi-v33` ; les commandes (relais, poste Flutter, mobile, banc, contrôles) sont à l'annexe « Commandes » du manuel administrateur (`docs/manuels/`) et dans `docs/guides/LANCER-EN-LOCAL.md`. Les sections 2 et 3 ci-dessous décrivent l'état du 09/11/2026 : l'état réel est celui de `docs/architecture/ECARTS-MAQUETTE.md` et des manuels.
+**`baguidi-lot1` (l'historique complet) reste LOCAL et ne se pousse pas** : son historique contient des données d'une autre clinique. Ce qui est publié ici est l'état du code SANS cet historique (contrôle d'identité à 0 trace). Pour cloner et tester : `git clone https://github.com/massenon/sighcbg.git`, puis `git checkout claude/eager-archimedes-e8whyx` ou `git checkout livraison/baguidi-v34` ; les commandes (relais, poste Flutter, mobile, banc, contrôles) sont à l'annexe « Commandes » du manuel administrateur (`docs/manuels/`) et dans `docs/guides/LANCER-EN-LOCAL.md`. Les sections 2 et 3 ci-dessous décrivent l'état du 09/11/2026 : l'état réel est celui de `docs/architecture/ECARTS-MAQUETTE.md` et des manuels.
 
 ## 2. Ce qui est fait (état vert au 09/11 : domaine 2 833 tests, poste 2 339 + 10 ignorés avec motif, banc de synchronisation 218/218)
 

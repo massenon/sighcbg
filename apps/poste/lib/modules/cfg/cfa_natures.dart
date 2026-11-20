@@ -6,6 +6,7 @@ import '../../core/jetons_shell.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
 import 'cfa_commun.dart';
+import 'cfa_versements.dart';
 
 /// `cfg-natures-facture` — « Natures de facture » : la liste des natures proposées à l'émission, administrable. En ajouter une la rend IMMÉDIATEMENT
 /// disponible à l'émission, sans intervention sur le logiciel (l'option « Ajouter » demandée par la Direction). Archivage annulable (RG-14).
@@ -30,7 +31,14 @@ class EcranNaturesFacture extends StatelessWidget with EcranMaquette {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) => OngletsSigh(onglets: [
+        OngletDef(id: 'natures', libelle: 'Natures de facture', construire: _natures),
+        // Le règlement en plusieurs versements (Direction, 20/11/2026) : ses deux paramètres, sous le geste réservé `versement_regler`.
+        OngletDef(id: 'types-versement', libelle: 'Types de versement', construire: cfaOngletTypesVersement),
+        OngletDef(id: 'modalites-versement', libelle: 'Modalités de versement', construire: cfaOngletModalitesVersement),
+      ]);
+
+  Widget _natures(BuildContext context) {
     final c = ContexteEcran.of(context);
     final col = c.magasin.collection('naturesFacture');
     final secteurs = cfaSecteursActivite();

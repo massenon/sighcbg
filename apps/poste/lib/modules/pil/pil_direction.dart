@@ -156,6 +156,8 @@ class EcranDirection extends StatelessWidget with EcranMaquette {
       mouvements: pilActives(c, 'mouvements'),
       facturesMere: pilActives(c, 'facturesMere'),
       objectifs: pilActives(c, 'objectifsPilotage'),
+      versements: pilActives(c, 'versements'),
+      typesVersement: c.magasin.collection('typesVersement').toutes,
       auj: c.aujourdhui,
       libelleMode: _libelleMode,
       refMois: c.aujourdhui);

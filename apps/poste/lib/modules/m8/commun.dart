@@ -29,17 +29,41 @@ String dateDe(Object? v) {
 List<String> get naturesFactureListe => ListesReference.valeurs('listes.m8.naturesFacture');
 
 /// `D.MODES_PAIEMENT` : (identifiant, libellé, icône).
-const _iconesModesPaiement = {'especes': 'banknote', 'tpe': 'credit-card', 'mtn': 'smartphone', 'moov': 'smartphone', 'assurance': 'shield-check'};
+const _iconesModesPaiement = {'especes': 'banknote', 'tpe': 'credit-card', 'mtn': 'smartphone', 'moov': 'smartphone', 'mobile_money': 'smartphone', 'mixte': 'layers', 'assurance': 'shield-check'};
+
+/// L'icône d'un type de versement (un type créé par la clinique, inconnu d'ici, prend la coupure de billets).
+String iconeDeMode(String code) => _iconesModesPaiement[code] ?? 'banknote';
 
 /// Tous les modes, dans l'ordre du réglage `libelles.m8.modesPaiement` (le libellé change, le code et donc la décision non).
 List<(String, String, String)> get modesPaiement => [for (final (c, l) in enumModesPaiement.paires) (c, l, _iconesModesPaiement[c] ?? 'banknote')];
 
-/// Les modes que le PATIENT règle au guichet : ce sont des CODES (la prise en charge de l'assurance n'est pas un règlement du patient), jamais « les quatre premiers » d'une liste dont
-/// l'ordre se règle.
-const _codesModesPatient = ['especes', 'tpe', 'mtn', 'moov'];
-List<(String, String, String)> get modesPaiementPatient => [for (final (c, l) in enumModesPaiement.paresDe(_codesModesPatient)) (c, l, _iconesModesPaiement[c] ?? 'banknote')];
+/// Les modes que le PATIENT règle au guichet sont les TYPES DE VERSEMENT en service (paramètres de la caisse, `typesVersementEnService`) : plus de liste de codes écrite ici (Direction, 20/11/2026).
 
 String modeLabel(Object? id) => enumModesPaiement.libelle(id);
+
+/// Les types de versement à présenter dans un état par mode : ceux en service, plus tout type archivé depuis qui porte un montant sur [factures] (aucun montant n'est écarté d'un état).
+List<(String, String)> typesParMode(Magasin mg, Iterable<Fiche> factures) {
+  final types = mg.collection(colTypesVersement).toutes;
+  final vers = mg.collection(colVersements).toutes;
+  final codes = [for (final t in typesVersementEnService(types)) t.code];
+  for (final k in repartitionParType(factures, vers).keys) {
+    if (!codes.contains(k)) codes.add(k);
+  }
+  return [for (final c in codes) (c, libelleDeType(types, c, repli: modeLabel))];
+}
+
+/// Le mode d'une facture, lu par ses VERSEMENTS (Direction, 20/11/2026) : le type du versement unique, ou les types distincts joints (« Mobile Money + Espèces ») ; une pièce d'avant les
+/// versements se lit par son mode unique ; une pièce sans règlement n'a pas de mode (« — »).
+String modeDeFacture(Magasin mg, Fiche f) {
+  final vs = versementsDeFacture(f, mg.collection(colVersements).toutes);
+  if (vs.isEmpty) return f['modePaiement'] == null || f['modePaiement'] == '' ? '—' : modeLabel(f['modePaiement']);
+  final types = mg.collection(colTypesVersement).toutes;
+  final ordre = <String>[];
+  for (final v in vs) {
+    if (!ordre.contains(v.type)) ordre.add(v.type);
+  }
+  return [for (final t in ordre) libelleDeType(types, t, repli: modeLabel)].join(' + ');
+}
 
 /// MECeF est-il en service sur ce poste ? Lu dans les fermetures en vigueur (fiche `modulesActifs` du module MECEF, bascule de « Activité des
 /// modules », PRD Baguidi P0-5), jamais dans un drapeau à part. Le résultat se PASSE aux moteurs du domaine (`emettreFacture`, `encaisser`,
@@ -196,13 +220,14 @@ PieceA4 pieceFacture(Fiche f,
       BlocTexte(
           '${i.formuleArrete} : ${montantEnLettres(f['partPatient'])}.',
           gras: true),
-      BlocTexte(
-          proforma
-              ? 'Facture pro-forma — document non fiscal, établi à titre d’estimation. Elle ne vaut pas facture normalisée et ne peut servir de justificatif comptable.'
-              : (mecefActif
-                  ? 'Facture normalisée conforme au dispositif de facturation électronique en vigueur en République du Bénin. Mode de règlement : ${modeLabel(f['modePaiement'])}.'
-                  : 'Mode de règlement : ${modeLabel(f['modePaiement'])}.'),
-          italique: true),
+      // DÉCISION DE LA DIRECTION (20/11/2026, §13) : la facture (normalisée ou non) ne mentionne NI les versements NI les modes de règlement — le montant total, le libellé d'arrêté et
+      // le montant en lettres seulement. Le détail des versements (mode, modalité, référence, montant) n'est que sur le REÇU DÉTAILLÉ.
+      if (proforma)
+        const BlocTexte(
+            'Facture pro-forma — document non fiscal, établi à titre d’estimation. Elle ne vaut pas facture normalisée et ne peut servir de justificatif comptable.',
+            italique: true)
+      else if (mecefActif)
+        const BlocTexte('Facture normalisée conforme au dispositif de facturation électronique en vigueur en République du Bénin.', italique: true),
       if (mecefActif && !proforma && f['numeroMecef'] != null && numeroMecefDeDemonstration(f))
         const BlocTexte('EXEMPLE DE DÉMONSTRATION : le numéro MECeF de cette pièce n’est pas un numéro fiscal.', gras: true),
       if (mecefActif && !proforma && f['numeroMecef'] != null)
@@ -220,6 +245,8 @@ PieceA4 pieceFacture(Fiche f,
 /// Reçu de paiement : détaille les PRESTATIONS réglées ET celles qui restent dues (quel examen précis a été payé, lequel attend).
 PieceA4 pieceRecu(Fiche f,
     {Fiche? versement,
+    List<VersementLu> versements = const [],
+    String Function(String)? libelleType,
     required String utilisateur,
     required DateTime edite,
     required String reference,
@@ -271,6 +298,19 @@ PieceA4 pieceRecu(Fiche f,
           ? (f['dernierReglement'] as Map)['montant']
           : f['montantPaye']);
   final mode = versement?['modePaiement'] ?? f['modePaiement'];
+  String typeDe(VersementLu v) => v.libelleType ?? (libelleType ?? modeLabel)(v.type);
+  final unique = versements.length == 1 ? versements.first : null;
+  final TableauEtat? tableauVersements = versements.isEmpty
+      ? null
+      : TableauEtat(colonnes: [
+          ColonneEtat(libelle: 'Date', valeur: (v) => dateDe((v['v'] as VersementLu).date)),
+          ColonneEtat(libelle: 'Mode', valeur: (v) => typeDe(v['v'] as VersementLu)),
+          ColonneEtat(libelle: 'Modalité', valeur: (v) => (v['v'] as VersementLu).modalite ?? '—'),
+          ColonneEtat(libelle: 'Référence', valeur: (v) => (v['v'] as VersementLu).reference.isEmpty ? '—' : (v['v'] as VersementLu).reference),
+          ColonneEtat(libelle: 'Montant', valeur: (v) => m((v['v'] as VersementLu).montant), droite: true, somme: (v) => n((v['v'] as VersementLu).montant)),
+        ], lignes: [
+          for (final v in versements) {'v': v}
+        ], libelleTotal: 'TOTAL VERSÉ');
   return PieceA4(
     titre: 'Reçu de paiement',
     sousTitre: '${f['numero']}',
@@ -282,15 +322,16 @@ PieceA4 pieceRecu(Fiche f,
       ('Patient', '${f['patient'] ?? ''}'),
       ('Dossier', '${f['patientCode'] ?? ''}'),
       ('Date', dateFR(edite)),
-      ('Mode de règlement', modeLabel(mode)),
+      ('Mode de règlement', versements.length > 1 ? 'Plusieurs modes (voir les versements)' : (unique != null ? typeDe(unique) : modeLabel(mode))),
       ('Encaissé par', utilisateur),
-      ('Référence transaction', '${versement?['reference'] ?? f['referenceTransaction'] ?? '—'}'),
+      ('Référence transaction', versements.length > 1 ? 'Voir les versements' : '${unique != null && unique.reference.isNotEmpty ? unique.reference : (versement?['reference'] ?? f['referenceTransaction'] ?? '—')}'),
       ('RCCM', i.rccm),
     ],
     identite: i,
     blocs: [
       if (payees.isNotEmpty)
         BlocTableau(tl(payees), titre: 'Prestations réglées'),
+      if (tableauVersements != null) BlocTableau(tableauVersements, titre: 'Versements'),
       if (f['lignes'] is! List || (f['lignes'] as List).isEmpty)
         BlocTableau(rub([
           {'k': 'Montant total de la facture', 'v': m(f['montantTTC'])},

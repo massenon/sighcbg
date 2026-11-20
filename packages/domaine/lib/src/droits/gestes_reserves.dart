@@ -100,6 +100,15 @@ const String gesteValiderAchats = 'achats_valider';
 /// Directrice Administrative (à confirmer par la Direction) ; une fiche de rôle accorde ou retire.
 const String gesteReglageEncaissementSansPrix = 'reglage_encaissement_sans_prix';
 
+/// ANNULER UN RÈGLEMENT, c'est-à-dire contre-passer ses versements (Direction de Baguidi, 20/11/2026, §13) : un versement ne se supprime jamais, il se contre-passe, avec un motif, par
+/// une écriture inverse. Geste RÉSERVÉ et distinct de la saisie d'un versement (qui suit le droit d'encaisser) : le caissier n'annule pas. Origine : le Comptable et la Directrice
+/// Administrative ; une fiche de rôle accorde ou retire.
+const String gesteVersementAnnuler = 'versement_annuler';
+
+/// RÉGLER LES TYPES ET LES MODALITÉS DE VERSEMENT (Direction de Baguidi, 20/11/2026, §13) : créer, modifier, archiver et restaurer un type (espèces, Mobile Money, carte…), son compte
+/// de trésorerie et l'exigence de référence, et les modalités (opérateurs Mobile Money, banques). Origine : l'administrateur et la Directrice Administrative ; une fiche de rôle accorde ou retire.
+const String gesteVersementRegler = 'versement_regler';
+
 /// LA PHARMACIE ET LA CAISSE NE SONT PAS UN RÔLE (Direction de Baguidi, 16/11/2026) : aujourd'hui la Caissière-Dispensatrice tient les deux et le rôle pharmacien reste ouvert, mais une
 /// clinique peut séparer un pharmacien de la caisse. Aucune décision de droit n'y suppose donc « pharmacie = caissier » : encaisser et délivrer sont des droits d'ÉCRAN de la matrice
 /// (`m8-caisse`, `m6-dispensation`), et ce qui n'était pas un droit d'écran (le routage des alertes, la retransmission MECeF) est un geste réservé ci-dessous, dont l'origine
@@ -440,6 +449,20 @@ const List<GesteReserve> gestesReserves = [
       ecran: 'cfg-systeme',
       rolesDefaut: ['admin', 'da'],
       aide: 'Le réglage « Encaisser le reste d’une facture qui a une ligne sans prix » (Non par défaut : rien de la facture ne s’encaisse tant qu’une ligne attend son prix). Se règle depuis n’importe quel poste : sur un poste rattaché, la demande est transmise à la mère, qui l’applique. Origine : l’administrateur et la Directrice Administrative (à confirmer par la Direction).'),
+  GesteReserve(
+      id: gesteVersementAnnuler,
+      libelle: 'Annuler un règlement (contre-passer ses versements)',
+      module: 'M8',
+      ecran: 'm8-paiements',
+      rolesDefaut: ['comptable', 'da'],
+      aide: 'Un versement ne se supprime jamais : l’annulation d’un règlement écrit une CONTRE-PASSATION par versement (motif obligatoire, écriture comptable inverse en brouillon) et remet les prestations en attente de règlement. Refusée sur une facture normalisée (passer par une facture d’avoir). Origine : le Comptable et la Directrice Administrative ; le caissier n’annule pas.'),
+  GesteReserve(
+      id: gesteVersementRegler,
+      libelle: 'Régler les types et les modalités de versement',
+      module: 'CFG',
+      ecran: 'cfg-natures-facture',
+      rolesDefaut: ['admin', 'da'],
+      aide: 'Les types de versement (espèces, carte, Mobile Money, chèque, virement…) avec leur compte de trésorerie et l’exigence de référence, et leurs modalités (opérateurs Mobile Money, banques) : création, modification, archivage annulable. Origine : l’administrateur et la Directrice Administrative.'),
   GesteReserve(
       id: gesteAlertesCaisse,
       libelle: 'Recevoir les notifications du poste de caisse',

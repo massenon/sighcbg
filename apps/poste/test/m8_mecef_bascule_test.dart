@@ -97,7 +97,8 @@ void main() {
           reason: 'l’identifiant fiscal ne s’imprime pas module fermé');
       final tout = [...rubriques(p), ...textes(p)].join(' ');
       expect(tout.contains('MECeF'), isFalse);
-      expect(textes(p).join(' '), contains('Mode de règlement'));
+      // Décision du 20/11/2026 : la facture ne mentionne ni versements ni modes de règlement.
+      expect(textes(p).join(' '), isNot(contains('Mode de règlement')));
       expect(p.cartouche.any((x) => x.$1 == 'RCCM' && x.$2 == IdentiteClinique.rccm), isTrue,
           reason: 'l’IFU et le RCCM relèvent de l’en-tête légal, pas du dispositif');
     });

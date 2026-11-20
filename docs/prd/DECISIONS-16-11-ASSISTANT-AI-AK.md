@@ -81,3 +81,12 @@ La Direction demande d'implémenter tout ce qui manque : (1) sauvegarde vérifi�
 **Réponses de la Direction (17/11/2026), qui remplacent le défaut ci-dessus** : (1) l'export ET l'import sont ouverts à l'administrateur ET à la DAF, par gestes réservés de la fiche de rôle (`base_exporter`, `base_importer`), réglables ; (2) ils se font sur la MÈRE ET sur le FILEUL ; le fileul n'est jamais l'autorité : son import écrit dans un magasin NEUF (mise en service par un geste tracé), un fileul rattaché remplace son magasin après une copie préalable VÉRIFIÉE, son export embarque sa file non confirmée et son étiquette, un fichier d'une autre clinique est refusé, un export de fileul ne s'importe pas comme mère, un export de mère sur un fileul n'est qu'un point de départ de resynchronisation, un import plus ancien que la dernière synchronisation avertit sans bloquer et liste les saisies non synchronisées, un fileul non rattaché importe comme une mère de lui-même.
 
 **Réalisation** : voir `docs/guides/MISE-A-JOUR-ET-RETOUR-ARRIERE.md` et les écarts E4600 à E4614 de `docs/architecture/ECARTS-MAQUETTE.md`.
+
+## 13. Règlement en plusieurs versements, modes différents (Direction de Baguidi, 20/11/2026)
+Un patient peut régler UNE facture en autant de versements que nécessaire, de modes différents (ex. Mobile Money puis espèces).
+1. **Nombre de versements** : autant que nécessaire. Les TYPES de versement et leurs MODALITÉS sont des paramètres (liste réglable dans les Paramètres), jamais en dur.
+2. **Pas de différé multi-jours** : le règlement mixte se fait LE MÊME JOUR ; la facture ne se solde pas sur plusieurs jours (la règle existante des restes dus d'un autre jour n'est pas étendue).
+3. **Prestations bloquées** : règle gardée — une prestation (examen, délivrance…) n'est débloquée que lorsque SA ligne est entièrement payée.
+4. **Mobile Money** : la liste des opérateurs est PARAMÉTRABLE (CRUD) ; la référence de transaction est saisie à la main (aucune intégration API).
+5. **Assurés ou non** : le règlement en plusieurs versements concerne la part du PATIENT, pour les assurés comme pour les non-assurés.
+6. **MECeF** : la facture normalisée ne mentionne PAS les versements ni les modes : uniquement le MONTANT TOTAL, avec le libellé d'arrêté (« Arrêter la facture … ») et le montant en lettres.

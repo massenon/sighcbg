@@ -45,6 +45,7 @@ export 'src/format/diacritiques.dart' show sansDiacritiques;
 export 'src/navigation/manifeste.dart';
 export 'src/caisse/prise_en_charge.dart';
 export 'src/caisse/encaissement.dart';
+export 'src/caisse/versements.dart';
 export 'src/caisse/valorisation.dart';
 export 'src/notifications/routage_notifications.dart';
 export 'src/caisse/emission.dart';

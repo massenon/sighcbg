@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:sigh_domaine/sigh_domaine.dart' show colFichesAide, champDepartCompteurs, champEnAttenteMere, assCouverturesEnConflit, champSerieDemande, ficheLocaleAuPoste, collectionsCircuitAchat, fusionnerCircuitAchat, fusionnerPlanTravail, ptaCollectionPlans, planningCollectionsSync, fusionnerPlanningRh, planningAffectationsEnDoublon, facturesTiersCollectionsSync;
+import 'package:sigh_domaine/sigh_domaine.dart' show colFichesAide, colVersements, champDepartCompteurs, champEnAttenteMere, assCouverturesEnConflit, champSerieDemande, ficheLocaleAuPoste, collectionsCircuitAchat, fusionnerCircuitAchat, fusionnerPlanTravail, ptaCollectionPlans, planningCollectionsSync, fusionnerPlanningRh, planningAffectationsEnDoublon, facturesTiersCollectionsSync;
 
 import '../donnees/magasin.dart';
 import 'fusion_activite.dart';
@@ -62,6 +62,8 @@ const Set<String> collectionsActivite = {
   'factures',
   'avoirs',
   'ecritures',
+  // LES VERSEMENTS (20/11/2026) : lignes de journal (famille B de la mère, ajout seul), jamais vers un téléphone.
+  'versements',
   'mouvements',
   'lots',
   'produits',
@@ -351,7 +353,7 @@ class PontActivite {
         // d'origine. Préfixée de l'étiquette du poste, la fiche du fileul et celle que la mère réécrit seraient DEUX fiches (mesuré : lots, mouvements et articles comptés deux fois).
         // Même règle pour un référentiel d'activité que la mère seule écrit (le catalogue des produits) : la configuration le publie sous son identifiant, le pont sous son identité de synchronisation ;
         // préfixée, elle faisait de chaque article créé après le jeu d'origine DEUX fiches chez un fileul (mesuré avec un import de la mère).
-        final identiteCommune = ((planningCollectionsSync.contains(c) || c == colFichesAide) && '${f['id']}'.startsWith('$etiquette-')) || magasin.idsOrigine(c).contains('${f['id']}') || '${f[champSerieDemande] ?? ''}'.isNotEmpty || collectionsDeLaMereSeule.contains(c) || collectionsAjoutSeul.contains(c);
+        final identiteCommune = ((planningCollectionsSync.contains(c) || c == colFichesAide || c == colVersements) && '${f['id']}'.startsWith('$etiquette-')) || magasin.idsOrigine(c).contains('${f['id']}') || '${f[champSerieDemande] ?? ''}'.isNotEmpty || collectionsDeLaMereSeule.contains(c) || collectionsAjoutSeul.contains(c);
         f['idSync'] = identiteCommune ? '${f['id']}' : '$etiquette-${f['id']}';
       }
     }

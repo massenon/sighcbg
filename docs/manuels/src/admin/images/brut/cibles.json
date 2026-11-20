@@ -962,5 +962,29 @@
         25.0
       ]
     }
+  },
+  "admin-56-types-versement": {
+    "largeur": 1800,
+    "hauteur": 1375,
+    "cibles": {
+      "Nouveau type": [
+        928.0,
+        505.0,
+        159.0,
+        35.0
+      ]
+    }
+  },
+  "admin-57-modalites-versement": {
+    "largeur": 1800,
+    "hauteur": 1375,
+    "cibles": {
+      "Nouvelle modalité": [
+        1304.0,
+        505.0,
+        189.0,
+        35.0
+      ]
+    }
   }
 }

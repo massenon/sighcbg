@@ -47,6 +47,13 @@ void main() {
     for (var i = 0; i < e.length; i++) {
       final g = vue.graphiques[i];
       expect(g.type, e[i]['type'], reason: '$ou : type du graphique $i');
+      if (e[i]['etiquettes'] is List && (e[i]['etiquettes'] as List).contains('Espèces') && g.type == 'anneau' && i == 3) {
+        // 20/11/2026 : la répartition par mode lit les VERSEMENTS ; les factures non réglées (le bucket « undefined » de la maquette, valeur nulle) n'y figurent plus. Même contenu, sans les zéros.
+        final att = {for (final (k, l) in (e[i]['etiquettes'] as List).cast<String>().indexed) l: (e[i]['series'] as List).cast<num>()[k]}..removeWhere((_, v) => v == 0);
+        final obt = {for (final (k, l) in g.etiquettes.indexed) l: g.series.first.donnees[k]};
+        expect(obt, att, reason: '$ou : répartition par mode de paiement (versements)');
+        continue;
+      }
       expect(g.etiquettes, (e[i]['etiquettes'] as List).cast<String>(), reason: '$ou : étiquettes du graphique $i');
       if (g.type == 'anneau') {
         expect(g.series.first.donnees, (e[i]['series'] as List).cast<num>(), reason: '$ou : valeurs de l’anneau $i');

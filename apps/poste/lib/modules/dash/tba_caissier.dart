@@ -22,9 +22,9 @@ class EcranDashCaissier extends StatelessWidget with EcranMaquette {
   Widget build(BuildContext context) {
     final c = ContexteEcran.of(context);
     return ListenableBuilder(
-      listenable: tbaEcoute(c, ['taches', 'factures']),
+      listenable: tbaEcoute(c, ['taches', 'factures', 'versements']),
       builder: (context, _) {
-        final d = tbaCaissier(taches: tbaActives(c, 'taches'), factures: tbaActives(c, 'factures'), auj: c.aujourdhui);
+        final d = tbaCaissier(taches: tbaActives(c, 'taches'), factures: tbaActives(c, 'factures'), auj: c.aujourdhui, versements: tbaActives(c, 'versements'), typesVersement: c.magasin.collection('typesVersement').toutes);
         return TbaDash(
           alerte: tbaFileDuPoste(c, 'encaissement',
               titre: 'Prescriptions à encaisser',

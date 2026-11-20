@@ -55,7 +55,7 @@ void main() {
   tearDown(ToastsSigh.viderPourTests);
 
   testWidgets(
-      'paiements : les quatre KPI par mode sont recalculés depuis le magasin',
+      'paiements : les KPI par mode (un par type de versement en service) sont recalculés depuis le magasin',
       (t) async {
     final m = magasin();
     await ouvrir(t, m, 'm8-paiements');
@@ -72,7 +72,9 @@ void main() {
       money(pour('especes')),
       money(pour('tpe')),
       money(pour('mtn')),
-      money(pour('moov'))
+      money(pour('moov')),
+      // Décision du 20/11/2026 : « Mobile Money » est un type en service (opérateurs en modalités) ; aucune pièce du jeu ne l'utilise.
+      money(0)
     ]);
   });
 
