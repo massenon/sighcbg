@@ -96,6 +96,8 @@ class _EtatCalcul extends State<EcranCalculPaie> {
           const SizedBox(height: 16),
           ...avisPaie(c),
           ...avisHonorairesExclus([for (final x in calc) for (final h in x.honorairesExclus) h['message']]),
+          ...avisChevauchementsPrimes([for (final x in calc) for (final h in x.chevauchementsPrimes) h['message']]),
+          ...avisVacationsEnAttente([for (final x in calc) (x.nomComplet, x.avertissementVacations)]),
           ...avisActivitesPaie(c),
           KpiGrilleSigh(kpis: [
             KpiSigh(libelle: 'Agents concernés', valeur: nombre(calc.length), icone: LucideIcons.usersRound),

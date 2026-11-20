@@ -103,6 +103,23 @@ List<Widget> avisHonorairesExclus(Iterable<Object?> messages) => [
       ]
     ];
 
+/// Les vacations « à valider » NON PAYÉES (RG-11, E4027) : une note d'attention par agent concerné — « N vacation(s) en attente de validation ne sont pas payées » — sans qu'aucune ne soit
+/// comptée ni perdue ; elles rapporteront au calcul suivant, une fois validées par la poste mère. [lignes] : (agent, phrase) ; rien quand il n'y en a pas.
+List<Widget> avisVacationsEnAttente(Iterable<(String, String?)> lignes) => [
+      for (final (i, l) in lignes.where((x) => (x.$2 ?? '').isNotEmpty).indexed) ...[
+        NoteSigh('${l.$1} : ${l.$2}.', ton: TonSigh.attention, icone: LucideIcons.hourglass, key: Key('pai:vacation-attente:$i')),
+        const SizedBox(height: 8),
+      ]
+    ];
+
+/// Les honoraires de régime qui S'AJOUTENT à une prime NS 132 de la même vacation, de montant différent (CHEVAUCHEMENT_PRIME) : versés, mais lus par le validateur avant de signer.
+List<Widget> avisChevauchementsPrimes(Iterable<Object?> messages) => [
+      for (final (i, t) in messages.where((x) => '${x ?? ''}'.isNotEmpty).indexed) ...[
+        NoteSigh('$t', ton: TonSigh.attention, icone: LucideIcons.layers, key: Key('pai:chevauchement-prime:$i')),
+        const SizedBox(height: 8),
+      ]
+    ];
+
 /// `String(nombre)` de JavaScript : 10 → « 10 », 3.6 → « 3.6 » (jamais « 10.0 »).
 String paiNum(num v) => v == v.truncate() ? '${v.truncate()}' : '$v';
 

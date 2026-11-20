@@ -13,11 +13,11 @@ import '../format/js.dart';
 import '../comptabilite/cpa_referentiels.dart' show cpaCompteLibelle, cpaJournalLibelle;
 import '../referentiels/regles.dart' show joursEntre;
 import '../configuration/cfb_regles.dart' show CfbFermetures;
-import '../rh/rhb_regles.dart' show RhbPrimeDef, rhbNs131Reference, rhbNs132Reference, rhbPrimesOrigine, vacationCompteRh;
+import '../rh/rhb_regles.dart' show RhbPrimeDef, rhbNs131Reference, rhbNs132Reference, rhbPrimesOrigine, rhbTypePlanning, vacationCompteRh, vacationEnAttenteRh, vacationsEnAttentePhrase;
 import '../referentiels/versions_datees.dart' show isoJour, versionEnVigueur;
 import '../rh/planning_rh.dart' show regimeRhALaDate;
 import '../rh/rha_regles.dart' show rhaLibellesEnAttente;
-import '../rh/double_paiement_prime.dart' show doublePaiementLigneRh;
+import '../rh/double_paiement_prime.dart' show chevauchementsPrimeLignesRh, doublePaiementLigneRh;
 import '../rh/regime_individuel.dart' show honoraireRegimeMoisRh;
 import '../numerotation/numerotation.dart';
 import 'pai_baremes.dart';
@@ -592,6 +592,8 @@ class PaiCalcul {
       this.prets = 0,
       this.pretsDetail = const [],
       this.honorairesExclus = const [],
+      this.chevauchementsPrimes = const [],
+      this.vacationsEnAttente = const [],
       this.tauxApplique});
   final PaiFiche employe;
   final String periode;
@@ -610,6 +612,16 @@ class PaiCalcul {
   /// message nommé, lu par le validateur. Vide dans le cas général.
   final List<PaiFiche> honorairesExclus;
 
+  /// Les honoraires de régime individuels qui s'AJOUTENT, pour la même vacation, à une prime NS 132 de MONTANT DIFFÉRENT (avertissement, jamais un refus : les deux sont versés) ;
+  /// chaque entrée porte son message nommé, lu par le validateur.
+  final List<PaiFiche> chevauchementsPrimes;
+
+  /// Les vacations de l'agent, dans le mois, EN ATTENTE de validation par la mère (RG-11) : ni comptées en prime ni en honoraire, mais SIGNALÉES, jamais perdues (`id`, `date`, `type`).
+  final List<PaiFiche> vacationsEnAttente;
+
+  /// « N vacation(s) en attente de validation ne sont pas payées », ou `null` s'il n'y en a pas.
+  String? get avertissementVacations => vacationsEnAttentePhrase(vacationsEnAttente.length);
+
   /// Les taux et le barème qui ont calculé ce bulletin (en vigueur au premier jour de la période) ; absent : les valeurs semées.
   final PaiTauxPaie? tauxApplique;
   PaiTauxPaie get taux => tauxApplique ?? PaiTauxPaie.semence;
@@ -624,6 +636,11 @@ int _compter(List<PaiFiche> planning, String employeId, int annee, int mois, Str
       final d = paiDate(p['date']).toLocal();
       return d.year == annee && d.month - 1 == mois;
     }).length;
+
+bool _dansMois(Object? date, int annee, int mois) {
+  final d = paiDate(date).toLocal();
+  return d.year == annee && d.month - 1 == mois;
+}
 
 /// `calculer(employe, annee, mois)` — UN SEUL point d'entrée : toutes les vues consomment ce calcul.
 ///
@@ -648,6 +665,7 @@ PaiCalcul paiCalculer(PaiFiche employe, int annee, int mois, PaiEntrees e, DateT
     lignesPrimes.add(PaiLignePrime(pr.id, pr.libelle, montant, nb, montant * nb));
   }
   final honorairesExclus = <Map<String, Object?>>[];
+  final chevauchementsPrimes = <Map<String, Object?>>[];
   final versionsAgent = e.regimesIndividuels;
   if (e.primesNs132 && versionsAgent != null) {
     final mesVersions = [for (final v in versionsAgent) if (v['employeId'] == id) v];
@@ -670,6 +688,12 @@ PaiCalcul paiCalculer(PaiFiche employe, int annee, int mois, PaiEntrees e, DateT
         'message': 'Honoraire exclu du bulletin de ${employe['nomComplet'] ?? id} : ${x['phrase']}. Seule la prime de la grille est versée.',
       });
     }
+    // Chevauchement économique : un honoraire individuel d'un AUTRE montant que la prime de la même vacation est versé, mais SIGNALÉ au validateur.
+    for (final c in chevauchementsPrimeLignesRh(hr.lignes,
+        primes: [for (final p in paiPrimesNs132) RhbPrimeDef(p.id, p.libelle, p.mode)],
+        montantPrime: (id, _) => lignesPrimes.where((x) => x.id == id && x.nombre > 0).map((x) => x.unitaire).firstOrNull ?? 0)) {
+      chevauchementsPrimes.add({...c.toJson(), 'message': 'Bulletin de ${employe['nomComplet'] ?? id} : ${c.phrase()}'});
+    }
     // Une ligne par périodicité et par montant : un honoraire relevé en cours de mois se lit à son montant, sans moyenne.
     final groupes = <String, (String, num, int)>{};
     for (final l in hr.lignes) {
@@ -684,6 +708,12 @@ PaiCalcul paiCalculer(PaiFiche employe, int annee, int mois, PaiEntrees e, DateT
     }
   }
   final totalPrimes = lignesPrimes.fold<num>(0, (a, l) => a + l.total);
+  // RG-11 : les vacations du mois « à valider » (posées par un fileul, non encore appliquées par la mère) ne sont pas comptées ci-dessus ; on les NOMME pour que le bulletin le dise.
+  final vacationsEnAttente = <Map<String, Object?>>[
+    for (final p in e.planning.where(_actif))
+      if (p['employeId'] == id && vacationEnAttenteRh(p) && (rhbTypePlanning(p['type'])?.duree ?? 0) > 0 && _dansMois(p['date'], annee, mois))
+        {'id': p['id'], 'date': '${p['date']}'.length >= 10 ? '${p['date']}'.substring(0, 10) : p['date'], 'type': p['type']}
+  ];
 
   // Les taux EN VIGUEUR au PREMIER JOUR de la période (paramètres datés, lot 1) : une version datée du 1er janvier ne touche pas le bulletin de décembre.
   final taux = PaiTauxPaie.aLaDate(e.parametres, paiDateTauxBulletin(annee, mois));
@@ -773,6 +803,8 @@ PaiCalcul paiCalculer(PaiFiche employe, int annee, int mois, PaiEntrees e, DateT
       prets: totalPrets,
       pretsDetail: pretsDetail,
       honorairesExclus: honorairesExclus,
+      chevauchementsPrimes: chevauchementsPrimes,
+      vacationsEnAttente: vacationsEnAttente,
       tauxApplique: taux);
 }
 
@@ -834,6 +866,9 @@ PaiFiche paiBulletinDe(PaiCalcul c, String reference, {String? genereePar, Strin
       'heuresSupNb': c.heuresSupNb,
       // Les honoraires écartés pour double paiement : le validateur le lit sur la pièce (le champ n'est écrit que s'il y en a, comme tout champ nul).
       if (c.honorairesExclus.isNotEmpty) 'honorairesExclus': c.honorairesExclus,
+      // L'AVERTISSEMENT d'une paie qui ne compte pas tout le planning : écrit à la génération (instantané — un bulletin déjà généré n'est jamais réécrit), absent s'il n'y a rien à dire.
+      if (c.chevauchementsPrimes.isNotEmpty) 'chevauchementsPrimes': c.chevauchementsPrimes,
+      if (c.vacationsEnAttente.isNotEmpty) 'vacationsEnAttente': c.vacationsEnAttente,
       'brut': c.brut,
       'pctSanction': c.pctSanction,
       'sanction': c.sanction,

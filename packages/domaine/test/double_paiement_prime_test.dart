@@ -135,6 +135,23 @@ void main() {
       expect(paiBulletinDe(c, 'BUL-00001').containsKey('honorairesExclus'), isFalse, reason: 'rien à dire : le champ n\'est pas écrit');
     });
 
+    test('CHEVAUCHEMENT : l\'honoraire de 6 000 F s\'ajoute à la prime de 5 000 F pour la même vacation — versé, mais SIGNALÉ au validateur (pas un refus)', () {
+      final c = calculer([remplacement(date: '2026-11-01', champs: {'honoraire': 6000, 'honorairePeriodicite': 'mensuelle'})]);
+      expect(c.chevauchementsPrimes, hasLength(1));
+      final x = c.chevauchementsPrimes.single;
+      expect(x['code'], codeChevauchementPrime);
+      expect(x['message'], allOf(contains('AGENT Fictif'), contains('Incinération'), contains('6 000'), contains('5 000'), contains('les deux sont versés')));
+      expect(c.lignesPrimes.where((l) => l.id == 'honoraire_regime_mensuel').single.total, 6000, reason: 'rien n\'est exclu');
+      expect(paiBulletinDe(c, 'BUL-00001')['chevauchementsPrimes'], hasLength(1));
+    });
+
+    test('pas de chevauchement à signaler : doublon exact (déjà exclu), sans version, ou régime de la catégorie', () {
+      expect(calculer([remplacement(date: '2026-11-01')]).chevauchementsPrimes, isEmpty, reason: 'le doublon exact est EXCLU, pas signalé deux fois');
+      final sans = calculer(const []);
+      expect(sans.chevauchementsPrimes, isEmpty);
+      expect(paiBulletinDe(sans, 'BUL-00001').containsKey('chevauchementsPrimes'), isFalse);
+    });
+
     test('sans version individuelle : le bulletin est celui d\'avant, aucune exclusion', () {
       final c = calculer(const []);
       expect(c.honorairesExclus, isEmpty);

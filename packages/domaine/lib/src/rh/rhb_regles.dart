@@ -410,14 +410,34 @@ num rhbMontantAgent(List<FicheRhb> grille, List<FicheRhb> historique, List<Fiche
 // Planning : comptages, incompatibilité, portée
 // ---------------------------------------------------------------------------------------------------------------------
 
+/// Les ÉTATS de validation d'une VACATION (`validationEtat`) : les seules chaînes qui les désignent dans le code. Une vacation posée par un fileul naît [vacationEtatAValider]
+/// jusqu'à l'application de la mère, qui la passe [vacationEtatValidee] ; [vacationEtatRefusee] clôt une proposition écartée. Un état ABSENT (jeu d'origine, pose directe d'avant le circuit)
+/// se lit validé : compatibilité, aucune vacation ancienne n'est perdue. (Les pièces à circuit — pointage, congé, mission — ont leurs propres états, `valide`/`refuse`.)
+const String vacationEtatValidee = 'validee';
+const String vacationEtatAValider = 'a_valider';
+const String vacationEtatRefusee = 'refuse';
+
 /// RG-11 — UNE SEULE FONCTION dit si une vacation du planning COMPTE (primes, honoraires du régime, bulletin, « Mon espace », statistiques de garde et de
 /// permanence) : elle est validée, ou elle date d'avant le circuit de validation (aucun état écrit = lue validée). Une vacation « à valider » (ou refusée)
-/// ne rapporte RIEN tant qu'elle n'est pas validée ; une fois validée (état `validee`), elle compte, sans autre geste. Toute vue qui compte des gardes ou des
+/// ne rapporte RIEN tant qu'elle n'est pas validée ; une fois validée (état [vacationEtatValidee]), elle compte, sans autre geste. Toute vue qui compte des gardes ou des
 /// permanences passe par elle : un filtre recopié à chaque endroit diverge au premier état ajouté.
 bool vacationCompteRh(Map<String, Object?> vacation) {
   final e = vacation['validationEtat'];
-  return e == null || e == '' || e == 'validee';
+  return e == null || e == '' || e == vacationEtatValidee;
 }
+
+/// Une vacation EN ATTENTE de validation par la mère : ni comptée, ni perdue — l'écran de paie et le bulletin la SIGNALENT ([vacationsEnAttentePhrase]).
+bool vacationEnAttenteRh(Map<String, Object?> vacation) => vacation['validationEtat'] == vacationEtatAValider;
+
+/// Le libellé lu à l'écran : « Validée » (état validé ou absent), « À valider » ou « Refusée ». Un seul mot par état, partout.
+String vacationEtatLibelleRh(Map<String, Object?> vacation) => switch (vacation['validationEtat']) {
+      vacationEtatAValider => 'À valider',
+      vacationEtatRefusee => 'Refusée',
+      _ => 'Validée',
+    };
+
+/// La phrase d'avertissement du bulletin et de l'écran de paie : « N vacation(s) en attente de validation ne sont pas payées ». `null` quand [n] est nul.
+String? vacationsEnAttentePhrase(int n) => n <= 0 ? null : '$n vacation(s) en attente de validation ne sont pas payées';
 
 /// `compter(employeId, annee, mois, type)` — [mois] de 1 à 12. Seules les vacations VALIDÉES comptent ([vacationCompteRh]).
 int rhbCompter(List<FicheRhb> planning, Object? employeId, int annee, int mois, String type) {
