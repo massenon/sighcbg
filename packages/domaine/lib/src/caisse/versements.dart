@@ -379,7 +379,8 @@ ResultatVersements reglerParVersements(
     if (dr is Map) 'dernierReglement': {...dr.cast<String, Object?>(), 'mode': modeFacture, 'versements': saisis.length},
   };
   final ref = '${_faux(facture['numero']) ? facture['id'] : facture['numero']}';
-  final lot = lotId ?? 'LOT-${facture['id']}-${maintenant.replaceAll(RegExp(r'[^0-9]'), '')}';
+  // L'identité du règlement : la facture et l'instant du geste (les versements d'un même geste la partagent) ; aucune référence de pièce, donc aucun préfixe.
+  final lot = lotId ?? '${facture['id']}@${maintenant.replaceAll(RegExp(r'[^0-9]'), '')}';
   final fiches = <Map<String, Object?>>[];
   final posees = <Map<String, Object?>>[];
   for (final (i, s) in saisis.indexed) {

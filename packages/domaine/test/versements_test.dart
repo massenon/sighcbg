@@ -9,7 +9,7 @@ const maint = '2026-11-20T10:00:00.000';
 Map<String, Object?> facture({num partAssurance = 0}) => {
       'id': 'F1',
       'numero': 'FN-2026-00001',
-      'patient': 'DOSSOU',
+      'patient': 'PATIENT-TEST',
       'date': auj,
       'montantTTC': 8000 + partAssurance,
       'partPatient': 8000,

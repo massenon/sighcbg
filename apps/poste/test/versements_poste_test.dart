@@ -25,7 +25,7 @@ Magasin jeu() => Magasin({
         {
           'id': 'F1',
           'numero': 'FN-2026-00001',
-          'patient': 'DOSSOU K.',
+          'patient': 'PATIENT-TEST A.',
           'patientCode': 'CBG/1/26',
           'patientId': 'P1',
           'date': '2026-11-20',
@@ -62,8 +62,8 @@ Magasin jeu() => Magasin({
         },
       ],
       'taches': [
-        {'id': 'T1', 'type': 'encaissement', 'statut': 'en_attente', 'factureId': 'F1', 'reference': 'ORD-0001', 'patient': 'DOSSOU K.', 'detail': 'Encaisser', 'montant': 6000, 'date': '2026-11-20'},
-        {'id': 'T2', 'type': 'dispensation', 'statut': 'bloque', 'factureId': 'F1', 'ordonnanceId': 'O1', 'reference': 'ORD-0001', 'patient': 'DOSSOU K.', 'date': '2026-11-20'},
+        {'id': 'T1', 'type': 'encaissement', 'statut': 'en_attente', 'factureId': 'F1', 'reference': 'ORD-0001', 'patient': 'PATIENT-TEST A.', 'detail': 'Encaisser', 'montant': 6000, 'date': '2026-11-20'},
+        {'id': 'T2', 'type': 'dispensation', 'statut': 'bloque', 'factureId': 'F1', 'ordonnanceId': 'O1', 'reference': 'ORD-0001', 'patient': 'PATIENT-TEST A.', 'date': '2026-11-20'},
       ],
       'demandesAnalyses': [
         {'id': 'D1', 'reference': 'LAB-00001', 'bloqueParPaiement': true, 'etatAnalyse': 'en_attente', 'factureId': 'F1', 'ordonnanceId': 'O1'},
