@@ -418,9 +418,9 @@ void main() {
       await ouvrirM14(t, m, 'dash-direction');
       expect(find.textContaining('Calcul incomplet — les factures fournisseurs ne sont pas amorcés sur ce poste'), findsOneWidget);
     });
-    casM14('le mode de paiement absent s’affiche « undefined » (porté fidèlement, signalé E1001)', (t) async {
+    casM14('le mode de paiement absent ne s’affiche plus « undefined » : les modes se lisent aux versements (E5500, ancien E1001)', (t) async {
       await ouvrirM14(t, magasinComplet(), 'dash-direction');
-      expect(find.textContaining('undefined'), findsWidgets);
+      expect(find.textContaining('undefined'), findsNothing);
     });
     casM14('le rapport de direction s’imprime avec le mois, les indicateurs et les deux signatures', (t) async {
       await ouvrirM14(t, magasinComplet(), 'dash-direction');
