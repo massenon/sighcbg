@@ -36,3 +36,9 @@ Limites assumées : la mère **ne juge pas** les écritures d'un mobile sur la m
 ## Valider un seuil de variation brutale du laboratoire (13/11/2026, lot A2)
 
 Un seuil de variation brutale passe de « Enregistré » (sans effet) à « Validé » (en vigueur) par un second geste, demandé par la Direction. Ce geste est lu à la MATRICE, pas à un nom de rôle : le droit **annuler** de l'écran `m5-valeurs-reference` porte l'arbitrage (même mécanique que l'arbitrage des lots d'import à `imp-accueil`), le droit **éditer** du même écran porte l'enregistrement. La matrice livrée donne annuler au Biologiste médical seul, plus l'administrateur système (toute la matrice). Le moteur (`SeuilsPoste`, `validerSeuil`) revérifie le droit à chaud ; la commande est absente, non grisée, hors droit. Hypothèse à valider : la fonction du technicien de laboratoire (intérim) est exclue en plus de la matrice. Pour ouvrir la validation à un autre profil, le régler à `m14-roles` (annuler sur cet écran) : aucun code ne change.
+
+## Règlement en plusieurs versements : deux gestes réservés (20/11/2026)
+
+- `versement_annuler` — annuler un règlement (contre-passer ses versements, motif obligatoire, écriture inverse en brouillon). Origine : le Comptable et la Directrice Administrative ; une fiche de rôle l'accorde ou le retire. **Le caissier n'annule pas** (`M8.annuler` reste fermé à sa fiche) ; saisir un versement suit le droit d'encaisser de l'écran (`m8-caisse`, `m8-paiements`).
+- `versement_regler` — créer, modifier, archiver et restaurer les types et les modalités de versement (onglets de `cfg-natures-facture`). Origine : l'administrateur et la Directrice Administrative.
+Les deux se règlent à « Rôles et permissions › Gestes réservés » ; aucun nom de rôle n'est écrit ailleurs que dans le référentiel des gestes (`gestes_reserves.dart`, tolérance du cliquet portée de 192 à 196 sites).
