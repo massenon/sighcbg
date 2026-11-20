@@ -17,7 +17,7 @@ return new class extends Migration
             $t->string('numero', 20)->nullable();                   // format international, effacé après envoi
             $t->text('texte')->nullable();                          // déjà composé par la mère, effacé après envoi
             $t->unsignedSmallInteger('longueur');                   // nombre de caractères du texte, gardé pour le journal technique
-            $t->string('statut', 16);                               // en_attente | envoye | echec
+            $t->string('statut', 16);                               // en_attente | envoye | echec | expire
             $t->unsignedTinyInteger('tentatives')->default(0);
             $t->unsignedBigInteger('depose_le');
             $t->unsignedBigInteger('prochain_essai_le');

@@ -11,6 +11,7 @@ import '../format/format_fr.dart';
 import '../referentiels/regles.dart' show codePatient, lireCodePatient;
 import '../labo/res_saisie.dart' show agePatient;
 import '../numerotation/numerotation.dart';
+import '../mere/sms_consentement.dart' show smsAppliquerConsentement;
 
 typedef FichePat = Map<String, Object?>;
 
@@ -70,8 +71,9 @@ String? patRefusCode(Iterable<FichePat> patients, String code) =>
 
 /// `transformerPatient(v, record)` : ce que l'enregistrement DÉDUIT de la saisie — le nom de la compagnie et l'âge. L'âge est une DÉCLARATION datée
 /// quand la date de naissance est inconnue ; l'âge déjà déclaré ne se re-date pas (le re-dater le rajeunirait à chaque ouverture).
-FichePat patTransformerPatient(FichePat saisie, FichePat? record, DateTime maintenant, {Iterable<FichePat> assureurs = const []}) {
-  final v = {...saisie};
+FichePat patTransformerPatient(FichePat saisie, FichePat? record, DateTime maintenant, {Iterable<FichePat> assureurs = const [], String auteur = ''}) {
+  // Le consentement aux SMS (E5201) : trois états, un changement est daté et signé ; une saisie qui n'en parle pas le laisse intact.
+  final v = saisie.containsKey('consentementSms') ? smsAppliquerConsentement(saisie, record, maintenant, auteur) : {...saisie};
   // Le NOM de la compagnie se lit sur le référentiel des assureurs (`assureurs`, administrable) passé en argument : plus de copie des treize compagnies dans le code.
   final a = assureurs.where((x) => x['statut'] != 'archive' && x['code'] == v['assureur']).firstOrNull;
   v['assureurNom'] = a?['nom'];

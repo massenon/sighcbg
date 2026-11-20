@@ -68,6 +68,15 @@ List<ChampDef> champsPatient(ContexteEcran c, Fiche? r) {
     ChampDef(nom: 'quartier', libelle: 'Quartier', type: TypeChamp.select, options: [for (final q in quartiers) OptionChamp(q)]),
     const ChampDef(nom: 'adresse', libelle: 'Adresse', col: ColChamp.plein),
     const ChampDef(nom: 'personneAPrevenir', libelle: 'Personne à prévenir', col: ColChamp.plein),
+    // E5201 : trois états (vide = non renseigné, jamais présumé consentant). Une modification qui n'y touche pas le laisse intact.
+    ChampDef(
+        nom: 'consentementSms',
+        libelle: 'Consentement aux SMS',
+        type: TypeChamp.select,
+        col: ColChamp.plein,
+        recherche: false,
+        options: [for (final e in smsLibellesChoixConsentement.entries) OptionChamp(e.key, e.value)],
+        aide: 'Rappels de rendez-vous et vœux. Laisser vide tant que le patient n’a pas été interrogé : sans réponse, aucun SMS ne lui est envoyé. Le changement est daté, signé et journalisé.'),
     const ChampDef.section('Éléments médicaux'),
     ChampDef(
         nom: 'antecedents',
@@ -119,6 +128,7 @@ Map<String, Object?> valeursPatient(Fiche? r) {
   v['naissanceConnue'] = (!patVrai(r['dateNaissance']) && r['age'] != null && r['age'] != '') ? 'age' : 'date';
   v['antecedents'] = patListe(r['antecedents']);
   v['allergies'] = patListe(r['allergies']);
+  v['consentementSms'] = smsChoixDeFiche(r);
   return v;
 }
 
@@ -328,7 +338,7 @@ class EcranPatients extends StatelessWidget with EcranMaquette {
                       messageVide: 'Aucun patient enregistré.',
                       triInitial: 'code',
                       transformer: (cc, s, e) {
-                        final v = patTransformerPatient(s, e, cc.aujourdhui, assureurs: cc.magasin.collection('assureurs').actives);
+                        final v = patTransformerPatient(s, e, cc.aujourdhui, assureurs: cc.magasin.collection('assureurs').actives, auteur: cc.utilisateur);
                         return v;
                       },
                       detail: (cc, f) => FichePatient(f),
@@ -415,7 +425,7 @@ class _EtatPatientNouveau extends State<EcranPatientNouveau> {
       ToastsSigh.afficher(context, refus, type: TypeToast.erreur);
       return;
     }
-    final v = patTransformerPatient(convertirSaisie(_champs, brut), null, c.aujourdhui, assureurs: c.magasin.collection('assureurs').actives);
+    final v = patTransformerPatient(convertirSaisie(_champs, brut), null, c.aujourdhui, assureurs: c.magasin.collection('assureurs').actives, auteur: c.utilisateur);
     final r = col.inserer({
       'statut': 'actif',
       'code': _code,
@@ -554,7 +564,7 @@ class _EtatProfil extends State<EcranPatientProfil> {
                       return;
                     }
                     // La MÊME transformation que le répertoire (écart E315).
-                    final v = patTransformerPatient(convertirSaisie(defs, brut), p, c.aujourdhui, assureurs: c.magasin.collection('assureurs').actives);
+                    final v = patTransformerPatient(convertirSaisie(defs, brut), p, c.aujourdhui, assureurs: c.magasin.collection('assureurs').actives, auteur: c.utilisateur);
                     fermer();
                     final annuler = c.magasin.collection('patients').mettreAJour(p['id'], v);
                     ToastsSigh.afficher(ctx, 'Modifications enregistrées.', type: TypeToast.succes, annuler: annuler);

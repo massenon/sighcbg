@@ -169,7 +169,7 @@ class MrbIndicateursClinique {
 /// La passerelle SMS (ADR-0009) telle que le service de la mère l'annonce : l'interrupteur (fermé par défaut), l'état lu au relais (plafond du jour, envoyés,
 /// attente, nom du pilote ; `null` quand le relais ne répond pas ou n'est pas configuré) et le journal des envois (numéro MASQUÉ, longueur, modèle, statut).
 class MrbSms {
-  const MrbSms({required this.actif, required this.relaisConfigure, this.relais, this.erreurRelais, this.journal = const [], this.statutMotsInterdits = ''});
+  const MrbSms({required this.actif, required this.relaisConfigure, this.relais, this.erreurRelais, this.journal = const [], this.statutMotsInterdits = '', this.automatiques});
   final bool actif;
   final bool relaisConfigure;
   final Map<String, Object?>? relais;
@@ -179,8 +179,13 @@ class MrbSms {
   final List<Map<String, Object?>> journal;
   final String statutMotsInterdits;
 
+  /// Les envois automatiques (E5200) : réglages en vigueur, dernier jour fait, bilan du dernier tour (compteurs seulement). `null` : la mère ne les annonce pas.
+  final Map<String, Object?>? automatiques;
+
   int? get plafondJour => relais?['plafond_jour'] is num ? (relais!['plafond_jour'] as num).toInt() : null;
   int? get envoyesAujourdhui => relais?['envoyes_aujourdhui'] is num ? (relais!['envoyes_aujourdhui'] as num).toInt() : null;
+  /// La durée de validité (heures) d'un SMS en attente, réglée au relais : au-delà, il est abandonné (E5204).
+  int? get validiteHeures => relais?['validite_heures'] is num ? (relais!['validite_heures'] as num).toInt() : null;
   int? get enAttenteRelais => relais?['en_attente'] is num ? (relais!['en_attente'] as num).toInt() : null;
   String? get pilote => relais?['pilote'] as String?;
 
@@ -251,8 +256,8 @@ abstract class MrbSource {
 
   Future<void> reglerSms({required bool actif}) async => throw MrbIndisponible('Le service de la mère ne propose pas la passerelle SMS.');
 
-  /// Dépose au relais un SMS DÉJÀ COMPOSÉ (le service de la mère le recontrôle). Rend l'identifiant du SMS.
-  Future<String> envoyerSms({required String numero, required String texte, String? modele, String? auteur, bool essai = false}) async =>
+  /// Dépose au relais un SMS DÉJÀ COMPOSÉ (le service de la mère le recontrôle, et relit le consentement du patient [patientId], obligatoire hors essai). Rend l'identifiant du SMS.
+  Future<String> envoyerSms({required String numero, required String texte, String? modele, String? auteur, bool essai = false, String? patientId}) async =>
       throw MrbIndisponible('Le service de la mère ne propose pas la passerelle SMS.');
 
   /// Relève au relais le statut des SMS en attente ; rend le nombre de statuts changés.
@@ -409,6 +414,7 @@ class MrbSourceClient extends MrbSource {
       erreurRelais: j['erreur_relais'] as String?,
       journal: [for (final x in (j['journal'] as List? ?? const [])) (x as Map).cast<String, Object?>()],
       statutMotsInterdits: '${j['mots_interdits_statut'] ?? ''}',
+      automatiques: j['automatiques'] is Map ? (j['automatiques'] as Map).cast<String, Object?>() : null,
     );
   }
 
@@ -416,10 +422,11 @@ class MrbSourceClient extends MrbSource {
   Future<void> reglerSms({required bool actif}) async => client.brut('POST', '/admin/sms/reglages', {'actif': actif});
 
   @override
-  Future<String> envoyerSms({required String numero, required String texte, String? modele, String? auteur, bool essai = false}) async {
+  Future<String> envoyerSms({required String numero, required String texte, String? modele, String? auteur, bool essai = false, String? patientId}) async {
     final j = await client.brut('POST', '/admin/sms/envoyer', {
       'numero': numero,
       'texte': texte,
+      if (patientId != null) 'patient_id': patientId,
       if (modele != null) 'modele': modele,
       if (auteur != null) 'auteur': auteur,
       if (essai) 'essai': true,

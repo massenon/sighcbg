@@ -51,6 +51,9 @@ return [
         'tentatives_max' => (int) env('RELAIS_SMS_TENTATIVES_MAX', 5),
         // Conservation des lignes TERMINÉES (déjà effacées : statut, tentatives, horodatages), en jours.
         'conservation_jours' => (int) env('RELAIS_SMS_CONSERVATION_JOURS', 30),
+        // Durée de validité (heures) d'un SMS en attente, comptée depuis son dépôt : au-delà, il est ABANDONNÉ (statut `expire`, numéro et texte effacés) au lieu de partir
+        // quand le plafond du jour ou une panne l'aura retenu. Un rappel « demain à 9 h » reçu deux jours plus tard serait faux, et un numéro ne doit pas dormir dans la file.
+        'validite_heures' => (int) env('RELAIS_SMS_VALIDITE_HEURES', 24),
         // SMS envoyés au plus par passage du cron.
         'lot' => (int) env('RELAIS_SMS_LOT', 20),
         // Longueur maximale d'un texte (caractères, 320 au plus) et taille maximale d'un corps de dépôt (octets).

@@ -28,12 +28,33 @@ class Envoyeur
         };
     }
 
-    /** @return array{envoyes: int, echecs: int, abandons: int, purges: int, plafond_atteint: bool} */
+    /**
+     * ABANDONNE les SMS en attente PÉRIMÉS (déposés depuis plus que `relais.sms.validite_heures`) : statut `expire`, numéro et texte EFFACÉS, un code d'erreur nommé, une ligne au
+     * journal technique (identifiant et âge, jamais le numéro ni le texte). Un SMS retenu par le plafond du jour ou par une panne ne part donc pas le lendemain, périmé.
+     */
+    public static function expirer(?int $maintenant = null): int
+    {
+        $m = $maintenant ?? Format::maintenant();
+        $limite = $m - FileSms::validiteMs();
+        $n = 0;
+        foreach (DB::table('sms_sortants')->where('statut', 'en_attente')->where('depose_le', '<', $limite)->get(['id', 'uid', 'depose_le']) as $l) {
+            DB::table('sms_sortants')->where('id', $l->id)->where('statut', 'en_attente')->update([
+                'statut' => 'expire', 'expire_le' => $m, 'efface_le' => $m, 'numero' => null, 'texte' => null, 'derniere_erreur' => 'expire',
+            ]);
+            FileSms::journal('sms_expire', $l->uid.' abandon apres '.(int) floor(($m - (int) $l->depose_le) / 3600000).' h', $m);
+            $n++;
+        }
+
+        return $n;
+    }
+
+    /** @return array{envoyes: int, echecs: int, abandons: int, expires: int, purges: int, plafond_atteint: bool} */
     public static function tourner(?Pilote $pilote = null, ?int $maintenant = null): array
     {
         $m = $maintenant ?? Format::maintenant();
         $pilote ??= self::pilote();
-        $bilan = ['envoyes' => 0, 'echecs' => 0, 'abandons' => 0, 'purges' => self::purger($m), 'plafond_atteint' => false, 'configuration_manquante' => []];
+        // Les périmés d'abord, quoi qu'il arrive ensuite (plafond atteint, pilote mal configuré) : un numéro ne dort pas dans la file.
+        $bilan = ['envoyes' => 0, 'echecs' => 0, 'abandons' => 0, 'expires' => self::expirer($m), 'purges' => self::purger($m), 'plafond_atteint' => false, 'configuration_manquante' => []];
         // Un pilote mal configuré ne touche pas à la file : sinon chaque SMS brûlerait ses cinq tentatives et son texte serait effacé pour une faute de .env.
         if ($pilote instanceof PiloteConfigurable && ($manque = $pilote->parametresManquants()) !== []) {
             $bilan['configuration_manquante'] = $manque;
@@ -90,6 +111,6 @@ class Envoyeur
         $m = $maintenant ?? Format::maintenant();
         $limite = $m - max(1, (int) config('relais.sms.conservation_jours', 30)) * 86400000;
 
-        return DB::table('sms_sortants')->whereIn('statut', ['envoye', 'echec'])->where('efface_le', '<', $limite)->delete();
+        return DB::table('sms_sortants')->whereIn('statut', ['envoye', 'echec', 'expire'])->where('efface_le', '<', $limite)->delete();
     }
 }

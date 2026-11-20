@@ -23,7 +23,7 @@ import '../mecef/imprimante_caisse.dart' show cleImprimanteModele, cleImprimante
 import '../acces/acc_support.dart' show accEditeurAuteurSemence, accEditeurEmailsSemence, accEditeurTelephoneSemence, accEditeurHorairesSemence, accEditeurVersionSemence;
 import '../mecef/mode.dart' show mecefModeleBoitierDefaut;
 import '../sauvegarde/sauvegarde_horssite.dart';
-import '../droits/gestes_reserves.dart' show gesteReglerLimiteExport, gestePtaRegler, gesteFiscalConfirmer, gesteFactureTiersEmettre;
+import '../droits/gestes_reserves.dart' show gesteReglageSms, gesteReglerLimiteExport, gestePtaRegler, gesteFiscalConfirmer, gesteFactureTiersEmettre;
 import '../mecef/facture_tiers_payeur.dart' show factureTiersCleSignataires;
 import '../sauvegarde/maj_regles.dart' show cleMajSauvegardeMaxHeures, cleMajValiditeAutorisationHeures;
 import '../administration/pta.dart' show ptaCleDecoupage, ptaClePrefixe, ptaCleSeuilRetard, ptaCleSignataires;
@@ -38,6 +38,7 @@ import 'reglages_roles.dart';
 import '../comptabilite/documents_fiscaux_synchro.dart' show cleTailleMaxDepotFiscalKo;
 import '../mere/reprise_poste_regles.dart' show cleValiditeCodeAppairage;
 import '../validation/decisions_en_attente.dart' show cleDelaiAlerteMere;
+import '../mere/sms.dart' show cleSmsRappelRdvActif, cleSmsVoeuxAnniversaireActif, cleSmsHeureExecution, cleSmsDelaiRappelHeures;
 
 const String _reprise = 'Valeur de la graine du code (calendrier du comptable, réunion du 19/08/2026) : à confirmer par la Direction de Baguidi';
 const String _attente = 'Valeur d\'attente reprise du code (littéral d\'avant le lot « seuils » de l\'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi';
@@ -626,6 +627,60 @@ final List<DefinitionParametre> definitionsParametres = [
     source: 'Décision de la Direction du 16/11/2026 (section AI) : 4 heures',
     branche: true,
     appliquePar: 'Continuité des validations (pastille et alerte des décisions en attente de la mère)',
+  ),
+
+  // --- LES ENVOIS AUTOMATIQUES DE SMS (E5200, ADR-0009) : réglages datés lus par la mère, fermés par défaut. Régler = le geste réservé `reglage_sms` (comme la passerelle).
+  DefinitionParametre(
+    cle: cleSmsRappelRdvActif,
+    famille: 'sms',
+    type: TypeParametre.booleen,
+    defaut: false,
+    libelle: 'Rappel automatique de rendez-vous par SMS',
+    aide: 'Fermé par défaut. Ouvert, la mère dépose chaque jour, à l’heure réglée, UN SMS par patient ayant un rendez-vous le jour visé par le délai de rappel (jour, heure, clinique ; aucun nom, aucune donnée de santé). Rien ne part sans le consentement du patient, passerelle ouverte, plafond non atteint.',
+    source: 'Décision de principe de la Direction du 16/11/2026 (rappel la veille) ; l’ouverture est un geste de la clinique',
+    branche: true,
+    appliquePar: 'Service de la mère (envois automatiques de SMS)',
+    geste: gesteReglageSms,
+  ),
+  DefinitionParametre(
+    cle: cleSmsVoeuxAnniversaireActif,
+    famille: 'sms',
+    type: TypeParametre.booleen,
+    defaut: false,
+    libelle: 'Vœux d’anniversaire automatiques par SMS',
+    aide: 'Fermé par défaut. Ouvert, la mère dépose chaque jour UN SMS de vœux par patient dont c’est l’anniversaire (modèle neutre, sans nom ni donnée de santé), sous les mêmes conditions que le rappel : consentement du patient, passerelle ouverte, plafond non atteint.',
+    source: 'Décision de principe de la Direction du 16/11/2026 (vœux d’anniversaire) ; l’ouverture est un geste de la clinique',
+    branche: true,
+    appliquePar: 'Service de la mère (envois automatiques de SMS)',
+    geste: gesteReglageSms,
+  ),
+  DefinitionParametre(
+    cle: cleSmsHeureExecution,
+    famille: 'sms',
+    type: TypeParametre.entier,
+    defaut: 9,
+    min: 0,
+    max: 23,
+    libelle: 'Envois automatiques de SMS : heure d’exécution',
+    aide: 'Entier de 0 à 23 (heure locale de la mère). Le tour des envois automatiques a lieu UNE fois par jour, à partir de cette heure ; si la mère était éteinte, il est rattrapé dès son démarrage ce jour-là. Hors bornes, la valeur d’attente de 9 h s’applique.',
+    source: _attente,
+    branche: true,
+    appliquePar: 'Service de la mère (envois automatiques de SMS)',
+    geste: gesteReglageSms,
+  ),
+  DefinitionParametre(
+    cle: cleSmsDelaiRappelHeures,
+    famille: 'sms',
+    type: TypeParametre.entier,
+    defaut: 24,
+    min: 1,
+    max: 168,
+    libelle: 'Rappel de rendez-vous par SMS : délai (heures)',
+    aide: 'Entier de 1 à 168. Le rappel vise les rendez-vous du jour qui tombe ce nombre d’heures après le tour d’envoi : 24 = la veille, 48 = l’avant-veille. Hors bornes, la valeur d’attente de 24 h s’applique.',
+    source: 'Décision de principe de la Direction du 16/11/2026 (« la veille ») ; valeur d’attente à confirmer',
+    branche: true,
+    appliquePar: 'Service de la mère (envois automatiques de SMS)',
+    geste: gesteReglageSms,
   ),
 
   // Q4 de la Direction de Baguidi (17/11/2026) : le POSTE porté sur la pièce ; QUI valide n'est plus un réglage mais le geste réservé `achats_valider` de la fiche RBAC (Direction du 16/11/2026) —
@@ -2620,6 +2675,7 @@ const Map<String, String> libellesFamillesParametres = {
   'assurances': 'Assurances et créances',
   'qualite': 'Qualité et enquêtes',
   'notifications': 'Notifications et alertes',
+  'sms': 'SMS automatiques',
   'laboratoire': 'Laboratoire et banque de sang',
   'specialites': 'Spécialités',
   'consultation': 'Consultation et agenda',

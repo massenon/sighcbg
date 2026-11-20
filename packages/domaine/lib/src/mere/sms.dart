@@ -12,6 +12,13 @@
 ///  * le numéro est ramené au format international (`+` et 8 à 15 chiffres) ; un numéro local reçoit l'indicatif du pays ([smsIndicatifDefaut], le Bénin).
 library;
 
+/// LES RÉGLAGES DATÉS DES ENVOIS AUTOMATIQUES (E5200, registre `parametres`, famille `sms`) : jamais une valeur écrite dans le code. Leurs définitions (défauts, bornes) sont dans
+/// `definitions.dart` ; le service de la mère les lit à la date du jour (`smsAutoReglageA`).
+const String cleSmsRappelRdvActif = 'sms.rappelRdvActif';
+const String cleSmsVoeuxAnniversaireActif = 'sms.voeuxAnniversaireActif';
+const String cleSmsHeureExecution = 'sms.heureExecution';
+const String cleSmsDelaiRappelHeures = 'sms.delaiRappelHeures';
+
 /// Longueur maximale d'un SMS composé (caractères) : la même borne que le schéma du relais (`App\Relais\Sms\FileSms`, `relais-sms.js`).
 const int smsLongueurMax = 320;
 
@@ -33,12 +40,39 @@ const List<String> smsMotsInterdits = [
   // diagnostic et maladies
   'diagnostic', 'maladie', 'pathologie', 'symptome', 'vih', 'sida', 'seropositi', 'paludisme', 'hepatite', 'tuberculose', 'cancer', 'tumeur', 'diabete',
   'hypertension', 'infection', 'ist', 'mst', 'syphilis', 'covid', 'depression', 'psychiatri', 'toxicomanie', 'alcoolisme',
+  // le mot « santé » lui-même : un SMS reçu sur un téléphone partagé ne doit pas annoncer qu'il vient d'une démarche de soin (E5200)
+  'sante',
   // santé de la femme
   'grossesse', 'enceinte', 'accouchement', 'avortement', 'ivg', 'fausse couche', 'contraception', 'planning familial', 'sterilet',
   // examens et résultats
   'depistage', 'analyse', 'resultat', 'examen', 'bilan sanguin', 'prelevement', 'echographie', 'radiographie', 'scanner', 'irm', 'biopsie',
   // soins
   'ordonnance', 'medicament', 'traitement', 'hospitalisation', 'chirurgie', 'chirurgical', 'motif de consultation', 'deces',
+];
+
+/// LES OCCASIONS QUE LE CANAL SMS ADMET (E5200). Un modèle de message est administré pour tous les canaux (application, courriel, SMS) ; le SMS, lui, part sur un téléphone
+/// que d'autres peuvent lire. « Résultat disponible » (`resultat`) révèle qu'un examen a eu lieu et « Rappel de règlement » (`echeance`) laisse entendre un acte ou une dette : ces deux
+/// occasions ne sont pas proposées au SMS, même si leur texte passait la liste des mots interdits. Le rappel de rendez-vous, l'anniversaire et les vœux restent.
+const List<String> smsOccasionsAdmises = ['anniversaire', 'nouvel_an', 'fete', 'rdv'];
+
+/// Un modèle de message est PROPOSABLE au canal SMS quand son occasion est admise ET que son texte ne porte aucun mot de [smsMotsInterdits]. Le même contrôle se refait à la
+/// composition (`smsControler`) : proposer ce qui serait refusé ferait croire qu'il manque quelque chose.
+bool smsModeleProposable({required Object? occasion, required String texte}) => smsOccasionsAdmises.contains('$occasion') && smsMotsInterditsTrouves(texte).isEmpty;
+
+/// Le motif pour lequel un modèle n'est PAS proposé au SMS (`null` : proposable) : affiché à l'écran des modèles, jamais silencieux.
+String? smsMotifModeleNonProposable({required Object? occasion, required String texte}) {
+  if (!smsOccasionsAdmises.contains('$occasion')) return 'Cette occasion n’est pas proposée par SMS : elle laisserait entendre un examen, un acte ou une dette.';
+  final mots = smsMotsInterditsTrouves(texte);
+  return mots.isEmpty ? null : 'Le texte contient « ${mots.first} » : mot interdit dans un SMS.';
+}
+
+/// Les modèles NEUTRES proposés au canal SMS (occasion, intitulé, texte), à valider par la Direction : le jour, l'heure et la clinique, jamais une donnée de santé. Ils s'ajoutent
+/// aux modèles de la maquette (`cfaModelesProposes`), dont deux vœux disent « santé » et que le SMS refuse donc.
+const List<(String, String, String)> smsModelesProposes = [
+  ('anniversaire', 'Anniversaire (SMS)', 'Bonjour {{nom}}, toute l’équipe de {{clinique}} vous souhaite un très joyeux anniversaire.'),
+  ('nouvel_an', 'Vœux de nouvel an (SMS)', 'Bonjour {{nom}}, {{clinique}} vous présente ses meilleurs vœux pour la nouvelle année : paix et prospérité à vous et à toute votre famille.'),
+  ('fete', 'Vœux de fête (SMS)', 'Bonjour {{nom}}, {{clinique}} vous souhaite une excellente fête, entouré des vôtres.'),
+  ('rdv', 'Rappel de rendez-vous (SMS)', 'Bonjour {{nom}}, nous vous rappelons votre rendez-vous à {{clinique}} le {{rdv}}. Pour toute modification, appelez le {{telephone}}.'),
 ];
 
 /// Les variables qu'un SMS peut porter. `{{nom}}` n'y figure pas : il est retiré, jamais remplacé.

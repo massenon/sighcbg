@@ -8,7 +8,8 @@
      3. l'ENVOI par la tâche planifiée (simulée par le crochet du banc) puis l'EFFACEMENT du numéro et du texte, statut suivi par la mère ;
      4. CINQ TENTATIVES au plus, délais respectés, puis échec et effacement ;
      5. le PLAFOND du jour : le dépôt de trop est refusé 429 plafond_atteint ;
-     6. le JOURNAL technique ne porte ni numéro ni texte. */
+     6. le JOURNAL technique ne porte ni numéro ni texte ;
+     7. la DURÉE DE VALIDITÉ (E5204) : un SMS retenu par le plafond ne part pas le lendemain s'il est périmé — statut « expire », numéro et texte effacés. */
 const crypto = require('node:crypto');
 
 const SECRET = 'secret-mere';
@@ -87,9 +88,21 @@ module.exports = ({ monde, verifier, titre }) => ({
     const deTrop = await deposer(sms(100 + place));
     verifier(`le plafond du jour (${e.plafond_jour}) est tenu : les ${place} dépôts permis passent, le suivant est refusé (429 plafond_atteint)`, tous && deTrop.status === 429 && deTrop.json.code === 'plafond_atteint', deTrop);
 
+    // 7. durée de validité : les SMS que le plafond retient sont périmés 25 heures plus tard (validité par défaut : 24 heures)
+    const enAttente = (await tout()).lignes.filter((l) => l.statut === 'en_attente').length;
+    const lendemain = await r.brut('POST', '/banc/sms/tourner', { pilote: 'journal', avance_ms: 25 * 3600000 });
+    const apres = (await tout()).lignes;
+    const perimes = apres.filter((l) => l.statut === 'expire');
+    verifier(`un SMS en attente dont la validité est dépassée est ABANDONNÉ (${enAttente} en attente → ${perimes.length} expirés), jamais envoyé le lendemain`, enAttente > 0 && lendemain.json.expires === enAttente && perimes.length === enAttente && lendemain.json.envoyes === 0, lendemain.json);
+    verifier('un SMS expiré a son numéro et son texte EFFACÉS, un statut nommé et aucune tentative', perimes.every((l) => l.numero === null && l.texte === null && l.derniere_erreur === 'expire' && Number(l.tentatives) === 0 && l.envoye_le === null), perimes[0]);
+    const sExp = await statuts([idSms(100)]);
+    verifier('la mère lit le statut « expire », sans numéro ni texte', sExp[0] && sExp[0].statut === 'expire' && !JSON.stringify(sExp).includes(numero(100)), sExp);
+    const eVal = (await r.brut('GET', '/mere/sms/etat', null, { 'x-mere': SECRET })).json;
+    verifier('l\'état annonce la durée de validité réglée', eVal.validite_heures >= 1, eVal);
+
     // 6. journal technique
     const audit = JSON.stringify((await tout()).audit);
-    verifier('le journal technique trace dépôts, envois, échecs et refus', ['sms_depose', 'sms_envoye', 'sms_echec', 'sms_refuse'].every((a) => audit.includes(a)), audit.slice(0, 300));
+    verifier('le journal technique trace dépôts, envois, échecs, refus et expirations', ['sms_depose', 'sms_envoye', 'sms_echec', 'sms_refuse', 'sms_expire'].every((a) => audit.includes(a)), audit.slice(0, 300));
     verifier('le journal technique ne porte ni numéro ni texte', !/\+?229000\d{5}/.test(audit) && !audit.includes('rendez-vous') && !audit.includes('SENTINELLE'), audit.slice(0, 300));
     await m.fermer();
   },

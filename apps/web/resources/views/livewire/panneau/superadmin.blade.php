@@ -33,10 +33,46 @@
             </table>
         @endif
     </div>
+    <div class="carte" id="sms">
+        <h2>SMS du relais</h2>
+        <p class="note">Le relais transporte des SMS déjà composés par la mère et les efface après l’envoi. Cette section ne montre que des compteurs et des noms de paramètres : jamais un numéro, jamais un texte, jamais une valeur du fichier de réglages.</p>
+        <table>
+            <tbody>
+                <tr>
+                    <th>Pilote en service</th>
+                    <td>{{ $sms['pilote'] }}
+                        @if($sms['envoie'])<span class="puce ok">envoie réellement</span>@else<span class="puce attention">essai : n’envoie rien</span>@endif
+                    </td>
+                </tr>
+                <tr>
+                    <th>Paramètres manquants</th>
+                    <td>
+                        @if($sms['parametres_manquants'] === [])
+                            <span class="puce ok">aucun</span>
+                        @else
+                            <span class="puce alerte">{{ count($sms['parametres_manquants']) }} manquant(s)</span>
+                            {{ implode(', ', $sms['parametres_manquants']) }}
+                            <br><span class="note">À renseigner dans le fichier de réglages du relais. Tant qu’ils manquent, la file n’est pas touchée.</span>
+                        @endif
+                    </td>
+                </tr>
+                <tr>
+                    <th>Plafond du jour</th>
+                    <td>{{ $sms['envoyes_aujourdhui'] }} envoyé(s) sur {{ $sms['plafond_jour'] }}
+                        @if($sms['plafond_atteint'])<span class="puce alerte">plafond atteint</span>@endif
+                    </td>
+                </tr>
+                <tr><th>File d’attente</th><td>{{ $sms['file'] }} en attente @if($sms['file_en_retard'] > 0)<span class="puce attention">{{ $sms['file_en_retard'] }} depuis plus d’une heure</span>@endif</td></tr>
+                <tr><th>Échecs (après {{ $sms['tentatives_max'] }} tentatives)</th><td>{{ $sms['echecs'] }}</td></tr>
+                <tr><th>Expirés (périmés après {{ $sms['validite_heures'] }} h d’attente)</th><td>{{ $sms['expires'] }}</td></tr>
+                <tr><th>Envoyés (gardés {{ $sms['conservation_jours'] }} jours)</th><td>{{ $sms['envoyes'] }}</td></tr>
+            </tbody>
+        </table>
+    </div>
     <form class="formulaire" style="margin:16px 0" wire:submit="changerMotDePasse">
         <label for="actuel">Mot de passe actuel</label>
         <input id="actuel" type="password" wire:model="actuel" autocomplete="current-password" required>
-        <label for="nouveau">Nouveau mot de passe (8 caractères au moins)</label>
+        <label for="nouveau">Nouveau mot de passe ({{ (int) config('relais.mdp_superadmin_min') }} caractères au moins)</label>
         <input id="nouveau" type="password" wire:model="nouveau" autocomplete="new-password" required>
         <label for="confirmation">Confirmation</label>
         <input id="confirmation" type="password" wire:model="confirmation" autocomplete="new-password" required>

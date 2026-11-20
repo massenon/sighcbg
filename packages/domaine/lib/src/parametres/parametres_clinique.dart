@@ -51,6 +51,9 @@ Object? _valeurA(Iterable<Map<String, Object?>> fiches, String cle, String date)
   return r.ok ? r.valeur!.valeur : definitionDeParametre(cle)?.defaut;
 }
 
+/// Un réglage OUI/NON en vigueur à [date] : la version datée qui s'applique, sinon le défaut de la définition. Seul un `true` explicite ouvre ; toute autre valeur ferme.
+bool reglageBooleenA(Iterable<Map<String, Object?>> fichesParametres, String cle, String date) => _valeurA(fichesParametres, cle, date) == true;
+
 int? _entier(Object? v) => v is num && v.isFinite && v == v.truncateToDouble() ? v.toInt() : null;
 
 /// Le préavis de péremption (jours) EN VIGUEUR à [date] (AAAA-MM-JJ) : la version datée qui s'applique, sinon 90. Hors bornes (1 à 730) : 90.

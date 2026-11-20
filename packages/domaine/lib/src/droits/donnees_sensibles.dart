@@ -50,9 +50,9 @@ const List<CategorieSensible> categoriesSensibles = [
       code: 'coordonnees',
       libelle: 'Coordonnées (téléphone, adresse, quartier)',
       zone: 1,
-      champs: ['telephone', 'quartier', 'adresse'],
+      champs: ['telephone', 'quartier', 'adresse', 'consentementSms', 'consentementSmsLe', 'consentementSmsPar'],
       ecranRef: 'm1-patients',
-      couvre: 'Téléphone, quartier, adresse.'),
+      couvre: 'Téléphone, quartier, adresse, consentement aux SMS.'),
   CategorieSensible(
       code: 'personne_a_prevenir',
       libelle: 'Personne à prévenir',

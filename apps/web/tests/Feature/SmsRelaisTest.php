@@ -470,6 +470,117 @@ class SmsRelaisTest extends TestCase
         $this->assertStringContainsString("env('RELAIS_SMS_HTTP_CLE', '')", $src);
     }
 
+    // --- durée de validité d'un SMS en attente (E5204) -----------------------------------------------------------------------------------------------
+
+    /** Dépose un SMS puis le vieillit : `depose_le` recule de [heures] heures. */
+    private function deposerVieux(string $id, int $heures): void
+    {
+        $this->deposer($id)->assertOk();
+        $vieux = (int) (microtime(true) * 1000) - $heures * 3600000;
+        DB::table('sms_sortants')->where('uid', $id)->update(['depose_le' => $vieux, 'prochain_essai_le' => $vieux]);
+    }
+
+    public function test_un_sms_perime_est_abandonne_avec_un_statut_nomme_et_son_numero_et_son_texte_sont_effaces(): void
+    {
+        config(['relais.sms.validite_heures' => 24]);
+        $this->deposerVieux('sms-perime-0001', 25);
+        $this->deposer('sms-frais-00001')->assertOk();
+        $b = Envoyeur::tourner(new PiloteJournal());
+        $this->assertSame(1, $b['expires']);
+        $this->assertSame(1, $b['envoyes'], 'seul le SMS frais part');
+        $l = DB::table('sms_sortants')->where('uid', 'sms-perime-0001')->first();
+        $this->assertSame('expire', $l->statut);
+        $this->assertSame('expire', $l->derniere_erreur);
+        $this->assertNotNull($l->expire_le);
+        $this->assertNull($l->numero);
+        $this->assertNull($l->texte);
+        $this->assertSame(0, (int) $l->tentatives, 'jamais tenté : il n\'est pas parti');
+        $this->assertNull($l->envoye_le);
+        $a = $this->auditSms();
+        $this->assertStringContainsString('sms_expire', $a);
+        $this->assertStringNotContainsString('22900000001', $a);
+        $this->assertStringNotContainsString('rendez-vous', $a);
+    }
+
+    public function test_un_sms_retenu_par_le_plafond_ne_part_pas_le_lendemain_s_il_est_perime(): void
+    {
+        config(['relais.sms.plafond_jour' => 1, 'relais.sms.validite_heures' => 24]);
+        $this->deposer('sms-0000000001')->assertOk();
+        Envoyeur::tourner(new PiloteJournal());
+        // Le plafond du jour est atteint : le deuxième SMS attend (plafond relevé le temps du dépôt).
+        config(['relais.sms.plafond_jour' => 2]);
+        $this->deposer('sms-0000000002')->assertOk();
+        config(['relais.sms.plafond_jour' => 1]);
+        $b = Envoyeur::tourner(new PiloteJournal());
+        $this->assertSame(0, $b['envoyes']);
+        $this->assertTrue($b['plafond_atteint']);
+        $this->assertSame('en_attente', DB::table('sms_sortants')->where('uid', 'sms-0000000002')->value('statut'));
+        // Le lendemain, 25 heures plus tard : le plafond est levé, mais le SMS est périmé — il est abandonné, il ne part pas.
+        $b = Envoyeur::tourner(new PiloteJournal(), (int) (microtime(true) * 1000) + 25 * 3600000);
+        $this->assertSame(1, $b['expires']);
+        $this->assertSame(0, $b['envoyes']);
+        $l = DB::table('sms_sortants')->where('uid', 'sms-0000000002')->first();
+        $this->assertSame('expire', $l->statut);
+        $this->assertNull($l->numero);
+        $this->assertNull($l->texte);
+    }
+
+    public function test_un_sms_encore_valide_reste_en_attente_et_la_duree_se_regle(): void
+    {
+        config(['relais.sms.validite_heures' => 48]);
+        $this->deposerVieux('sms-0000000001', 30);
+        $this->assertSame(0, Envoyeur::expirer());
+        $this->assertSame('en_attente', DB::table('sms_sortants')->value('statut'));
+        config(['relais.sms.validite_heures' => 24]);
+        $this->assertSame(1, Envoyeur::expirer());
+        $this->assertSame('expire', DB::table('sms_sortants')->value('statut'));
+        // jamais illimitée : zéro ou négatif retombe sur une heure au moins
+        config(['relais.sms.validite_heures' => 0]);
+        $this->assertSame(3600000, FileSms::validiteMs());
+    }
+
+    public function test_un_pilote_mal_configure_n_empeche_pas_d_abandonner_les_perimes(): void
+    {
+        Http::fake();
+        config(['relais.sms.pilote' => 'inconnu', 'relais.sms.validite_heures' => 24]);
+        $this->deposerVieux('sms-perime-0001', 30);
+        $this->deposer('sms-frais-00001')->assertOk();
+        $b = Envoyeur::tourner();
+        $this->assertSame(1, $b['expires']);
+        $this->assertSame(['RELAIS_SMS_PILOTE'], $b['configuration_manquante']);
+        $this->assertNull(DB::table('sms_sortants')->where('uid', 'sms-perime-0001')->value('texte'), 'le périmé est effacé même sans pilote');
+        $this->assertNotNull(DB::table('sms_sortants')->where('uid', 'sms-frais-00001')->value('texte'), 'le frais n\'est pas touché pour une faute de .env');
+        Http::assertNothingSent();
+    }
+
+    public function test_la_mere_voit_le_statut_expire_et_un_depot_rejoue_ne_ressuscite_pas_le_sms(): void
+    {
+        $this->deposerVieux('sms-perime-0001', 30);
+        Envoyeur::tourner(new PiloteJournal());
+        $r = $this->signe('/mere/sms/statuts', ['ids' => ['sms-perime-0001']])->assertOk();
+        $this->assertSame('expire', $r->json('statuts.0.statut'));
+        $this->assertNotNull($r->json('statuts.0.expire_le'));
+        $this->assertStringNotContainsString('22900000001', (string) $r->getContent());
+        $rejeu = $this->deposer('sms-perime-0001')->assertOk();
+        $this->assertTrue($rejeu->json('rejeu'));
+        $this->assertSame('expire', $rejeu->json('sms.statut'));
+        $this->assertNull(DB::table('sms_sortants')->where('uid', 'sms-perime-0001')->value('texte'));
+    }
+
+    public function test_l_etat_annonce_la_validite_et_les_expires_sont_purges_apres_la_conservation(): void
+    {
+        config(['relais.sms.validite_heures' => 12, 'relais.sms.conservation_jours' => 30]);
+        $this->getJson('/mere/sms/etat', ['x-mere' => self::SECRET])->assertOk()->assertJson(['validite_heures' => 12]);
+        $vieux = (int) (microtime(true) * 1000) - 31 * 86400000;
+        DB::table('sms_sortants')->insert(['uid' => 'sms-vieux-expire', 'longueur' => 1, 'statut' => 'expire', 'tentatives' => 0, 'depose_le' => $vieux, 'prochain_essai_le' => $vieux, 'expire_le' => $vieux, 'efface_le' => $vieux, 'numero' => null, 'texte' => null]);
+        $this->assertSame(1, Envoyeur::purger());
+    }
+
+    public function test_la_validite_est_un_reglage_du_env_jamais_une_valeur_ecrite_dans_le_code(): void
+    {
+        $this->assertStringContainsString("env('RELAIS_SMS_VALIDITE_HEURES', 24)", file_get_contents(config_path('relais.php')));
+    }
+
     // --- crochets du banc ------------------------------------------------------------------------------------------------------------------------
 
     public function test_les_crochets_du_banc_sont_fermes_hors_banc(): void

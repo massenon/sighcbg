@@ -40,16 +40,29 @@ void main() {
       expect(r.texte, isNot(contains('{{')));
     });
 
-    test('les six modèles proposés : seul « Résultat disponible » est refusé (il révèle un examen)', () {
+    test('les six modèles de la maquette : seuls « Vœux de fête » et « Rappel de rendez-vous » sont proposables au SMS (E5200)', () {
+      final proposables = <String>[];
       for (final m in cfaModelesProposes) {
+        if (smsModeleProposable(occasion: m.$1, texte: m.$3)) proposables.add(m.$1);
+        expect(smsMotifModeleNonProposable(occasion: m.$1, texte: m.$3) == null, smsModeleProposable(occasion: m.$1, texte: m.$3), reason: m.$2);
+      }
+      // « Résultat disponible » révèle un examen, « Rappel de règlement » laisse entendre une dette, les deux vœux de santé disent « santé ».
+      expect(proposables, ['fete', 'rdv']);
+      final r = smsComposer(modele: cfaModelesProposes.firstWhere((m) => m.$1 == 'resultat').$3, numero: '0100000001', clinique: clinique);
+      expect(r.refus?.code, 'SMS_CONTENU_MEDICAL');
+      expect(r.refus!.motif, contains('resultat'));
+      expect(smsMotifModeleNonProposable(occasion: 'echeance', texte: 'Bonjour.'), contains('dette'));
+      expect(smsMotifModeleNonProposable(occasion: 'anniversaire', texte: 'une excellente santé'), contains('sante'));
+    });
+
+    test('les modèles neutres proposés au SMS passent tous la composition : jour, heure, clinique, jamais « santé »', () {
+      expect([for (final m in smsModelesProposes) m.$1], smsOccasionsAdmises);
+      for (final m in smsModelesProposes) {
         final r = smsComposer(modele: m.$3, numero: '0100000001', clinique: clinique, telephone: '+229 00 00 00 00', rdv: '18/11/2026 à 09h00', date: '18/11/2026');
-        if (m.$1 == 'resultat') {
-          expect(r.refus?.code, 'SMS_CONTENU_MEDICAL', reason: m.$2);
-          expect(r.refus!.motif, contains('resultat'));
-        } else {
-          expect(r.ok, isTrue, reason: '${m.$2} : ${r.refus}');
-          expect(r.texte!.length, lessThanOrEqualTo(smsLongueurMax));
-        }
+        expect(r.ok, isTrue, reason: '${m.$2} : ${r.refus}');
+        expect(smsModeleProposable(occasion: m.$1, texte: m.$3), isTrue, reason: m.$2);
+        expect(r.texte, isNot(contains('santé')));
+        expect(r.texte!.length, lessThanOrEqualTo(smsLongueurMax));
       }
     });
 
