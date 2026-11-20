@@ -902,4 +902,23 @@ void main() {
       'Valider': find.byKey(const Key('aide:valider:FAI-CAP-1')),
     });
   });
+
+  // v34 (21/11/2026) : le règlement en plusieurs versements, ses deux paramètres.
+  cas('Versements : les types de versement', 1440, 1100, (t) async {
+    await _posteMere(t, 'cfg-natures-facture');
+    await _toucher(t, _onglet('types-versement'));
+    await _png(t, 'admin-56-types-versement', {
+      'Types de versement': _onglet('types-versement'),
+      'Nouveau type': _bouton('Nouveau type'),
+    });
+  });
+
+  cas('Versements : les modalités de versement', 1440, 1100, (t) async {
+    await _posteMere(t, 'cfg-natures-facture');
+    await _toucher(t, _onglet('modalites-versement'));
+    await _png(t, 'admin-57-modalites-versement', {
+      'Modalités de versement': _onglet('modalites-versement'),
+      'Nouvelle modalité': _bouton('Nouvelle modalité'),
+    });
+  });
 }

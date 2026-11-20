@@ -172,6 +172,30 @@
       "aide": "Le réglage « Encaisser le reste d’une facture qui a une ligne sans prix » (Non par défaut : rien de la facture ne s’encaisse tant qu’une ligne attend son prix). Se règle depuis n’importe quel poste : sur un poste rattaché, la demande est transmise à la mère, qui l’applique. Origine : l’administrateur et la Directrice Administrative (à confirmer par la Direction)."
     },
     {
+      "id": "versement_annuler",
+      "libelle": "Annuler un règlement (contre-passer ses versements)",
+      "module": "M8",
+      "ecran": "m8-paiements",
+      "rolesDefaut": [
+        "Comptable",
+        "Directrice de l’Administration et des Finances (DAF)"
+      ],
+      "suitEcran": false,
+      "aide": "Un versement ne se supprime jamais : l’annulation d’un règlement écrit une CONTRE-PASSATION par versement (motif obligatoire, écriture comptable inverse en brouillon) et remet les prestations en attente de règlement. Refusée sur une facture normalisée (passer par une facture d’avoir). Origine : le Comptable et la Directrice Administrative ; le caissier n’annule pas."
+    },
+    {
+      "id": "versement_regler",
+      "libelle": "Régler les types et les modalités de versement",
+      "module": "CFG",
+      "ecran": "cfg-natures-facture",
+      "rolesDefaut": [
+        "Administrateur système",
+        "Directrice de l’Administration et des Finances (DAF)"
+      ],
+      "suitEcran": false,
+      "aide": "Les types de versement (espèces, carte, Mobile Money, chèque, virement…) avec leur compte de trésorerie et l’exigence de référence, et leurs modalités (opérateurs Mobile Money, banques) : création, modification, archivage annulable. Origine : l’administrateur et la Directrice Administrative."
+    },
+    {
       "id": "alertes_caisse",
       "libelle": "Recevoir les notifications du poste de caisse",
       "module": "M8",
@@ -3409,7 +3433,7 @@
       "cle": "libelles.m8.modesPaiement",
       "famille": "listes_m8",
       "type": "texte",
-      "defaut": "especes=Espèces; tpe=TPE (carte bancaire); mtn=MTN Mobile Money; moov=Moov Money; assurance=Prise en charge assurance",
+      "defaut": "especes=Espèces; tpe=TPE (carte bancaire); mtn=MTN Mobile Money; moov=Moov Money; mobile_money=Mobile Money; mixte=Plusieurs modes de règlement; assurance=Prise en charge assurance",
       "libelle": "Modes de paiement",
       "choix": null,
       "libellesChoix": {},
