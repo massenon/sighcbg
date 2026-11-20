@@ -120,3 +120,67 @@ RefusRh? controlerDoublePaiementPrimeRh({
   }
   return null;
 }
+
+// ---------------------------------------------------------------------------------------------------------------------
+// CHEVAUCHEMENT ÉCONOMIQUE : même agent, même vacation, un honoraire de régime individuel ET une prime NS 132 — de MONTANT DIFFÉRENT.
+// ---------------------------------------------------------------------------------------------------------------------
+
+/// Le code de l'avertissement (jamais un refus : la décision du 17/11/2026 ne refuse que la RÉPÉTITION exacte ; un honoraire d'un autre montant est un complément que la Direction a pu vouloir).
+const String codeChevauchementPrime = 'CHEVAUCHEMENT_PRIME';
+
+/// Un honoraire de régime individuel qui s'ajoute, pour la même vacation, à une prime de la grille NS 132 versée sur le même bulletin, sans la répéter. Le validateur le LIT avant de
+/// signer ; rien n'est exclu ni refusé : [honoraire] et [prime] sont versés tous deux. Une entrée groupe les vacations de même type, de même prime et de même honoraire du mois.
+class ChevauchementPrime {
+  const ChevauchementPrime(
+      {required this.primeId, required this.primeLibelle, required this.vacation, required this.honoraire, required this.prime, required this.periodiciteHonoraire, required this.jours});
+  final String primeId, primeLibelle, vacation, periodiciteHonoraire;
+  final num honoraire, prime;
+
+  /// Les jours (ISO) des vacations concernées.
+  final List<String> jours;
+
+  Map<String, Object?> toJson() => {
+        'code': codeChevauchementPrime,
+        'prime': primeId,
+        'primeLibelle': primeLibelle,
+        'vacation': vacation,
+        'honoraire': honoraire,
+        'montantPrime': prime,
+        'periodicite': periodiciteHonoraire,
+        'jours': jours,
+      };
+
+  /// La phrase du validateur : nomme la prime, la vacation, les deux montants et le nombre de vacations ; dit que les DEUX sont versés.
+  String phrase() =>
+      '${jours.length} vacation(s) « ${rhbTypePlanningLabel(vacation)} » : l’honoraire du régime individuel (${_montant(honoraire)} F ${periodiciteHonoraire == 'occurrence' ? 'par occurrence' : 'mensuel'}) '
+      's’ajoute à la prime « $primeLibelle » de la note NS 132 (${_montant(prime)} F), de montant différent — les deux sont versés. À confirmer comme complément voulu.';
+}
+
+/// Les chevauchements des [lignes] d'honoraire RETENUES au bulletin (`honoraireRegimeMoisRh().lignes`, celles que le doublon exact n'a pas écartées). Seul un honoraire d'une version
+/// INDIVIDUELLE (ou de remplacement) est en cause, jamais le régime de la catégorie. [primes] : les primes de la grille ; [montantPrime] : le montant UNITAIRE versé ce jour-là
+/// pour la prime de cet identifiant (0 : aucune prime versée, donc rien à chevaucher). Une prime d'occurrence ne compte que si le planning la verse (`primesAuComptageDuPlanningRh`).
+/// Un honoraire MENSUEL est une ligne par mois : ses jours sont ceux des vacations qui l'ouvrent.
+List<ChevauchementPrime> chevauchementsPrimeLignesRh(Iterable<Map<String, Object?>> lignes,
+    {required Iterable<RhbPrimeDef> primes, required num Function(String primeId, String jour) montantPrime}) {
+  final groupes = <String, ChevauchementPrime>{};
+  for (final l in lignes) {
+    final prov = l['provenance'];
+    if (prov != provenanceIndividuelleRh && prov != provenanceRemplacementRh) continue;
+    final type = '${l['type']}';
+    final jour = '${l['date']}';
+    final honoraire = l['montant'];
+    if (honoraire is! num || honoraire <= 0) continue;
+    for (final p in primes) {
+      if (p.id != type) continue;
+      if (p.mode == 'occurrence' && !primesAuComptageDuPlanningRh.contains(p.id)) continue;
+      final m = montantPrime(p.id, jour);
+      if (m <= 0) continue;
+      final per = '${l['periodicite']}' == 'occurrence' ? 'occurrence' : 'mensuelle';
+      final k = '${p.id}/$type/$per/$honoraire/$m';
+      final g = groupes[k];
+      groupes[k] = ChevauchementPrime(
+          primeId: p.id, primeLibelle: p.label, vacation: type, honoraire: honoraire, prime: m, periodiciteHonoraire: per, jours: [...?g?.jours, jour]);
+    }
+  }
+  return groupes.values.toList();
+}

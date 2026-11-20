@@ -18,6 +18,7 @@ library;
 import '../validation/validation.dart' show RefusValidation, valInstant;
 import '../validation/validation_deposee.dart';
 import 'planning_rh.dart' show RefusRh, gardePresenceValideeRh;
+import 'rhb_regles.dart' show vacationCompteRh, vacationEtatAValider, vacationEtatValidee;
 
 /// Les cinq collections du planning qui voyagent (famille A de la mère ; jamais vers un téléphone : elles portent des honoraires, des motifs d'absence et des données de santé).
 const List<String> planningCollectionsSync = ['planning', 'propositionsPlanning', 'conges', 'missions', 'presences'];
@@ -60,10 +61,7 @@ bool _meme(Object? a, Object? b) => '${_norm(a)}' == '${_norm(b)}';
 Object? _norm(Object? v) => v is Map ? (v.keys.map((k) => '$k').toList()..sort()).map((k) => '$k:${_norm(v[k])}').join(',') : (v is List ? v.map(_norm).join('|') : v);
 
 /// Une vacation est VALIDÉE quand elle ne dit pas le contraire : sans état (jeu d'origine, pose directe d'autrefois) ou `validee` (même lecture que le calcul des honoraires de régime, RG-11).
-bool planningVacationValidee(Map<String, Object?> v) {
-  final e = _s(v['validationEtat']);
-  return e.isEmpty || e == 'validee';
-}
+bool planningVacationValidee(Map<String, Object?> v) => vacationCompteRh(v);
 
 /// L'état de validation d'une pièce à circuit (même lecture que `etatValidationRh`, sans en dépendre : la mère Node la recopie).
 String planningEtatPiece(String collection, Map<String, Object?> rec) {
@@ -154,7 +152,7 @@ RefusRh? refusPlanningRh(String collection, String type, Map<String, Object?> ch
   // planning : les vacations.
   final etat = champs['validationEtat'];
   if (creation) {
-    if (etat == null || '$etat' != 'a_valider') {
+    if (etat == null || '$etat' != vacationEtatAValider) {
       return reserve('Une vacation ne naît pas validée (état « ${_vide(etat) ? 'absent' : etat} »)');
     }
     for (final k in const ['validePar', 'valideLe']) {
@@ -164,10 +162,10 @@ RefusRh? refusPlanningRh(String collection, String type, Map<String, Object?> ch
   }
   final validee = actuelle != null && planningVacationValidee(actuelle);
   if (etat != null && '$etat' != _s(actuelle?['validationEtat'])) {
-    if ('$etat' == 'a_valider' && validee) {
+    if ('$etat' == vacationEtatAValider && validee) {
       return RefusRh('validation_defaite', 'Une validation ne se défait pas : la vacation est validée, elle ne repasse pas « à valider ».', 'Retirer la vacation (dépôt) plutôt que de défaire la décision');
     }
-    if ('$etat' == 'validee' || '$etat' == '') return reserve('L’état « validée » d’une vacation');
+    if ('$etat' == vacationEtatValidee || '$etat' == '') return reserve('L’état « validée » d’une vacation');
   }
   for (final k in const ['validePar', 'valideLe']) {
     if (champs.containsKey(k) && !_vide(champs[k]) && !_meme(champs[k], actuelle?[k])) return champReserve(k);
