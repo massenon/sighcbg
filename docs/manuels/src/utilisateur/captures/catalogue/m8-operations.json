@@ -1,0 +1,17 @@
+{
+ "id": "m8-operations",
+ "titre": "Opérations de caisse",
+ "libelle": "Opérations de caisse",
+ "domaine": "Financier",
+ "module": "M8",
+ "moduleLibelle": "Facturation & Caisse",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m8-operations"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 572
+}

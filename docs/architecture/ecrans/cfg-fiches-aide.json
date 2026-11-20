@@ -1,0 +1,10 @@
+{
+ "id": "cfg-fiches-aide",
+ "module": "CFG",
+ "domaine": "Système",
+ "libelleManifeste": "Fiches d’aide de l’assistant",
+ "acces": "ouvert",
+ "titre": "Fiches d’aide de l’assistant",
+ "description": "Rédiger, valider et archiver les fiches d’aide et de définition que l’assistant cite, avec la liste des fiches attendues et leur état.",
+ "note": "Fiche rédigée pour le poste Baguidi (Direction, 16/11/2026, section 2 : aide d’utilisation et définitions de l’assistant, « pas de fiche » tant qu’aucune fiche validée) : écran sans équivalent à la maquette."
+}

@@ -1,0 +1,17 @@
+{
+ "id": "m13-notes-service",
+ "titre": "Notes de service",
+ "libelle": "Notes de service",
+ "domaine": "Administration",
+ "module": "M13",
+ "moduleLibelle": "Administration & Ambulance",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m13-notes-service"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 494
+}

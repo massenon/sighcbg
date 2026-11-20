@@ -1,0 +1,17 @@
+{
+ "id": "mere-reprise-poste",
+ "titre": "Reprise d’un poste",
+ "libelle": "Reprise d’un poste",
+ "domaine": "Poste mère",
+ "module": "MERE",
+ "moduleLibelle": "Exploitation de la synchronisation",
+ "role": "admin",
+ "mode": "mère",
+ "capture": true,
+ "ecransAffiches": [
+  "mere-reprise-poste"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 458
+}

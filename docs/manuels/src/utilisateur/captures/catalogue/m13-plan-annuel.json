@@ -1,0 +1,17 @@
+{
+ "id": "m13-plan-annuel",
+ "titre": "Plan de travail annuel (PTA)",
+ "libelle": "Plan de travail annuel (PTA)",
+ "domaine": "Administration",
+ "module": "M13",
+ "moduleLibelle": "Administration & Ambulance",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m13-plan-annuel"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 544
+}

@@ -1,0 +1,116 @@
+<?php
+
+namespace App\Relais\Sms;
+
+use App\Relais\Format;
+use Illuminate\Support\Facades\DB;
+
+/**
+ * ADR-0009 : UN TOUR D'ENVOI, lancé par la tâche planifiée `relais:sms-envoyer` (le cron d'une minute `schedule:run` du cPanel : aucun démon).
+ * Envoie les SMS en attente dont l'heure d'essai est venue, dans la limite du plafond du jour ; EFFACE le numéro et le texte dès que le fournisseur accepte,
+ * ou au dernier échec ; purge les lignes terminées au-delà de la durée de conservation.
+ */
+class Envoyeur
+{
+    /** Le pilote du `.env` (`RELAIS_SMS_PILOTE`) ; un pilote lié au conteneur (tests) l'emporte. Un nom inconnu est un échec nommé (`pilote_inconnu`) : retomber sur le journal marquerait « envoyé » un SMS jamais parti. */
+    public static function pilote(): Pilote
+    {
+        if (app()->bound(Pilote::class)) {
+            return app(Pilote::class);
+        }
+
+        return match ((string) config('relais.sms.pilote', 'journal')) {
+            'journal' => new PiloteJournal(),
+            'http' => new PiloteHttp((array) config('relais.sms.http', [])),
+            'twilio' => new PiloteTwilio((array) config('relais.sms.twilio', [])),
+            'vonage' => new PiloteVonage((array) config('relais.sms.vonage', [])),
+            default => new PiloteNonConfigure((string) config('relais.sms.pilote')),
+        };
+    }
+
+    /**
+     * ABANDONNE les SMS en attente PÉRIMÉS (déposés depuis plus que `relais.sms.validite_heures`) : statut `expire`, numéro et texte EFFACÉS, un code d'erreur nommé, une ligne au
+     * journal technique (identifiant et âge, jamais le numéro ni le texte). Un SMS retenu par le plafond du jour ou par une panne ne part donc pas le lendemain, périmé.
+     */
+    public static function expirer(?int $maintenant = null): int
+    {
+        $m = $maintenant ?? Format::maintenant();
+        $limite = $m - FileSms::validiteMs();
+        $n = 0;
+        foreach (DB::table('sms_sortants')->where('statut', 'en_attente')->where('depose_le', '<', $limite)->get(['id', 'uid', 'depose_le']) as $l) {
+            DB::table('sms_sortants')->where('id', $l->id)->where('statut', 'en_attente')->update([
+                'statut' => 'expire', 'expire_le' => $m, 'efface_le' => $m, 'numero' => null, 'texte' => null, 'derniere_erreur' => 'expire',
+            ]);
+            FileSms::journal('sms_expire', $l->uid.' abandon apres '.(int) floor(($m - (int) $l->depose_le) / 3600000).' h', $m);
+            $n++;
+        }
+
+        return $n;
+    }
+
+    /** @return array{envoyes: int, echecs: int, abandons: int, expires: int, purges: int, plafond_atteint: bool} */
+    public static function tourner(?Pilote $pilote = null, ?int $maintenant = null): array
+    {
+        $m = $maintenant ?? Format::maintenant();
+        $pilote ??= self::pilote();
+        // Les périmés d'abord, quoi qu'il arrive ensuite (plafond atteint, pilote mal configuré) : un numéro ne dort pas dans la file.
+        $bilan = ['envoyes' => 0, 'echecs' => 0, 'abandons' => 0, 'expires' => self::expirer($m), 'purges' => self::purger($m), 'plafond_atteint' => false, 'configuration_manquante' => []];
+        // Un pilote mal configuré ne touche pas à la file : sinon chaque SMS brûlerait ses cinq tentatives et son texte serait effacé pour une faute de .env.
+        if ($pilote instanceof PiloteConfigurable && ($manque = $pilote->parametresManquants()) !== []) {
+            $bilan['configuration_manquante'] = $manque;
+            if (DB::table('sms_sortants')->where('statut', 'en_attente')->exists()) {
+                FileSms::journal('sms_pilote_non_configure', 'pilote='.$pilote->nom().' manque='.implode(',', $manque), $m);
+            }
+
+            return $bilan;
+        }
+        $restant = FileSms::plafondJour() - FileSms::envoyesAujourdhui($m);
+        if ($restant <= 0) {
+            $bilan['plafond_atteint'] = DB::table('sms_sortants')->where('statut', 'en_attente')->exists();
+
+            return $bilan;
+        }
+        $lot = max(1, (int) config('relais.sms.lot', 20));
+        $lignes = DB::table('sms_sortants')->where('statut', 'en_attente')->where('prochain_essai_le', '<=', $m)
+            ->orderBy('depose_le')->orderBy('id')->limit(min($lot, $restant))->get();
+        foreach ($lignes as $l) {
+            try {
+                $r = $pilote->envoyer((string) $l->numero, (string) $l->texte);
+            } catch (\Throwable) {
+                $r = ResultatEnvoi::refuse('exception');
+            }
+            $tentatives = (int) $l->tentatives + 1;
+            if ($r->accepte) {
+                DB::table('sms_sortants')->where('id', $l->id)->update([
+                    'statut' => 'envoye', 'tentatives' => $tentatives, 'envoye_le' => $m, 'efface_le' => $m, 'numero' => null, 'texte' => null, 'derniere_erreur' => null,
+                ]);
+                FileSms::journal('sms_envoye', $l->uid.' pilote='.$pilote->nom().' longueur='.$l->longueur, $m);
+                $bilan['envoyes']++;
+            } elseif ($tentatives >= FileSms::tentativesMax()) {
+                DB::table('sms_sortants')->where('id', $l->id)->update([
+                    'statut' => 'echec', 'tentatives' => $tentatives, 'echec_le' => $m, 'efface_le' => $m, 'numero' => null, 'texte' => null, 'derniere_erreur' => $r->code,
+                ]);
+                FileSms::journal('sms_echec', $l->uid.' '.$r->code.' abandon apres '.$tentatives.' tentatives', $m);
+                $bilan['abandons']++;
+            } else {
+                DB::table('sms_sortants')->where('id', $l->id)->update([
+                    'tentatives' => $tentatives, 'prochain_essai_le' => $m + (FileSms::DELAIS_MS[$tentatives] ?? 3600000), 'derniere_erreur' => $r->code,
+                ]);
+                FileSms::journal('sms_echec', $l->uid.' '.$r->code.' tentative '.$tentatives, $m);
+                $bilan['echecs']++;
+            }
+        }
+        $bilan['plafond_atteint'] = FileSms::envoyesAujourdhui($m) >= FileSms::plafondJour() && DB::table('sms_sortants')->where('statut', 'en_attente')->exists();
+
+        return $bilan;
+    }
+
+    /** Purge les lignes TERMINÉES (déjà effacées) au-delà de la conservation ; une ligne en attente n'est jamais purgée. */
+    public static function purger(?int $maintenant = null): int
+    {
+        $m = $maintenant ?? Format::maintenant();
+        $limite = $m - max(1, (int) config('relais.sms.conservation_jours', 30)) * 86400000;
+
+        return DB::table('sms_sortants')->whereIn('statut', ['envoye', 'echec', 'expire'])->where('efface_le', '<', $limite)->delete();
+    }
+}

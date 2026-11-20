@@ -1,0 +1,17 @@
+{
+ "id": "imp-catalogue-imagerie",
+ "titre": "Importation du catalogue de l’imagerie",
+ "libelle": "Importation du catalogue de l’imagerie",
+ "domaine": "Système",
+ "module": "IMP",
+ "moduleLibelle": "Importation de données",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "imp-catalogue-imagerie"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 452
+}

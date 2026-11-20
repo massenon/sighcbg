@@ -1,0 +1,17 @@
+{
+ "id": "dash-chirurgien",
+ "titre": "Tableau de bord — Chirurgien",
+ "libelle": "Chirurgien",
+ "domaine": "Pilotage",
+ "module": "DASH",
+ "moduleLibelle": "Tableaux de bord par poste",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "dash-chirurgien"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 491
+}

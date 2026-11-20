@@ -10,8 +10,8 @@
 
 1. **Le jeu montre ce qu'il sert à montrer** : chaque écran ouvert a des lignes à afficher, chaque alerte a une cause, et il reste un flux courant (brouillons à valider, une échéance dépassée, des stocks sous seuil, des créances à relancer). C'est la doctrine « journée des postes » du logiciel d'origine.
 2. **RG-10 construit, pas contrôlé après coup** : toute écriture naît en pièce équilibrée (le semis de la maquette Baguidi, 260 lignes déséquilibrées, n'est PAS repris).
-3. **Rien d'officiel ne s'invente** : les tarifs restent les valeurs d'attente héritées, marqués `tarifProvisoire` avec le motif « hérités du logiciel d'origine, grille Baguidi à fournir » (Q30) ; les salaires portent `salaireProvisoire` ; les barèmes NS 131/132 sont marqués « hérités, à confirmer » (Q31). Aucune mention « arrêté par la Direction » de Nassiera Too n'est reprise.
-4. **Aucun patronyme de Nassiera Too** dans les données fictives : les noms de patients, clients et tiers sont tirés de listes propres (patronymes du Borgou et noms neutres), quartiers de Parakou (Zongo, Banikanni, Albarika, Ladjifarani, Guéma, Dépôt, Titirou, Kpébié).
+3. **Rien d'officiel ne s'invente** : les tarifs restent les valeurs d'attente héritées, marqués `tarifProvisoire` avec le motif « hérités du logiciel d'origine, grille Baguidi à fournir » (Q30) ; les salaires portent `salaireProvisoire` ; les barèmes NS 131/132 sont marqués « hérités, à confirmer » (Q31). Aucune mention « arrêté par la Direction » de la clinique d'origine n'est reprise.
+4. **Aucun patronyme de la clinique d'origine** dans les données fictives : les noms de patients, clients et tiers sont tirés de listes propres (patronymes du Borgou et noms neutres), quartiers de Parakou (Zongo, Banikanni, Albarika, Ladjifarani, Guéma, Dépôt, Titirou, Kpébié).
 5. **Déterminisme** : tout est tiré d'une graine fixe, fenêtre du **01/08/2026 au 06/11/2026**, pour que les tests et les captures se rejouent.
 6. **Un module fermé a ses collections VIDES** (fichiers `[]` conservés : le chargeur du poste l'exige). Aucune consultation, hospitalisation, analyse ni dossier de maternité.
 
@@ -102,7 +102,7 @@ Créances nées des parts à crédit des reports : ~18 créances sur les 6 entre
 | besoins / commandes | 12 / 8 | | dépenses | 30 |
 | bulletins | 24 (3 mois × 8) | | courriers / réunions | 10 / 4 |
 
-Garde-fous : le contrôle d'identité (0 occurrence Nassiera Too, patronymes des 44 agents NT inclus) tourne sur le jeu engendré ; un test vérifie que chaque pièce comptable s'équilibre ; un test vérifie qu'aucune collection d'un module fermé n'est peuplée.
+Garde-fous : le contrôle d'identité (0 occurrence du nom de la clinique d'origine, patronymes des 44 agents NT inclus) tourne sur le jeu engendré ; un test vérifie que chaque pièce comptable s'équilibre ; un test vérifie qu'aucune collection d'un module fermé n'est peuplée.
 
 ## 13. Ce que la proposition attend de la Direction
 
@@ -137,7 +137,7 @@ Corrige la version 1 selon les décisions rendues depuis : M1 à M10 actifs avec
 | J8 | Assureurs | **Les 13 compagnies du marché conservées** comme référentiel ; conventions et souscripteurs fictifs | liste Baguidi à fournir |
 | J9 | Plan comptable | **SYSCOHADA révisé complet (1 332 comptes)** pris du classeur Baguidi (`plan-comptable-syscohada-revise.csv`), AIB 5 %, calendrier fiscal hérité avec CNSS au 15 | plan réduit de 112 comptes |
 | J10 | Comptabilité | **Exercice 2026 sans bilan d'ouverture ni liasse** (dits à l'écran) ; écritures produites par les moteurs, équilibrées par construction ; une échéance dépassée ; une journée de caisse non arrêtée | inventer une ouverture (refusé : rien d'officiel ne s'invente) |
-| J11 | Fixtures de test | **Pseudonymisation** : les fixtures et vecteurs issus de Nassiera Too (noms d'agents) reçoivent la MÊME table de pseudonymes des deux côtés, donc la parité des tests tient, et plus aucun nom réel de l'autre clinique n'y figure ; le jeu LIVRÉ est entièrement Baguidi | conserver les noms d'origine dans les tests (visibles dans un dépôt public) |
+| J11 | Fixtures de test | **Pseudonymisation** : les fixtures et vecteurs issus de la clinique d'origine (noms d'agents) reçoivent la MÊME table de pseudonymes des deux côtés, donc la parité des tests tient, et plus aucun nom réel de l'autre clinique n'y figure ; le jeu LIVRÉ est entièrement Baguidi | conserver les noms d'origine dans les tests (visibles dans un dépôt public) |
 | J12 | Générateur | **Un générateur en Dart** (`apps/poste/tool`), graine fixe, qui appelle les moteurs de `packages/domaine` (facture, encaissement, avoir, écriture) : les invariants (RG-03, RG-10) tiennent par construction | générateur Node écrit à part (recopie des règles, divergera) |
 | J13 | Découpage du travail | **Quatre sous-lots, un agent chacun** : (1) référentiels et personnes, (2) RH et paie, (3) stock, achats, facturation, caisse, comptabilité, (4) clinique M1 à M5 | un seul lot (trop gros pour un agent) |
 | J14 | Dépôt | **Passer `sighcbg` en privé avant de pousser le code** : il contient le code de l'éditeur, les noms des 9 agents réels et le périmètre contractuel | rester public |

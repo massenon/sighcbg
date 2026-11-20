@@ -1,0 +1,17 @@
+{
+ "id": "m2-ordonnance-nouvelle",
+ "titre": "Nouvelle ordonnance",
+ "libelle": "Nouvelle ordonnance — saisie",
+ "domaine": "Soins",
+ "module": "M2",
+ "moduleLibelle": "Consultations & prescriptions",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m2-ordonnance-nouvelle"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 486
+}

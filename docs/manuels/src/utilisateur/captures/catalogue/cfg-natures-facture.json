@@ -1,0 +1,17 @@
+{
+ "id": "cfg-natures-facture",
+ "titre": "Natures de facture",
+ "libelle": "Natures de facture",
+ "domaine": "Système",
+ "module": "CFG",
+ "moduleLibelle": "Configuration Clinique",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "cfg-natures-facture"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 503
+}

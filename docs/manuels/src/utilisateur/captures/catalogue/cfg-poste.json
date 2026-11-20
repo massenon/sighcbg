@@ -1,0 +1,17 @@
+{
+ "id": "cfg-poste",
+ "titre": "Ce poste",
+ "libelle": "Ce poste (mode fileul / mère)",
+ "domaine": "Système",
+ "module": "CFG",
+ "moduleLibelle": "Configuration Clinique",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "cfg-poste"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 482
+}

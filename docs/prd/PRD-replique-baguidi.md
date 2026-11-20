@@ -12,13 +12,13 @@
 
 ## 1. Problème
 
-La Clinique Baguidi « L'As de Cœur » (Parakou) est un centre de médecine du travail et de médecine générale. Elle a besoin d'un système de gestion pour sa pharmacie et ses stocks, ses achats et expressions de besoins, ses RH, sa paie, sa comptabilité SYSCOHADA et son pilotage. Le logiciel SIGH-CNT, construit pour la Clinique Nassiera Too (Natitingou), couvre déjà ces fonctions, avec son architecture hors ligne d'abord (poste Flutter fileul/mère, relais web Laravel, mobile).
+La Clinique Baguidi « L'As de Cœur » (Parakou) est un centre de médecine du travail et de médecine générale. Elle a besoin d'un système de gestion pour sa pharmacie et ses stocks, ses achats et expressions de besoins, ses RH, sa paie, sa comptabilité SYSCOHADA et son pilotage. Le logiciel SIGH-CNT, construit pour la clinique sœur, couvre déjà ces fonctions, avec son architecture hors ligne d'abord (poste Flutter fileul/mère, relais web Laravel, mobile).
 
 Repartir de zéro coûterait des mois et ferait perdre les règles de gestion déjà éprouvées (RG-01 à RG-14, 74 parcours, audit RBAC). Livrer SIGH-CNT tel quel serait une faute : chaque pièce porterait l'identité légale d'une autre clinique (IFU, RCCM, logo), et la moitié des modules (soins, laboratoire, caisse) relèvent d'activités que Baguidi n'exerce pas, ou pas dans ce logiciel.
 
 ## 2. Objectifs
 
-1. **Une identité, une seule.** Toute pièce imprimée, tout écran, toute page du relais et l'application mobile portent l'identité de la Clinique Baguidi. **Aucune occurrence** de l'identité Nassiera Too dans ce qui est livré, vérifiée par un contrôle automatique.
+1. **Une identité, une seule.** Toute pièce imprimée, tout écran, toute page du relais et l'application mobile portent l'identité de la Clinique Baguidi. **Aucune occurrence** de l'identité de la clinique sœur dans ce qui est livré, vérifiée par un contrôle automatique.
 2. **Le périmètre Baguidi, et lui seul.** Les modules hors périmètre sont fermés pour tous les rôles : absents du ruban, de la recherche, des hubs et des adresses. Facturation & Caisse est réduit à une **caisse minimale** (opérations sans dossier patient, ventes de pharmacie, état journalier). Trois modules (MECeF, Primes NS 132, Évaluations NS 131) arrivent **ouverts** et se ferment depuis *Paramètres système*.
 3. **Toute l'activité de la clinique est suivie en comptabilité, sans double saisie patient.** La clinique garde son logiciel de caisse rattaché aux patients. Le comptable **reporte** chaque jour dans SIGH-CB les ventes de ce logiciel par nature d'activité (actes, consultations, certificats, hospitalisations, analyses, imagerie, pharmacie…), ainsi que les dépenses et les sorties. Chaque report produit son écriture équilibrée (RG-10) et alimente les statistiques. Cible : 100 % des journées de caisse reportées, écart nul entre le total reporté et le total du logiciel de caisse.
 4. **Les modules conservés restent complets.** Stock, achats, RH, paie, comptabilité, administration, sécurité, configuration, GED, rapports et pilotage gardent leur CRUD entier (créer, consulter, modifier, archiver, restaurer, imprimer). Leurs bancs d'essai restent verts.
@@ -36,7 +36,7 @@ Repartir de zéro coûterait des mois et ferait perdre les règles de gestion d�
 | Reprendre dans SIGH-CB le détail patient par patient des ventes | Le report se fait par **nature d'activité et par jour**, pas par patient : ressaisir chaque patient doublerait le travail du guichet et ouvrirait des données médicales au comptable (RG-13) |
 | Créer des modules propres à la médecine du travail (visites d'embauche, aptitude, suivi par entreprise) | Initiative séparée, à spécifier après la mise en service. Voir P2 |
 | Le site vitrine (`apps/vitrine`, `frontend_html/`) | Non demandé (périmètre : web, poste, mobile). À traiter dans un second temps si Baguidi le souhaite |
-| Reprendre les données de Nassiera Too | Elles sont confidentielles et propres à une autre clinique (personnel, paie, comptes, inventaire). Elles ne sont **jamais** livrées à Baguidi |
+| Reprendre les données de la clinique sœur | Elles sont confidentielles et propres à une autre clinique (personnel, paie, comptes, inventaire). Elles ne sont **jamais** livrées à Baguidi |
 
 ## 4. Identité de référence (fournie le 06/11/2026)
 
@@ -61,27 +61,23 @@ Mention légale : CLINIQUE BAGUIDI « L'AS DE CŒUR » — IFU 3201001996110 —
 
 | Champ de `IdentiteClinique` | Valeur Baguidi |
 |---|---|
-| `nom` (dénomination sociale) | CLINIQUE BAGUIDI « L'AS **DU** CŒUR » (alignée sur le RCCM le 06/11/2026 ; le logo garde « DE » en attendant une version corrigée) |
+| `nom` (dénomination sociale) | CLINIQUE BAGUIDI « L'AS DE CŒUR » |
 | `sigle` (remplace « CNT ») | **CBG** |
 | `nomCourt` | à confirmer (proposition : CLINIQUE BAGUIDI) |
 | `slogan` | Votre bien-être est notre raison d'être. |
 | adresse géographique (champ nouveau, absent de `IdentiteClinique`) | Quartier Zongo II, Parakou |
 | `bp` | 02 BP : 105 PARAKOU (Rép. du Bénin) |
-| adresse du principal établissement (RCCM) | Îlot 575, quartier Zongo, Parakou |
-| activité déclarée (RCCM) | cabinet médical, exploitation d'une clinique chirurgico-médicale, d'une officine, formation, commerce général |
 | `telephones` | 95 74 69 56 · 95 95 99 14 · 97 09 34 99 |
-| `email` | cliniquebaguidi@yahoo.fr |
+| `email` | contact@cliniquebaguidi.com (décision du 17/11/2026 ; remplace l’ancienne adresse de la fiche du 06/11) |
 | `ifu` | 3201001996110 |
-| `rccm` | **RB/PKO/17 A 4240** (décision du 06/11/2026 : le numéro seul ; la date d'immatriculation, 19/03/2009, vit dans un champ distinct `rccmDate` et ne se concatène pas) |
-| `mentionLegale` | dérivée : `CLINIQUE BAGUIDI « L'AS DU CŒUR » — IFU 3201001996110 — RCCM RB/PKO/17 A 4240.` |
-| forme juridique | **Entreprise individuelle** (personne physique), immatriculation principale au RCCM du 19/03/2009 (extrait du RCCM communiqué le 06/11/2026) 
-| n° d'enregistrement / d'inscription (champ nouveau) | **0416/ONMB/ATL/2002** (communiqué le 06/11/2026 ; ONMB = Ordre national des médecins du Bénin). Imprimé à l'en-tête à la place du « n° d'autorisation d'ouverture » de Nassiera Too, sous le libellé « N° d'enregistrement », sauf avis contraire (voir Q32) |
-| exploitant | **BAGUIDI Rafiou** (orthographe de l'extrait RCCM ; la maquette écrivait « GBAGUIDI », corrigé). Date et lieu de naissance, domicile personnel : champs laissés VIDES, à remplir en production (dépôt public) |
+| `rccm` | RB/PKO/17 A 4240 du 19/03/2009 |
+| `mentionLegale` | dérivée : `CLINIQUE BAGUIDI « L'AS DE CŒUR » — IFU 3201001996110 — RCCM RB/PKO/17 A 4240 du 19/03/2009.` |
+| forme juridique | **non renseignée** (SARL, SA, EI… ? Elle figure habituellement sur l'en-tête légal) |
 | `autorisation` (n° d'autorisation d'ouverture) | **non renseigné** |
 | `formuleArrete` | générique, reprise telle quelle : « Arrêtée la présente facture à la somme de » |
-| `formulePolitesse` (pied de facture) | **Votre bien-être est notre raison d’être.** (décision du 06/11/2026 : même texte que le slogan ; celle de Nassiera Too, « QUE DIEU VOUS GUÉRISSE ! AMINE ! », ne se reprend pas) |
+| `formulePolitesse` (pied de facture) | **non renseignée** (celle de la clinique sœur ne se reprend pas) |
 
-**Décisions du 06/11/2026 sur l'identité** : les champs inconnus (forme juridique, autorisation d'ouverture) restent **vides dans le formulaire** « Identité & papier à en-tête » (`cfg-branding`) ; quand la Direction les remplit, la valeur enregistrée **met à jour la base** et toutes les pièces la reprennent. Un champ vide n'imprime rien (ni libellé orphelin, ni valeur de Nassiera Too). Cela lève l'écart E841 de la base (l'enregistrement y était journalisé mais l'en-tête restait constant) : l'identité imprimée devient la valeur enregistrée, avec l'identité Baguidi ci-dessus comme valeur initiale. La mention « Prototype SIGH-CBG, jeu de données de démonstration » de la maquette **ne figure pas** au pied de page : le pied porte la seule mention légale.
+**Décisions du 06/11/2026 sur l'identité** : les champs inconnus (forme juridique, autorisation d'ouverture, formule de politesse) restent **vides dans le formulaire** « Identité & papier à en-tête » (`cfg-branding`) ; quand la Direction les remplit, la valeur enregistrée **met à jour la base** et toutes les pièces la reprennent. Un champ vide n'imprime rien (ni libellé orphelin, ni valeur de la clinique sœur). Cela lève l'écart E841 de la base (l'enregistrement y était journalisé mais l'en-tête restait constant) : l'identité imprimée devient la valeur enregistrée, avec l'identité Baguidi ci-dessus comme valeur initiale. La mention « Prototype SIGH-CBG, jeu de données de démonstration » de la maquette **ne figure pas** au pied de page : le pied porte la seule mention légale.
 
 Le **sigle CBG** remplace « CNT » partout où il est visible : numérotation des pièces certifiantes (`<SIGLE> n°/n°/CBG/<direction>/<année>`), préfixe des codes, titre « SIGH-CBG ». Les identifiants techniques (`sigh_poste`, noms de collections) ne changent pas.
 
@@ -96,7 +92,7 @@ Palette déduite du logo, **à confirmer** par les valeurs hexadécimales mesur�
 | Texte et contours | noir de la roue | ≈ `#111111` |
 | Fonds | blanc / gris clair | `#FFFFFF` |
 
-**Conséquence pour P1-1** : chez Nassiera Too, le bleu marine est la couleur institutionnelle et le rouge est réservé au sens « rupture, péremption, erreur ». Si le **rouge** devient la primaire de Baguidi, un bouton principal et une alerte de rupture auront la même couleur. Trois solutions : (a) primaire **bleue**, rouge réservé à la marque (logo, bandeau de connexion) et aux erreurs ; (b) primaire rouge, et les erreurs passent sur un rouge plus sombre avec une icône obligatoire ; (c) primaire noire ou anthracite, rouge et bleu en accents. **Recommandation : (a)**, qui ne change pas la sémantique des 300 écrans. À trancher par la Direction (Q18).
+**Conséquence pour P1-1** : chez la clinique sœur, le bleu marine est la couleur institutionnelle et le rouge est réservé au sens « rupture, péremption, erreur ». Si le **rouge** devient la primaire de Baguidi, un bouton principal et une alerte de rupture auront la même couleur. Trois solutions : (a) primaire **bleue**, rouge réservé à la marque (logo, bandeau de connexion) et aux erreurs ; (b) primaire rouge, et les erreurs passent sur un rouge plus sombre avec une icône obligatoire ; (c) primaire noire ou anthracite, rouge et bleu en accents. **Recommandation : (a)**, qui ne change pas la sémantique des 300 écrans. À trancher par la Direction (Q18).
 
 Le logo et la charte sont dans la branche `baguidi-sources` (en cours d'envoi) : `draft/logo.png`, `draft/Cliniqur BAGUIDI LAS DU COEUR.png`, `draft/design/login_exemple*.png|jpg`.
 
@@ -104,7 +100,7 @@ Le logo et la charte sont dans la branche `baguidi-sources` (en cours d'envoi) :
 
 **Identification fiscale.** Dénomination, IFU, RCCM : voir §4. Adresse fiscale : 02 BP : 105 PARAKOU (Rép. du Bénin). Devise : **FCFA (XOF)**. Forme juridique et autorisation d'ouverture : « à compléter par la Direction ».
 
-**Régime de TVA : taux normal 18 %.** C'est une **différence de fond avec Nassiera Too**, qui est en régime **exonéré** (produits et actes de santé, TVA à 0 et net à payer = HT + AIB 1 %, facture certifiée MECeF à l'appui). Le moteur sait déjà faire les deux : `packages/domaine/lib/src/caisse/mecef.dart` porte les régimes `exonere` et `normal` (18 %), et le régime est un **paramètre** de `mecef-config`. Le passer à `normal` est donc une **configuration**, pas un développement. Mais une erreur de régime fausse chaque facture normalisée et chaque déclaration : **Q21** demande confirmation écrite, et si certaines natures restent exonérées (médicaments, actes de soins) alors que d'autres sont taxables (prestations de médecine du travail facturées aux entreprises), le régime doit être porté **par nature d'article**, pas par établissement.
+**Régime de TVA : taux normal 18 %.** C'est une **différence de fond avec la clinique sœur**, qui est en régime **exonéré** (produits et actes de santé, TVA à 0 et net à payer = HT + AIB 1 %, facture certifiée MECeF à l'appui). Le moteur sait déjà faire les deux : `packages/domaine/lib/src/caisse/mecef.dart` porte les régimes `exonere` et `normal` (18 %), et le régime est un **paramètre** de `mecef-config`. Le passer à `normal` est donc une **configuration**, pas un développement. Mais une erreur de régime fausse chaque facture normalisée et chaque déclaration : **Q21** demande confirmation écrite, et si certaines natures restent exonérées (médicaments, actes de soins) alors que d'autres sont taxables (prestations de médecine du travail facturées aux entreprises), le régime doit être porté **par nature d'article**, pas par établissement.
 
 **Numérotation des documents.**
 
@@ -119,13 +115,13 @@ Le logo et la charte sont dans la branche `baguidi-sources` (en cours d'envoi) :
 | Bulletin de paie | `BP-NNNNN` | par période de paie | ⚠ « par période » avec un numéro sans année : la numérotation repart-elle à 1 chaque mois ? Deux bulletins `BP-00001` coexisteraient alors (Q23) |
 | Écriture comptable | `JJJ-AAAA-NNNNN` | par journal | `JJJ` = code du journal (VTE, ACH, BQE, CAI, SAL, OD, AN…) |
 
-**Exigence P0-10 (numérotation)** : chaque format ci-dessus est appliqué par la fabrique de numéros existante du document concerné, à la place du format de Nassiera Too. Ce qui est « strictement séquentiel » ne présente **aucun trou** : un numéro attribué ne se réattribue jamais, une pièce annulée garde le sien (avoir, RG-14). La reprise des séquences sur plusieurs postes suit le mécanisme existant des plages allouées par la mère.
+**Exigence P0-10 (numérotation)** : chaque format ci-dessus est appliqué par la fabrique de numéros existante du document concerné, à la place du format de la clinique sœur. Ce qui est « strictement séquentiel » ne présente **aucun trou** : un numéro attribué ne se réattribue jamais, une pièce annulée garde le sien (avoir, RG-14). La reprise des séquences sur plusieurs postes suit le mécanisme existant des plages allouées par la mère.
 - *Critères* : 100 factures normalisées émises sur deux postes fileuls et la mère donnent `FN-2026-00001` à `FN-2026-00100` sans trou ni doublon ; changement d'année = reprise à 1 ; un bulletin et une écriture portent le format attendu.
 - À vérifier dans le code : la base construit-elle ces préfixes en dur dans chaque fabrique, ou depuis un paramètre ? S'ils sont en dur, la bonne correction est de les **paramétrer** (une table de formats), pas de les réécrire un par un : c'est ce qui permettra la troisième clinique.
 
 **Obligations déclaratives.**
 
-| Déclaration | Périodicité | Échéance Baguidi | Base Nassiera Too | Écran producteur dans le logiciel |
+| Déclaration | Périodicité | Échéance Baguidi | Base clinique sœur | Écran producteur dans le logiciel |
 |---|---|---|---|---|
 | Cotisations CNSS | mensuelle | **15** du mois suivant | **10** du mois suivant (`D.CALENDRIER_FISCAL`) | `m11` état des cotisations CNSS ; suivi `m12-echeances` |
 | ITS | mensuelle | 10 du mois suivant | 10 | `m11` état ITS ; `m12-echeances` |
@@ -133,32 +129,12 @@ Le logo et la charte sont dans la branche `baguidi-sources` (en cours d'envoi) :
 | Transmission des factures normalisées | continue | à l'émission | à l'émission | `MECEF` (centre de supervision) |
 | États financiers de synthèse | annuelle | clôture de l'exercice | 30 avril (liquidation du solde puis dépôt) | `m12-etats-financiers`, `m12-cloture` |
 
-Le calendrier fiscal est un **référentiel** (`D.CALENDRIER_FISCAL`, semé au socle, source unique de `cfg-comptabilite` et `m12-echeances`) : y porter l'échéance CNSS au 15 alimente les deux écrans. La base porte aussi des obligations que la liste de Baguidi ne cite pas : **AIB**, quatre acomptes d'**impôt sur les sociétés**, **patente**, **CCIB**, **TVM**, redevances **ORTB** Radio/Télé (qui se cumulent), **TVA** (déclaration mensuelle, désormais due puisque le régime est au taux normal). **Q24** : sont-elles à retirer, ou la liste reçue ne cite-t-elle que les principales ? Une obligation retirée à tort ferait disparaître une échéance de l'alarme de `m12-echeances`.
-
-## 4 ter. Ce que la maquette Baguidi (`baguidi-sources`) apporte, et où elle est dépassée
-
-L'extraction du 06/11/2026 (limitée à l'identité, aux utilisateurs et rôles, à l'organisation et aux écrans de configuration listés par la Direction) est archivée dans les fichiers de travail de la session. Elle établit :
-
-**Charte graphique (fait foi pour P1-1 et P1-2)** : trois palettes nouvelles, `coeur` (rouge, 500 = `#D32F2F`), `sante` (bleu, 600 = `#1565C0`), `anthracite` (`#212121`) ; la palette `navy` est réaffectée (50-900 = bleu santé, 950 = anthracite), si bien que la coquille change de couleur sans changer de classes ; `success`/`warning`/`danger`/`info` inchangées. Polices : Inter (corps, inchangée), **Montserrat** (titres) et **Dancing Script** (slogan en cursive rouge), vendorées. Logo rond 315 × 324. En-tête imprimé à trois zones (logo + slogan cursif / nom + sous-titre / coordonnées avec IFU daté), double filet rouge puis bleu, autorisation non imprimée, pied « nom — IFU — RCCM », référence `CBG-AAAAMMJJ-NNNN`, « Fait à Parakou ». Numérotation des pièces certifiantes : `<SIGLE> n°/n°/CBG/<direction>/<année>` ; le code patient lit le sigle (`CBG/n/AA`).
-
-**Décisions Baguidi du 07/09/2026 portées par la maquette (à reprendre)** : le **plan comptable SYSCOHADA révisé complet** (1 332 comptes, 1 049 imputables, codes à 4 chiffres) remplace le plan de 93/112 comptes de Nassiera Too, et les 31 comptes des schémas d'écriture sont nommés dans `COMPTES_SIGH` ; le référentiel **AIB** (barème : 5 % généralisé au 07/09/2026 arrêté, 1 % et 3 % non arrêtés, comptes 4478/4492/891) ; les **centres de coûts et groupes de prestation** renommés (« Échographie » remplace « Imagerie médicale », codes NS 145) ; les échéances validées par le comptable Baguidi.
-
-**Où la maquette est DÉPASSÉE, et par quoi :**
-
-| Sujet | La maquette Baguidi dit | Ce qui fait foi |
-|---|---|---|
-| M8, M9, MECeF | fermés pour tous (`MOD-CBG-M8/M9/MECEF`) | **décisions du 06/11/2026** : M9 gardé, caisse minimale + report (P0-8, P0-9), MECeF ouvert avec vraie bascule (P0-5) |
-| Formule de politesse | « QUE DIEU VOUS GUÉRISSE ! AMINE ! » (héritée) | **« Votre bien-être est notre raison d'être. »** (06/11/2026) |
-| Forme juridique | vide | **entreprise individuelle** (extrait RCCM, 06/11/2026) |
-| TVA | `PARAM_FISCAL.regimeTva = 'exonere'`, alors que l'écran affiche « Taux normal 18 % » (incohérence interne) | fiche fiscale du 06/11/2026 : **taux normal 18 %** (Q21 : confirmation écrite attendue) |
-| Version de code | dérivée de Nassiera Too au 02/09/2026 : journaux BQE/AN absents, pas de bilan d'ouverture ni de flux de trésorerie, catalogue d'imagerie ancien (7 examens), semis d'écritures DÉSÉQUILIBRÉ (RG-10 violé), défaut E711 de numérotation | **le code importé reste `sighcnt@26efb3f`** (06/11/2026) : on ne prend de la maquette que l'identité, la charte, les rôles, l'organisation et les référentiels listés, jamais son code |
-| Tarifs, actes, analyses, certificats | valeurs de Nassiera Too, sources « … NASSIERA TOO », arrêtés de la Direction de NT repris tels quels | aucune grille Baguidi fournie : les tarifs restent des **valeurs d'attente**, à re-marquer `tarifProvisoire` côté Baguidi (les mentions « arrêté par la Direction » de NT ne valent pas arbitrage Baguidi) : **Q30** |
-| Secteurs NS 145, types de pièces (directions DG/DE, DA…), SOURCES_VERITE, NS 131/132 (« KASSA A. B. Augustin ») | documents de cadrage de Nassiera Too | à remplacer ou à marquer « hérité, à confirmer » dans le lot données : **Q31** |
+Le calendrier fiscal est un **référentiel** (`D.CALENDRIER_FISCAL`, semé au socle, source unique de `cfg-comptabilite` et `m12-echeances`) : y porter une échéance alimente les deux écrans. **La CNSS est en deux obligations (décision du 09/11/2026)** : `CNSS`, la « Déclaration unique (ITS, VPS, déclaration CNSS) » au 10 du mois suivant (identifiant technique historique conservé : paie, alertes, tests), et `CNSS-VERS`, le « versement des cotisations » au 15 (part patronale 16,4 %, ouvrière 3,6 %), **marquée NON ARRÊTÉE** : le 15 vient de guides, la CNSS écrit « dans les quinze jours qui suivent la période », à confirmer auprès d'elle. Le marquage s'affiche à `cfg-comptabilite` et à `m12-echeances` et tombe quand la Direction arrête la date (commande « Arrêter la date » : date et décideur écrits sur la fiche, aucune échéance régénérée) ; modifier le jour d'une date arrêtée la remet « à valider ». Les deux jours sont des DONNÉES datées, modifiables avec date d'effet ; un week-end passe au jour ouvrable suivant. La base porte aussi des obligations que la liste de Baguidi ne cite pas : **AIB**, quatre acomptes d'**impôt sur les sociétés**, **patente**, **CCIB**, **TVM**, redevances **ORTB** Radio/Télé (qui se cumulent), **TVA** (déclaration mensuelle, désormais due puisque le régime est au taux normal). **Q24** : sont-elles à retirer, ou la liste reçue ne cite-t-elle que les principales ? Une obligation retirée à tort ferait disparaître une échéance de l'alarme de `m12-echeances`.
 
 ## 5. Ce que l'analyse de la base a établi
 
 - **L'identité vit en un seul endroit dans le code** : `packages/domaine/lib/src/impression/identite.dart` (`IdentiteClinique`, environ 140 usages). La reprendre change toutes les pièces imprimées. Quelques fichiers la recopient en dur et doivent être alignés : `cfa_identite.dart`, `page_standard.dart` (pied de page), `cpb_liasse.dart`, `cpc_liasse.dart`, `cfa_regles.dart`.
-- **Mais l'identité Nassiera Too est aussi dans les données et les tests** : 94 fichiers citent « NASSIERA », 58 « Natitingou », 194 le format `CNT/`. La plupart sont des vecteurs de test (`packages/domaine/test/vecteurs`), des fixtures (`apps/poste/test/fixtures`) et le jeu livré (`apps/poste/assets/donnees/jeu/*.json`).
+- **Mais l'identité de la clinique sœur est aussi dans les données et les tests** : 94 fichiers citaient sa dénomination, 58 sa ville, 194 le format de son sigle. La plupart sont des vecteurs de test (`packages/domaine/test/vecteurs`), des fixtures (`apps/poste/test/fixtures`) et le jeu livré (`apps/poste/assets/donnees/jeu/*.json`).
 - **Le thème est piloté par des jetons** (`apps/poste/lib/core/theme.dart` lit `JetonsSigh` et `JetonsShell`). Changer la palette ne demande pas de toucher aux écrans.
 - **La fermeture de modules existe déjà** : collection `modulesActifs`, écran `cfg-modules` (`apps/poste/lib/modules/cfg/cfb_modules.dart`), jeu livré `assets/donnees/jeu/modulesActifs.json`. La banque de sang et les donneurs y sont déjà fermés. Seul le NOYAU (CFG, DASH) ne se ferme pas. Une fiche peut fermer un module entier ou une liste d'écrans.
 - **Le poste dépend de paquets du monorepo** : `apps/poste/pubspec.yaml` référence `packages/domaine` et `packages/sync_dart` par chemin relatif. Copier seulement `apps/web`, `apps/poste` et `apps/mobile` ne compilerait pas.
@@ -169,7 +145,7 @@ L'extraction du 06/11/2026 (limitée à l'identité, aux utilisateurs et rôles,
 **Direction de la Clinique Baguidi**
 - En tant que Directrice, je veux que chaque facture fournisseur, bulletin de paie, état comptable et bon porte l'en-tête et l'IFU/RCCM de Baguidi, pour que nos pièces soient opposables aux impôts et à la CNSS.
 - En tant que Directrice, je veux pouvoir activer MECeF le jour où nous serons assujettis à la facture normalisée, sans attendre une nouvelle version.
-- En tant que Directrice, je veux activer ou désactiver les primes NS 132 et les évaluations NS 131, parce que ces barèmes sont des notes de service de Nassiera Too et que nous pourrions adopter les nôtres.
+- En tant que Directrice, je veux activer ou désactiver les primes NS 132 et les évaluations NS 131, parce que ces barèmes sont des notes de service de la clinique sœur et que nous pourrions adopter les nôtres.
 - En tant que Directrice, je veux voir les recettes de la clinique par nature d'activité, par jour, par mois et par année, pour piloter sans ouvrir le logiciel de caisse.
 
 **Comptable**
@@ -210,21 +186,17 @@ L'extraction du 06/11/2026 (limitée à l'identité, aux utilisateurs et rôles,
 - Remplacer `apps/poste/assets/img/logo.png`, `logo.jpeg` et `icone-poste.png` par le logo Baguidi.
 - Changer les libellés visibles du relais web (nom de l'application, gabarits) et de l'application mobile (nom Android).
 - *Critères* :
-  - [ ] Un contrôle automatique (script `controle-identite`) cherche « NASSIERA », « Natitingou », « 3201642748214 », « RB/NAT », « raison de vivre », « cliniquenassiera » dans tout le dépôt hors historique et dossier d'archive. **Résultat attendu : 0.** Il tourne en CI.
+  - [ ] Un contrôle automatique (script `controle-identite`) cherche les motifs d'identité de la clinique sœur (dénomination, ville, IFU, RCCM, devise, courriel ; liste unique dans `tools/baguidi/neutraliser-identite.mjs`) dans tout le dépôt hors historique et dossier d'archive. **Résultat attendu : 0.** Il tourne en CI.
   - [ ] Facture fournisseur, bulletin de paie, état comptable et bon de commande imprimés en PDF portent l'en-tête Baguidi, IFU 3201001996110 et RCCM RB/PKO/17 A 4240 du 19/03/2009.
   - [ ] Le pied de page légal de chaque écran du poste affiche la mention légale Baguidi.
 
 **P0-3. Données livrées propres**
-- Purger `apps/poste/assets/donnees/jeu/` de toute donnée de Nassiera Too : personnel, paie, inventaire SAGE, écritures, liasse fiscale, assureurs, comptes, patients et pièces de soins.
+- Purger `apps/poste/assets/donnees/jeu/` de toute donnée de la clinique sœur : personnel, paie, inventaire SAGE, écritures, liasse fiscale, assureurs, comptes, patients et pièces de soins.
 - Conserver les **référentiels génériques** (plan comptable SYSCOHADA, calendrier fiscal béninois, familles d'articles, régimes de travail types) et les marquer « à valider par Baguidi ».
-- **Comptes et rôles du jeu livré** (06/11/2026) : les comptes utilisateurs Baguidi sont TOUS ACTIFS (aucun compte archivé ne se livre) ; les rôles hors périmètre restent ARCHIVÉS (RG-14) tant que leurs modules ne sont pas réactivés ; les rôles actifs sont admin, direction, medecin, infirmier, comptable, rh, plus **stock** (désarchivé, CRUD total M6 avec le comptable).
-- Régénérer les vecteurs de test et les fixtures qui portent l'identité Nassiera Too, sans changer ce qu'ils vérifient.
-- *Critères* : un poste mère installé à neuf affiche des registres vides (ou de démonstration explicitement fictifs, selon la décision Q4) ; aucun nom d'agent de Nassiera Too n'apparaît ; tous les tests passent.
+- Régénérer les vecteurs de test et les fixtures qui portent l'identité de la clinique sœur, sans changer ce qu'ils vérifient.
+- *Critères* : un poste mère installé à neuf affiche des registres vides (ou de démonstration explicitement fictifs, selon la décision Q4) ; aucun nom d'agent de la clinique sœur n'apparaît ; tous les tests passent.
 
 **P0-4. Fermeture des modules hors périmètre**
-
-> **SUPPLANTÉ le 06/11/2026 (nuit)** : la Direction active **M1 à M10 avec tous leurs écrans** (voir P0-11). Les fermetures MOD03 à MOD09 posées par le lot 1 sont à RETIRER du jeu livré. Le mécanisme de fermeture, les bascules NS 131/132 et MECeF restent. Banque de sang et donneurs : Q34.
-
 - Ajouter au jeu livré `modulesActifs.json` des fiches `actif: false` (motif « Hors périmètre Clinique Baguidi », date, auteur Direction) pour :
 
 | Module | Code | Fermeture |
@@ -261,9 +233,6 @@ L'extraction du 06/11/2026 (limitée à l'identité, aux utilisateurs et rôles,
 
 **P0-8. Report des recettes journalières (nouvel écran M12, `m12-report-recettes`)**
 
-> **SUPPLANTÉ le 06/11/2026 (nuit), Q35 = OUI** : SIGH-CBG REMPLACE le logiciel de caisse patient de la clinique. Le report des recettes n'est plus développé ; la facturation et la caisse complètes de M8 sont actives (client libre pour le comptoir, écriture à l'encaissement). Restent valables de P0-8 : le suivi par nature d'activité (déjà fourni par `m8-recettes` et le groupement de prestations) et les statistiques. Q14 à Q16 et Q17 deviennent sans objet.
-
-
 Le seul vrai développement du chantier. Il réutilise des mécanismes existants : l'éditeur de lignes en modale des dépenses multi-lignes (`m12-depenses`), l'écriture plate par ligne, le contrôle RG-10 avant écriture, la naissance en brouillon, la plage de dates du kit.
 
 - Un **report** = une journée × une caisse source (le logiciel de caisse, ou chaque caisse s'il y en a plusieurs : Q14). Il porte des **lignes par nature d'activité** : consultations, actes, certificats, hospitalisations, analyses, imagerie, pharmacie, visites de médecine du travail, autres (liste administrable, rattachée aux six secteurs et aux groupes de prestation existants).
@@ -284,8 +253,6 @@ Le seul vrai développement du chantier. Il réutilise des mécanismes existants
 - **Vente de pharmacie au comptant sans dossier patient**, depuis `m8-operations` : l'opération porte ses lignes d'articles, sort le stock du rayon de détail (RG-03 : justificatif = n° de l'opération ; refus nommé si une ligne n'est pas couverte) et produit l'écriture d'encaissement. RG-02 s'applique (prix d'achat, sans marge). À vérifier dans le code : `m8-operations` enregistre aujourd'hui une opération sans dossier, mais il faut confirmer qu'elle sait sortir du stock.
 - **Bon de sortie interne** : la consommation d'un service (bloc, salle de soins, visites d'entreprise) sort du stock sur un **bon de besoins servi** (`m7-besoins`, déjà ouvert à tout agent, avec quantité demandée ≠ quantité accordée). Le n° du bon est le justificatif RG-03. Aucune caisse, aucun patient.
 - **Ce qui se recoupe** : les ventes de pharmacie enregistrées dans SIGH-CB **ne se reportent pas une seconde fois** dans le report journalier (P0-8). La nature « pharmacie » du report ne sert qu'aux ventes de pharmacie faites dans le logiciel de caisse patient, si la clinique en fait (Q15).
-- **Client libre** (décision du 06/11/2026) : une vente au comptoir s'enregistre sans fiche patient, avec un nom de client saisi librement ; le moteur d'émission cesse d'exiger une fiche du répertoire pour une opération dissociée. Le CRUD Patients (`m1-patients`) reste ouvert pour les clients et assurés récurrents.
-- **Deux défauts de la base à corriger dans ce lot** (confirmés par la Direction le 06/11/2026) : « Enregistrer et encaisser » et l'écran Paiements doivent passer l'écriture comptable d'encaissement (aujourd'hui seule la voie `encaisserFacture` la pose) ; et l'écriture lit `partAssureur` quand les pièces portent `partAssurance`, si bien que le débit 411 de la part assureur n'est jamais passé.
 - `m8-caisse` (état de caisse journalier) agrège les opérations de caisse, les ventes de pharmacie et les dépenses (`m12-depenses`) de la journée.
 - *Critères* :
   - [ ] Vente de 3 articles : stock du détail diminué de chaque quantité, mouvement rattaché au n° d'opération, écriture équilibrée en brouillon.
@@ -303,7 +270,7 @@ Le seul vrai développement du chantier. Il réutilise des mécanismes existants
 
 La maquette locale `prototype_html` de Baguidi applique déjà la charte à la coquille. Elle fait foi :
 
-| Élément | Nassiera Too (base) | Baguidi (maquette) |
+| Élément | Clinique sœur (base) | Baguidi (maquette) |
 |---|---|---|
 | Barre supérieure | bleu marine | **noir anthracite** (≈ `#1C1C1E`) : logo en pastille, « CLINIQUE BAGUIDI », sous-titre « SIGH — Gestion hospitalière » en **bleu**, recherche globale `Ctrl K`, Actions, plein écran, cloche, profil |
 | Ruban des domaines | onglets sur fond marine | même fond anthracite ; **onglet actif souligné de rouge** ; un **filet rouge** court sous tout le ruban ; raccourcis permanents à droite (Stocks, Achats, RH, Comptabilité) |
@@ -344,11 +311,11 @@ Refaire `acc_gabarit.dart` / `acc_ecrans.dart` sur la maquette fournie. Une cart
 Ce que la maquette tranche, et ce qu'elle laisse ouvert :
 - **Q18 en partie tranchée** : la marque est **bleue** (panneau, titres) et le **bouton d'action principal de la connexion est rouge**. Reste à décider si les boutons principaux des 300 écrans suivent ce rouge (et les erreurs passent alors sur un rouge plus sombre avec icône obligatoire), ou si le rouge reste propre à la connexion et à la marque. Recommandation inchangée : boutons de l'application en bleu, rouge réservé à la connexion, au logo et aux alertes.
 - **Polices** : trois familles (titres géométriques, corps de texte, devise manuscrite). Elles doivent être **embarquées dans le poste** (`apps/poste/assets/polices/`), aucune requête réseau : le poste fonctionne hors ligne. Noms exacts des polices à obtenir du concepteur de la maquette (Q19) ; à défaut, équivalents libres de licence.
-- **L'identifiant a la forme d'une adresse** (`m-001@baguidi-clinique.bj`) : le poste actuel connecte par identifiant de compte. Q20 : est-ce un exemple décoratif ou une règle de nommage des comptes ? Le domaine `baguidi-clinique.bj` diffère de l'e-mail officiel (`cliniquebaguidi@yahoo.fr`).
+- **L'identifiant a la forme d'une adresse** (`m-001@baguidi-clinique.bj`) : le poste actuel connecte par identifiant de compte. Q20 : est-ce un exemple décoratif ou une règle de nommage des comptes ? Le domaine `baguidi-clinique.bj` diffère de l'e-mail officiel (`contact@cliniquebaguidi.com`).
 - **« Mot de passe oublié ? »** se branche sur le mécanisme existant (code de secours et coffre de récupération du poste) ; il ne doit pas promettre un envoi par courriel si le relais SMTP n'est pas configuré.
 - **« Se souvenir de ce poste »** existe-t-il dans le poste de base ? À vérifier ; sinon, il ne retient que l'identifiant, jamais le mot de passe.
 - **Responsive** : sous la largeur d'une tablette, le panneau bleu passe au-dessus et se réduit à l'en-tête et au titre.
-- *Critères* : rendu comparé côte à côte avec la maquette à 1920 px et 1366 px ; contraste AA du texte blanc sur le dégradé et du libellé du bouton rouge ; aucun texte de Nassiera Too ; fonctionne hors ligne (polices et logo locaux) ; capture validée par la Direction de Baguidi.
+- *Critères* : rendu comparé côte à côte avec la maquette à 1920 px et 1366 px ; contraste AA du texte blanc sur le dégradé et du libellé du bouton rouge ; aucun texte de la clinique sœur ; fonctionne hors ligne (polices et logo locaux) ; capture validée par la Direction de Baguidi.
 
 **P1-3. Relais web et mobile aux couleurs Baguidi**
 - Panneau superadmin du relais et application mobile alignés sur les jetons.
@@ -363,54 +330,11 @@ Ce que la maquette tranche, et ce qu'elle laisse ouvert :
 - **Report des correctifs de SIGH-CNT** : garder la liste des fichiers « propres à Baguidi » (`docs/DIFFERENCES-CNT.md`) à jour pour que le report reste mécanique.
 - **Dérivation vers une troisième clinique** : si l'opération se répète, extraire l'identité, le thème et le périmètre dans un seul fichier de configuration d'établissement.
 
-### P0-11 à P0-13 : décisions du 06/11/2026 (nuit)
-
-**P0-11. M1 à M10 actifs, avec tout.** Retirer du jeu livré les fiches `modulesActifs` MOD03 à MOD09 (modules M1 à M5, six statistiques cliniques de PIL, neuf tableaux de bord cliniques de DASH) et leur référence de test ; M6 à M14, MECeF, GED, RAP, PIL et DASH inchangés. Conséquences à traiter dans le même lot :
-- les **17 rôles archivés** dont les modules rouvrent sont **désarchivés** (règle posée le 06/11 : un rôle archivé le reste tant que son module n'est pas réactivé, il ne l'est plus) ; les comptes restent les 9 réels, tous actifs ;
-- `fermetures_baguidi_test` devient un test de **non-régression de l'ouverture** (tous les écrans M1 à M10 visibles aux rôles qui les ont dans la matrice d'origine) ;
-- le jeu de démonstration ne peut plus laisser vides les collections de M1 à M5 : patients, consultations, hospitalisations, analyses, maternité sont peuplés (voir `JEU-DEMONSTRATION-BAGUIDI.md`, révisé en conséquence) ;
-- l'application mobile (profils soignant et réception, écrans cliniques) redevient pertinente.
-- *Critères* : `inventaire-rbac` donne, pour chaque rôle, les mêmes écrans qu'à l'import de la base (hors NS 131/132 et MECeF selon leurs bascules) ; aucun écran de M1 à M10 en « Activité fermée » ; suite complète verte.
-
-**P0-12. Les quatorze spécialités.** La clinique affiche 14 spécialités (Médecine du travail, Santé publique, Gynécologie, Chirurgie, Urologie, Rhumatologie, Ophtalmologie, Orthophonie, Endocrinologie, Pédiatrie, Neurologie, Cardiologie, Kinésithérapie, Imagerie). **Quatre existent déjà en partie** : Gynécologie (M4), Chirurgie (bloc M3, rôle chirurgien), Imagerie (M2, cinq modalités), Médecine du travail (aucune pièce spécifique à ce jour). **Choix d'architecture : une SEULE mécanique pilotée par des données**, et non quatorze modules écrits à la main.
-- Collection `specialites` (14 fiches administrables : code, libellé, praticiens rattachés, actes du catalogue, modèle de consultation) ; **quatre écrans génériques** filtrés par spécialité : hub de la spécialité, dossier / consultation spécialisée (formulaire engendré du modèle de la fiche, comme le questionnaire d'enquête naît de son modèle), agenda et file, statistiques calculées. Le manifeste en dérive 14 entrées de ruban (rangée « Spécialités ») sans écrire 14 fois le même écran.
-- Les spécialités qui ont déjà leurs écrans (Gynécologie, Chirurgie, Imagerie) **les réutilisent** : leur fiche pointe vers eux, rien n'est dupliqué.
-- **Médecine du travail** (cœur de métier) : visite d'embauche, périodique, de reprise, fiche d'aptitude (certificat tarifé via la caisse, `PR.facturerPiece`), entreprises clientes et leurs salariés, convention de visites ; c'est la seule spécialité qui ajoute des écrans propres.
-- Les modèles de consultation des autres spécialités sont des **propositions marquées « à valider par le praticien »** (doctrine du bloc et du laboratoire) : aucun n'est donné comme arrêté.
-- *Critères* : ajouter une quinzième spécialité = une fiche, sans code ; chaque spécialité a son hub au ruban, filtré par RBAC ; une consultation spécialisée enregistrée apparaît au dossier du patient ; les statistiques d'une spécialité se recomptent depuis les registres.
-
-**P0-13. Papier à en-tête Baguidi : la mise en page, pas seulement les textes.** État vérifié le 06/11/2026 : le poste (`impression/pdf.dart`, `feuilles.dart`, aperçu de `cfa_identite.dart`) garde la composition de Nassiera Too (titre centré, logo de part et d'autre) ; la maquette Baguidi (`print.js`, `cfg-branding`) définit **trois zones** :
-- **gauche** : logo circulaire (≈ 2,4 cm) et, dessous, la devise en cursive rouge (Dancing Script) ; **centre** : dénomination en Montserrat gras rouge (`coeur-500`), sous-titre « CENTRE DE MÉDECINE DU TRAVAIL, MÉDECINE GÉNÉRALE » en petites capitales anthracite ; **droite** : BP, téléphones, **IFU avec sa date** (« du 26 novembre 2010 », donnée à ajouter à `IdentiteClinique`), e-mail, adresse et pays, RCCM (n° d'enregistrement ONMB sous le RCCM, décision du 06/11) ;
-- sous l'en-tête, **double filet fin rouge puis bleu** (2 px, 2 px d'écart) ; autorisation d'ouverture non imprimée tant qu'elle est vide ; l'option « logo de part et d'autre » (`doubleLogo`) disparaît de `cfg-branding` ;
-- pied : « dénomination, IFU, RCCM » ; référence `CBG-AAAAMMJJ-NNNN` ; « Édité depuis le SIGH-CBG ».
-Même rendu à l'écran (aperçu de `cfg-branding`) et sur la pièce (A4 et PDF) : deux rendus finiraient par montrer deux formulaires. Le rouleau 80 mm et le badge CR80 gardent leurs gabarits (pas d'en-tête fiscal complet).
-- *Critères* : comparaison côte à côte avec la maquette à 1 200 px ; champ vide = ligne absente ; contrastes AA ; test de présence des trois zones et du double filet sur le PDF engendré.
-
-### Audit des quatorze spécialités dans le poste hérité (06/11/2026, avant toute construction)
-
-Recherche dans `apps/poste`, `packages/domaine`, le jeu livré et le manifeste du poste cloné de Nassiera Too :
-
-| Spécialité | Présent dans le poste | Verdict |
-|---|---|---|
-| Gynécologie | **M4 complet** : dossier obstétrical, CPN, accouchements, partogramme, planification familiale, soins curatifs, SONU, PTME, `dash-maternite` | existe, à rattacher |
-| Chirurgie | **Bloc M3** : CPA, compte rendu opératoire et d'anesthésie, check-listes, statistiques, rôles chirurgien et anesthésiste, `dash-chirurgien` | existe, à rattacher |
-| Imagerie | **M2 complet** : cinq modalités (écho, radio, mammo, scanner, IRM), demandes, galerie, catalogue, statistiques | existe, à rattacher |
-| Pédiatrie | **partielle** : dossier du nouveau-né, naissances, CPoN, vaccins J0 (M4) ; aucune consultation pédiatrique | partiel |
-| Médecine du travail | **absente** : seule une pièce « certificat d'aptitude » (sigle CMA, en collision avec l'accouchement) ; ni visite d'embauche ou périodique, ni entreprise cliente | à créer |
-| Santé publique | absente (une catégorie de courrier du même nom) | à créer |
-| Urologie, Rhumatologie, Ophtalmologie, Orthophonie, Endocrinologie, Neurologie, Cardiologie, Kinésithérapie | **absentes** : leurs noms n'apparaissent que dans les pastilles de l'écran de connexion ajoutées par le lot charte | à créer |
-
-Il n'existe **aucun modèle de spécialité** (ni champ « spécialité » sur la consultation, ni catalogue d'actes par spécialité) ; seul le prestataire externe de M10 porte une spécialité en texte libre. Le dossier de consultation générique (examen IPPOA par appareil, antécédents, prescriptions) est la base commune réutilisable. Le cahier des charges Baguidi V2 ne décrit aucune spécialité et la Direction indique que les contenus sont **déjà validés** : ils sont donc livrés sans le marquage « à valider par le praticien », et tout contenu précis déjà arrêté par la clinique est à porter dans les fiches (Q36).
-
-### Point contractuel relevé le 06/11/2026 : le CDC Baguidi V2 dit le contraire
-
-Le cahier des charges fonctionnel et technique Baguidi V2 (`draft/`) décrit **16 modules propres à Baguidi** (M1 Achats à M16 Facturation et comptabilité, sa numérotation diffère de celle de Nassiera Too) et **exclut expressément** le dossier patient informatisé, la consultation médicale et l'hospitalisation (§4.2), tout en prévoyant « M12 Intégration avec le logiciel de caisse existant ». Les décisions de la Direction du 06/11/2026 (M1 à M10 actifs avec tout, SIGH-CBG remplace le logiciel de caisse patient, banque de sang activée, quatorze spécialités) **élargissent** ce périmètre. Elles font foi, mais l'écart avec le document contractuel doit être acté : **Q38** (avenant au CDC V2, ou périmètre signé par la Direction). Non bloquant pour le développement.
-
 ## 8. Indicateurs de réussite
 
 | Indicateur | Cible | Mesure |
 |---|---|---|
-| Occurrences de l'identité Nassiera Too | **0** | script `controle-identite` en CI, à chaque commit |
+| Occurrences de l'identité de la clinique sœur | **0** | script `controle-identite` en CI, à chaque commit |
 | Tests poste, mobile, domaine, web | 100 % verts, même nombre de tests qu'à l'import (moins ceux des modules fermés, listés un par un) | CI |
 | Écrans de modules fermés atteignables | **0** sur 16 rôles | `inventaire-rbac` + test des adresses directes |
 | Promesses à l'audit RBAC | **0** | `audit-rbac` |
@@ -426,42 +350,30 @@ Le cahier des charges fonctionnel et technique Baguidi V2 (`draft/`) décrit **1
 |---|---|---|---|
 | ~~Q1~~ | ~~M9 à garder ou à fermer ?~~ **Tranché le 06/11/2026 : gardé** (P0-6) | | |
 | ~~Q2~~ | ~~État par défaut de MECeF, NS 132, NS 131 ?~~ **Tranché le 06/11/2026 : ouverts** (P0-5) | | |
-| ~~Q3~~ | ~~Rôles cliniques ?~~ **Lu dans la maquette Baguidi** : `medecin` et `infirmier` restent ACTIFS (tableau de bord et expression des besoins `m7-besoins`, lecture du stock) ; biologiste, échographiste, chirurgien, anesthésiste, aide-soignant, sage-femme, caissier, pharmacien, stock, etc. sont ARCHIVÉS (RG-14) | | |
+| Q3 | Les rôles cliniques (médecin, sage-femme, biologiste, caissier…) : à archiver ou à garder ? | Direction Baguidi | Non |
 | ~~Q4~~ | ~~Registres vides ou jeu de démonstration ?~~ **Tranché le 06/11/2026 : un jeu de données créé pour Baguidi** (P0-3). La maquette locale l'affiche déjà (« Prototype SIGH-CBG, jeu de données de démonstration », 9 comptes) | | |
 | ~~Q5~~ | ~~Justificatif des sorties de pharmacie ?~~ **Tranché le 06/11/2026 : les deux** — bon de sortie interne ET caisse minimale pour les ventes de pharmacie ; le comptable reporte les ventes du logiciel de caisse patient (P0-8, P0-9) | | |
-| Q6 | ~~Sigle, BP, téléphones, e-mail, adresse fiscale, devise~~ **fournis le 06/11/2026** (§4, §4 bis). Restent : **n° d’autorisation d’ouverture** (« à compléter par la Direction »), nom court (forme juridique fournie : entreprise individuelle) (formule de politesse fournie : identique au slogan) | Direction Baguidi | Non (des valeurs vides n'empêchent pas le développement ; elles bloquent la recette des pièces imprimées) |
+| Q6 | ~~Sigle, BP, téléphones, e-mail, adresse fiscale, devise~~ **fournis le 06/11/2026** (§4, §4 bis). Restent : **forme juridique** et **n° d’autorisation d’ouverture** (« à compléter par la Direction »), **formule de politesse** des factures, nom court | Direction Baguidi | Non (des valeurs vides n'empêchent pas le développement ; elles bloquent la recette des pièces imprimées) |
 | Q7 | Fichier source du logo (vectoriel de préférence) et charte graphique (couleurs en hexadécimal, police) | Direction Baguidi | Oui pour P1-1/P1-2, non pour P0 |
-| ~~Q8~~ | ~~Historique git ?~~ **Tranché le 06/11/2026 : instantané, sans l'historique de SIGH-CNT.** Les deux dépôts étant **publics**, aucune donnée de Nassiera Too n'entre dans `sighcbg`, pas même dans un commit intermédiaire | | |
+| ~~Q8~~ | ~~Historique git ?~~ **Tranché le 06/11/2026 : instantané, sans l'historique de SIGH-CNT.** Les deux dépôts étant **publics**, aucune donnée de la clinique sœur n'entre dans `sighcbg`, pas même dans un commit intermédiaire | | |
 | ~~Q9~~ | ~~Autorisation de réutiliser le code ?~~ **Tranché le 06/11/2026 : oui, même éditeur et concepteur** | | |
-| ~~Q10~~ | ~~Les 7 spécialités non nommées ?~~ **Lues dans la maquette** (`BRAND.specialites`, 14) : Médecine du travail, Santé publique, Gynécologie, Chirurgie, Urologie, Rhumatologie, Ophtalmologie, Orthophonie, Endocrinologie, Pédiatrie, Neurologie, Cardiologie, Kinésithérapie, Imagerie (Radiologie-Échographie) | | |
+| Q10 | Les 7 spécialités non nommées (« + 7 spécialités ») : liste complète pour l'écran de connexion ? | Direction Baguidi | Non |
 | Q11 | Le relais web (cPanel) : nouvel hébergement et nouveau domaine pour Baguidi, ou relais partagé ? Un relais partagé mêlerait les journaux de deux cliniques | Ingénierie + Direction Baguidi | Oui avant mise en service, non pour le développement |
 | Q12 | Une vente de pharmacie erronée se corrige-t-elle par **facture d'avoir** (`m8-facture-avoir`, à garder ouvert) ou par une opération de remboursement ? | Direction Baguidi + comptable | Non |
 | Q13 | Les écrans M9 qui exigent le détail patient (assurés, prises en charge, factures mensuelles assureur, facture mère) : les garder ouverts avec leur avertissement, ou les fermer par écran ? Baguidi facture-t-elle les assureurs depuis son logiciel de caisse ? | Direction Baguidi | Non |
 | Q14 | Combien de caisses alimentent le logiciel de caisse patient (une seule, ou une par point de vente) ? Le report se fait par journée **et par caisse** | Comptable Baguidi | **Oui** (P0-8) |
 | Q15 | La pharmacie vend-elle **aussi** dans le logiciel de caisse patient ? Si oui, quelle vente fait foi pour le stock, pour ne pas sortir deux fois le même produit ? | Direction Baguidi + gestionnaire de stock | **Oui** (P0-9) |
-| Q16 | Liste des natures d'activité du report et comptes de produit 70x de chacune (le plan de Baguidi peut différer de celui de Nassiera Too). Un export du logiciel de caisse (même une capture de son état journalier) permettrait d'aligner les natures sur ce qu'il imprime | Comptable Baguidi | **Oui** (P0-8) |
+| Q16 | Liste des natures d'activité du report et comptes de produit 70x de chacune (le plan de Baguidi peut différer de celui de la clinique sœur). Un export du logiciel de caisse (même une capture de son état journalier) permettrait d'aligner les natures sur ce qu'il imprime | Comptable Baguidi | **Oui** (P0-8) |
 | ~~Q18~~ | ~~Couleur des boutons principaux ?~~ **Tranché par la maquette de l'écran Utilisateurs (06/11/2026) : rouge** (« Nouveau », onglet actif, filet du ruban). Conséquence traitée en P1-1 : une erreur ne se signale plus par la couleur seule | | |
 | Q19 | Noms des trois polices de la maquette de connexion (titres, corps, devise manuscrite) et licence d'embarquement | concepteur de la maquette | Non |
 | Q20 | L'identifiant suit une **règle de nommage** (`m-NNN@baguidi-clinique.bj`, `admin@…` : maquette Utilisateurs). Reste : le domaine `baguidi-clinique.bj` existe-t-il, ou l'identifiant n'est-il qu'une forme d'écriture, sans boîte aux lettres derrière ? (« Mot de passe oublié » ne peut pas écrire à une adresse qui n'existe pas) | Direction Baguidi | Non |
-| ~~Q25~~ | ~~Les rôles de Baguidi ?~~ **Lu dans la maquette Baguidi (`m14-roles`, semis `store.js`) le 06/11/2026.** Six rôles ACTIFS : `admin`, `direction`, `medecin`, `infirmier`, `comptable`, `rh` (désarchivé) ; les dix-sept autres sont archivés avec transfert nommé (`da` → `direction`…). **Le stock (M6) est tenu par le Comptable** (SANOUSSI Adamon `m-002`, ZIME Nadège `m-007`), voir + éditer sans annuler, avec la note « AUCUN gestionnaire de stock n'est nommé, décision à confirmer » ; la Direction garde la validation RG-04 (`m7-besoins`, `m7-commandes` en écriture). **La caisse** : la maquette ferme M8 pour tous, mais la décision du 06/11/2026 (caisse minimale + report, P0-8/P0-9) est POSTÉRIEURE et fait foi : le Comptable tient la caisse minimale et le report. **Précisions de la Direction (06/11/2026, soir)** : (1) **aucun compte utilisateur archivé** dans le jeu livré, les comptes Baguidi sont tous actifs ; l'archivage ne vaut que pour les RÔLES, et un rôle archivé le reste tant que son module n'est pas réactivé ; (2) **le rôle Gestionnaire de stock est DÉSARCHIVÉ et nommé** : lui et le Comptable ont le **CRUD total sur M6** (voir, éditer, annuler) ; (3) la Direction garde la validation RG-04 des bons et commandes. Reste : QUI tient le poste de gestionnaire de stock (compte à créer ou agent des huit : Q33) | Direction Baguidi (titulaire) | Non |
+| Q25 | **Les rôles de Baguidi** : la maquette montre six intitulés (Administrateur système, Direction / Gérance, Médecin, Infirmier / Sage-femme, Responsable RH, Comptable) pour neuf comptes, quand la base en porte 16. Correspondance attendue avec les identifiants techniques de la base (`admin`, `direction`, `medecin`, `infirmier`, `rh` (archivé dans la base), `comptable`…) ; rôles de la base à archiver ; le gestionnaire de stock et la caissière-dispensatrice n'apparaissent pas alors que la pharmacie et la caisse minimale sont dans le périmètre | Direction Baguidi | **Oui** (P0-3, P0-4) |
 | Q26 | **Double facteur** exigé pour Administrateur et Direction (bandeau de la maquette). Le poste de base authentifie par mot de passe Argon2id et code de secours ; le double facteur hors ligne (application TOTP sur téléphone, sans réseau) est-il attendu en version 1 ? | Direction Baguidi + ingénierie | Non pour P0 |
-| ~~Q27~~ | ~~Noms réels ou fictifs ?~~ **Réels, et demandés par la Direction** (« les utilisateurs réels », 06/11/2026) : 8 agents + l'administrateur. Ils sont déjà publics dans la branche `baguidi-sources`. À noter : l'extrait du RCCM écrit **BAGUIDI** Rafiou, la maquette **GBAGUIDI** ; le logiciel suivra le RCCM sauf avis contraire. Les salaires de la maquette sont des valeurs d'attente `salaireProvisoire` (« grille salariale BAGUIDI à fournir ») | Direction Baguidi (orthographe du nom, grille salariale) | Non |
-| Q21 bis | **Écart E13 relevé le 06/11/2026** : l'écran `mecef-config` journalise l'enregistrement mais RIEN ne relit la valeur sauvée ; changer le régime de TVA dans l'interface est sans effet, seule la configuration livrée (`referentiels.json`, `paramFiscal.regimeTva`) compte. À solder avec Q21 : soit l'écran devient effectif, soit il le dit | Ingénierie | Non |
-| Q21 | **TVA au taux normal 18 % sur TOUT ?** Nassiera Too est exonérée (produits et actes de santé). Confirmation écrite du régime de Baguidi, et liste des natures éventuellement exonérées (médicaments, soins) si le régime est mixte | Direction Baguidi + conseil fiscal | **Oui** (P0-10 et MECeF) |
+| Q27 | Les noms des neuf comptes de la maquette (GBAGUIDI Rafiou, SOKOU Peace…) sont-ils **réels** ou fictifs ? Le dépôt étant public, des noms réels d'agents n'y vont pas | Direction Baguidi | **Oui** (P0-3) |
+| Q21 | **TVA au taux normal 18 % sur TOUT ?** La clinique sœur est exonérée (produits et actes de santé). Confirmation écrite du régime de Baguidi, et liste des natures éventuellement exonérées (médicaments, soins) si le régime est mixte | Direction Baguidi + conseil fiscal | **Oui** (P0-10 et MECeF) |
 | Q22 | Baguidi émet-elle des factures pro-forma ? Si oui, `m8-proforma` reste ouvert | Direction Baguidi | Non |
 | Q23 | Bulletin `BP-NNNNN` « par période de paie » : la séquence repart-elle à 1 chaque mois (et comment distinguer deux `BP-00001`), ou est-elle continue ? | DAF Baguidi | Non |
 | Q24 | Les obligations de la base absentes de la liste reçue (AIB, acomptes IS, patente, CCIB, TVM, ORTB, déclaration de TVA) : à retirer ou à garder ? | Comptable Baguidi | Non |
-| Q32 | Le n° **0416/ONMB/ATL/2002** est-il bien la mention à imprimer à l'en-tête (ligne « N° d'enregistrement »), et remplace-t-il le « n° d'autorisation d'ouverture », ou les deux mentions coexistent-elles ? | Direction Baguidi | Non |
-| Q33 | **Titulaire du poste de gestionnaire de stock** : lequel des huit agents (ou un nouveau compte) tient le rôle `stock` désarchivé ? Son compte `m-NNN@baguidi-clinique.bj` est à nommer | Direction Baguidi | Non (le rôle est prêt, le compte attend son titulaire) |
-| Q30 | Les tarifs (131 lignes, actes, analyses, chambres, certificats) restent ceux de Nassiera Too dans la maquette Baguidi. Les garder comme **valeurs d'attente marquées provisoires** (recommandé), ou attendre une grille Baguidi avant livraison ? | Direction Baguidi | Non (oui pour la recette) |
-| Q31 | Les secteurs NS 145, les directions des types de pièces et la matrice des sources citent encore les documents de Nassiera Too. Baguidi fournit-elle son organigramme de directions et ses notes de service, ou marque-t-on « hérité, à confirmer » ? | Direction Baguidi | Non |
-| ~~Q28~~ | ~~Nom commercial ?~~ **Tranché le 06/11/2026 : alignement sur le RCCM.** La dénomination imprimée devient « CLINIQUE BAGUIDI « L'AS **DU** CŒUR » » (ligature Œ conservée à l'impression ; le RCCM écrit « COEUR » en capitales simples). Le logo, qui porte « L'AS DE COEUR », reste tel quel tant que la Direction ne fournit pas de version corrigée | | |
-| ~~Q29~~ | ~~Régime d'imposition de l'EI ?~~ **Tranché le 06/11/2026 : on suit le calendrier fiscal hérité pour le moment** (acomptes d'IS compris). Le comptable de Baguidi le corrigera dans `cfg-comptabilite` / `m12-echeances` quand le régime réel (BIC) sera arrêté | | |
-| ~~Q34~~ | ~~Banque de sang et donneurs ?~~ **Tranché le 06/11/2026 (nuit) : activés ET complétés dans SIGH-CBG** (retrait des fiches de fermeture MOD01 et MOD02 ; audit de complétude du module, CRUD, droits, jeu de démonstration) | | |
-| ~~Q35~~ | ~~SIGH-CBG remplace-t-il le logiciel de caisse patient ?~~ **OUI (06/11/2026, nuit)** : P0-8 supplanté, M8 complet actif | | |
-| ~~Q36~~ | ~~Contenu clinique des spécialités ?~~ **Déjà validé par la Direction (06/11/2026)** ; l'audit n'a trouvé aucun document qui le détaille : le poste livre les modèles construits sur le dossier de consultation générique, et le contenu précis arrêté par les praticiens se porte dans les fiches de spécialité | | |
-| ~~Q37~~ | ~~Fiche d'aptitude ?~~ **Déjà validée par la Direction (06/11/2026)** | | |
-| Q38 | Le CDC Baguidi V2 (§4.2) exclut DPI, consultation et hospitalisation et prévoit l'intégration avec le logiciel de caisse existant (M12 du CDC) : les décisions du 06/11/2026 s'y substituent-elles par avenant, ou par un périmètre signé de la Direction ? | Direction Baguidi | Non |
 | Q17 | Qui fait le report : le comptable seul, ou l'assistant comptable avec validation par le comptable (séparation des tâches) ? | Direction Baguidi | Non |
 
 ## 10. Calendrier et phasage
@@ -471,7 +383,7 @@ Aucune échéance n'a été communiquée. Phasage proposé, chaque phase se term
 | Phase | Contenu | Dépend de |
 |---|---|---|
 | **0. Décisions** | Q21, Q25, Q27 (Q1, Q2, Q4, Q5, Q8, Q9, Q18 tranchées) | Direction Baguidi |
-| **1. Import** | P0-1 : code de base importé en instantané, CI verte. Le jeu de données de Nassiera Too est **remplacé dans le même lot** que l'import (dépôt public : il ne transite par aucun commit) | aucune |
+| **1. Import** | P0-1 : code de base importé en instantané, CI verte. Le jeu de données de la clinique sœur est **remplacé dans le même lot** que l'import (dépôt public : il ne transite par aucun commit) | aucune |
 | **2. Identité et données** | P0-2, P0-3, P0-7, script `controle-identite` | Q4, Q6 |
 | **3. Périmètre** | P0-4, P0-5, P0-6 | aucune |
 | **3 bis. Caisse et report** | P0-9 (caisse minimale, bons de sortie), puis P0-8 (report des recettes, statistiques) | Q14, Q15, Q16 |
@@ -479,27 +391,3 @@ Aucune échéance n'a été communiquée. Phasage proposé, chaque phase se term
 | **5. Recette** | pièces imprimées validées, installation à blanc sur un poste Baguidi, P1-4 | phases 1 à 4 |
 
 Règle de conduite : **une phase par lot de commits**, jamais l'identité et le périmètre dans le même commit. Un défaut se rattache ainsi à sa cause, et le report d'un correctif de SIGH-CNT reste lisible.
-
-## 11. Stratégie d'exécution jusqu'à 100 % (sobriété en jetons)
-
-**Mesure** : les trois grandes lectures du code et de la maquette ont coûté de l'ordre de 3 millions de jetons chacune, les quatre agents du lot 1 environ 1,7 million ; le travail le plus coûteux a été le travail REFAIT (fermeture de M1 à M5 construite puis renversée par P0-11). Règles pour la suite :
-1. **La spec fait loi, on ne relit plus le dépôt.** Un agent reçoit la liste exacte des fichiers, l'extrait JSON de la maquette et ses critères ; plus d'agents « lecteurs » de toute la base.
-2. **Un agent par lot, sur Sonnet.** Modèle supérieur réservé aux arbitrages d'architecture (aucun en attente). Contre-vérification par agent seulement pour ce qui touche argent, droits ou règles RG (report des recettes, écritures) ; ailleurs, **sondes scriptées** (`controle-identite`, équilibre des pièces, contrastes WCAG, parité des fiches).
-3. **Tests en gradins** : fichiers touchés pendant le lot, suite complète UNE fois à la fusion, en arrière-plan, lecture de la seule queue et des échecs.
-4. **Données engendrées, pas écrites** : le jeu de démonstration vient d'UN générateur déterministe (graine fixe) rejouable ; les spécialités sont des fiches, pas du code ; les polices et logo sont déjà prêts.
-5. **Décider avant de construire** : les questions bloquantes se posent d'un seul bloc (Q35 avant P0-8 et le jeu), car un lot renversé coûte deux fois.
-6. **Sorties compactes** : rapports d'agents bornés par schéma (résumé court, chiffres, échecs), pas de journal de bord.
-
-**Ordre vers 100 %** (chaque étape finit sur une suite verte) :
-| # | Lot | Taille | Dépend de |
-|---|---|---|---|
-| A | Charte et connexion (en cours) | moyen | rien |
-| B | **Papier à en-tête (P0-13)** + date d'IFU | petit | A |
-| C | Réouverture M1 à M10 (P0-11) : retrait des fermetures, rôles, test de non-régression | petit | rien |
-| D | Corrections de caisse (écriture à l'encaissement, `partAssurance`), client libre | moyen | C |
-| E | Générateur du jeu de démonstration (Baguidi, patients compris) | gros | C, Q35 |
-| F | Plan comptable révisé, AIB, calendrier (CNSS le 15) | moyen | rien |
-| G | Report des recettes (P0-8) et bons de sortie (P0-9) | gros | Q35, Q14 à Q16 |
-| H | Spécialités (P0-12), Médecine du travail d'abord | gros | C, Q36, Q37 |
-| I | Relais web et mobile aux couleurs Baguidi (P1-3) | petit | A |
-| J | Recette : pièces imprimées, installation à blanc, `controle-identite` à 0 | moyen | tout |

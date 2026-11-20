@@ -1,0 +1,17 @@
+{
+ "id": "m1-pieces",
+ "titre": "Certificats & attestations",
+ "libelle": "Certificats & attestations",
+ "domaine": "Soins",
+ "module": "M1",
+ "moduleLibelle": "Patients & Dossier médical",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m1-pieces"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 711
+}

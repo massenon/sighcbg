@@ -1,0 +1,17 @@
+{
+ "id": "hub-imp",
+ "titre": "Importation de données",
+ "libelle": "Importation de données",
+ "domaine": "Système",
+ "module": "IMP",
+ "moduleLibelle": "Importation de données",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "hub-imp"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 448
+}

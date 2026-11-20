@@ -1,0 +1,17 @@
+{
+ "id": "m6-pertes",
+ "titre": "Pertes, casses & rebuts",
+ "libelle": "Pertes, casses & rebuts",
+ "domaine": "Logistique",
+ "module": "M6",
+ "moduleLibelle": "Pharmacie & Stocks",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m6-pertes"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 575
+}

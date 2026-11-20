@@ -1,0 +1,17 @@
+{
+ "id": "m2-imagerie-radiographie",
+ "titre": "Tableau Radiographie",
+ "libelle": "Tableau Radiographie",
+ "domaine": "Soins",
+ "module": "M2",
+ "moduleLibelle": "Imagerie médicale",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m2-imagerie-radiographie"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 494
+}

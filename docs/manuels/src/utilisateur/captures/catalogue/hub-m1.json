@@ -1,0 +1,17 @@
+{
+ "id": "hub-m1",
+ "titre": "Patients & Dossier médical",
+ "libelle": "Patients & Dossier médical",
+ "domaine": "Soins",
+ "module": "M1",
+ "moduleLibelle": "Patients & Dossier médical",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "hub-m1"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 542
+}

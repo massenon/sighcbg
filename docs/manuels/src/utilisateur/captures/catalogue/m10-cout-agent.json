@@ -1,0 +1,17 @@
+{
+ "id": "m10-cout-agent",
+ "titre": "Coût global de l’agent",
+ "libelle": "Coût global de l’agent",
+ "domaine": "Pilotage",
+ "module": "PIL",
+ "moduleLibelle": "Pilotage & analyse",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m10-cout-agent"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 515
+}

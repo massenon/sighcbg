@@ -1,0 +1,17 @@
+{
+ "id": "m5-banque-sang",
+ "titre": "Banque de sang",
+ "libelle": "Banque de sang",
+ "domaine": "Soins",
+ "module": "M5",
+ "moduleLibelle": "Laboratoire",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m5-banque-sang"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 796
+}

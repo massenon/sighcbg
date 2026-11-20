@@ -1,0 +1,17 @@
+{
+ "id": "m1-antecedents",
+ "titre": "Antécédents & allergies",
+ "libelle": "Antécédents & allergies",
+ "domaine": "Soins",
+ "module": "M1",
+ "moduleLibelle": "Patients & Dossier médical",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m1-antecedents"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 694
+}

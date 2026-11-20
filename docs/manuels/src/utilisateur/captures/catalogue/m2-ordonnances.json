@@ -1,0 +1,17 @@
+{
+ "id": "m2-ordonnances",
+ "titre": "Ordonnances",
+ "libelle": "Ordonnances",
+ "domaine": "Soins",
+ "module": "M2",
+ "moduleLibelle": "Consultations & prescriptions",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m2-ordonnances"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 636
+}

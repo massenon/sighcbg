@@ -1,0 +1,17 @@
+{
+ "id": "rapports-historique",
+ "titre": "Historique des éditions",
+ "libelle": "Historique des éditions",
+ "domaine": "Administration",
+ "module": "RAP",
+ "moduleLibelle": "Rapports & Impression",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "rapports-historique"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 515
+}

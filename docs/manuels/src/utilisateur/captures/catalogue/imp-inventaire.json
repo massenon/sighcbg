@@ -1,0 +1,17 @@
+{
+ "id": "imp-inventaire",
+ "titre": "Importation d’un comptage d’inventaire",
+ "libelle": "Importation d’un comptage d’inventaire",
+ "domaine": "Système",
+ "module": "IMP",
+ "moduleLibelle": "Importation de données",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "imp-inventaire"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 399
+}

@@ -1,0 +1,17 @@
+{
+ "id": "m5-resultats",
+ "titre": "Saisie des résultats",
+ "libelle": "Saisie des résultats",
+ "domaine": "Soins",
+ "module": "M5",
+ "moduleLibelle": "Laboratoire",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m5-resultats"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 538
+}

@@ -1,0 +1,17 @@
+{
+ "id": "parametres-hub",
+ "titre": "Paramètres système",
+ "libelle": "Paramètres système",
+ "domaine": "Système",
+ "module": "SUP",
+ "moduleLibelle": "Aide & assistance",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "parametres-hub"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 572
+}

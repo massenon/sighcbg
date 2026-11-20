@@ -1,6 +1,6 @@
 # Inventaire des audits et lectures déjà payés (06/11/2026)
 
-> Objet : ne plus payer deux fois la même lecture. Les bruts (116 Ko d'audit du code, 1,06 Mo d'extraits de la maquette) restent dans l'espace de travail de la session et ne sont **pas** poussés : ils citent des agents réels de Nassiera Too et des tarifs de cette clinique, et le dépôt est public. Ce fichier en est la synthèse réutilisable.
+> Objet : ne plus payer deux fois la même lecture. Les bruts (116 Ko d'audit du code, 1,06 Mo d'extraits de la maquette) restent dans l'espace de travail de la session et ne sont **pas** poussés : ils citent des agents réels de la clinique d'origine et des tarifs de cette clinique, et le dépôt est public. Ce fichier en est la synthèse réutilisable.
 
 ## 1. Ce que chaque audit a coûté
 
@@ -24,16 +24,16 @@ Les deux audits de **lecture** pèsent à eux seuls **72 %** des jetons des sous
 - Une facture ne s'émet pas sans fiche patient (la case « comptoir » existe mais le moteur exige un patient) ; « Enregistrer et encaisser » et l'écran Paiements ne passent aucune écriture ; l'écriture lit `partAssureur` quand les pièces portent `partAssurance` (débit 411 jamais passé). **Ces trois défauts restent à corriger** (lot D).
 - Les catalogues (actes, produits, analyses, natures de facture) sont semés au socle : fermer M1 à M5 n'en vide aucun.
 - L'application mobile ne lit ni le manifeste ni `modulesActifs` : elle ne suit pas les fermetures.
-- Le jeu livré est extrait de la maquette Nassiera Too par ~60 scripts, sans script maître ; le jeu n'est pas déterministe (identifiants `Date.now` et `Math.random`). Le dépôt `sighcbg` ne contient pas la maquette : régénérer est impossible ici, le jeu de démonstration Baguidi doit donc être produit par un générateur propre au dépôt.
-- 144 fichiers de test Dart lisent des vecteurs d'identité de Nassiera Too, 115 chargent le jeu.
-- Une pièce Dart engendrée porte encore des données de Nassiera Too : liasse fiscale (`cpb_liasse.dart`, `cpc_liasse.dart`), classeur 2025, inventaire SAGE (`donnees_sage.dart`), notes NS 131/132 (`adm_notes_donnees.dart`), `cfb_donnees.dart`, données mobiles.
+- Le jeu livré est extrait de la maquette de la clinique d'origine par ~60 scripts, sans script maître ; le jeu n'est pas déterministe (identifiants `Date.now` et `Math.random`). Le dépôt `sighcbg` ne contient pas la maquette : régénérer est impossible ici, le jeu de démonstration Baguidi doit donc être produit par un générateur propre au dépôt.
+- 144 fichiers de test Dart lisent des vecteurs d'identité de la clinique d'origine, 115 chargent le jeu.
+- Une pièce Dart engendrée porte encore des données de la clinique d'origine : liasse fiscale (`cpb_liasse.dart`, `cpc_liasse.dart`), classeur 2025, inventaire SAGE (`donnees_sage.dart`), notes NS 131/132 (`adm_notes_donnees.dart`), `cfb_donnees.dart`, données mobiles.
 
 **Extraction de la maquette Baguidi**
 - Identité complète, 14 spécialités, charte mesurée (`coeur #D32F2F`, `sante #1565C0`, `anthracite #212121`), polices Montserrat et Dancing Script, logo 315 x 324, en-tête imprimé à trois zones.
 - Rôles : 6 actifs, 17 archivés ; le stock était tenu par le comptable ; M8, M9 et MECeF fermés dans la maquette (dépassé par les décisions du 06/11).
-- **Tarifs, actes, analyses, certificats : identiques à Nassiera Too** (131 lignes sourcées « NASSIERA TOO »). Les 295 Ko d'extraction tarifaire aboutissent à cette seule conclusion.
+- **Tarifs, actes, analyses, certificats : identiques à ceux de la clinique d'origine** (131 lignes sourcées « BAGUIDI »). Les 295 Ko d'extraction tarifaire aboutissent à cette seule conclusion.
 - Plan comptable SYSCOHADA révisé complet (1 332 comptes), barème AIB, centres de coûts renommés (décisions Baguidi du 07/09).
-- La maquette dérive d'une version antérieure du code de Nassiera Too (journaux BQE et AN absents, semis comptable déséquilibré).
+- La maquette dérive d'une version antérieure du code de la clinique d'origine (journaux BQE et AN absents, semis comptable déséquilibré).
 
 ## 3. Où va la consommation : mesures de la session
 
