@@ -1,0 +1,126 @@
+/* ENGENDRÉ par tools/baguidi/engendrer-jetons-relais.mjs : NE PAS ÉDITER À LA MAIN.
+   Sources : docs/design/design-tokens.json (palettes, ombres, polices), apps/poste/lib/core/jetons_shell.dart (neutres, voile).
+   UNIQUE endroit du relais où une couleur s'écrit en dur ; panneau.css et satisfaction.css n'emploient que var(--…). */
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 400; font-display: swap; src: url("../fonts/Inter-Regular.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 500; font-display: swap; src: url("../fonts/Inter-Medium.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 600; font-display: swap; src: url("../fonts/Inter-SemiBold.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 700; font-display: swap; src: url("../fonts/Inter-Bold.woff2") format("woff2"); }
+@font-face { font-family: "Montserrat"; font-style: normal; font-weight: 600; font-display: swap; src: url("../fonts/Montserrat-SemiBold.woff2") format("woff2"); }
+@font-face { font-family: "Montserrat"; font-style: normal; font-weight: 700; font-display: swap; src: url("../fonts/Montserrat-Bold.woff2") format("woff2"); }
+@font-face { font-family: "Dancing Script"; font-style: normal; font-weight: 400; font-display: swap; src: url("../fonts/DancingScript-Regular.woff2") format("woff2"); }
+
+:root {
+  /* Palettes de la charte : Rouge Cœur (actions), Bleu Santé (titres, badges), Noir Anthracite (barres sombres). */
+  --coeur-50: #fdecec;
+  --coeur-100: #fbd8d8;
+  --coeur-200: #f6b1b1;
+  --coeur-300: #ee8383;
+  --coeur-400: #e35555;
+  --coeur-500: #d32f2f;
+  --coeur-600: #b62222;
+  --coeur-700: #971c1c;
+  --coeur-800: #7d1a1a;
+  --coeur-900: #671717;
+  --coeur-950: #3f0d0d;
+  --sante-50: #eef4fc;
+  --sante-100: #d9e7f8;
+  --sante-200: #b6d0f1;
+  --sante-300: #8ab3e8;
+  --sante-400: #5590da;
+  --sante-500: #2f74cc;
+  --sante-600: #1565c0;
+  --sante-700: #1253a0;
+  --sante-800: #124684;
+  --sante-900: #123a6b;
+  --sante-950: #0c2647;
+  --anthracite-800: #2b2b2b;
+  --anthracite-900: #212121;
+  --anthracite-950: #1a1a1a;
+  /* États : le rouge d'ERREUR (danger) n'est pas le rouge d'ACTION (coeur) : une alerte ne se confond jamais avec un bouton. */
+  --success-50: #eefbf4;
+  --success-100: #d6f5e3;
+  --success-200: #b0e9cc;
+  --success-300: #7bd7ae;
+  --success-400: #45bd8b;
+  --success-500: #22a170;
+  --success-600: #15825a;
+  --success-700: #12684a;
+  --success-800: #12523c;
+  --success-900: #104433;
+  --warning-50: #fff8eb;
+  --warning-100: #ffedc6;
+  --warning-200: #ffd888;
+  --warning-300: #ffbe4a;
+  --warning-400: #ffa620;
+  --warning-500: #f98307;
+  --warning-600: #dd5f02;
+  --warning-700: #b74106;
+  --warning-800: #94320c;
+  --warning-900: #7a2a0d;
+  --danger-50: #fef2f2;
+  --danger-100: #fee2e2;
+  --danger-200: #fecaca;
+  --danger-300: #fca5a5;
+  --danger-400: #f87171;
+  --danger-500: #ef4444;
+  --danger-600: #dc2626;
+  --danger-700: #b91c1c;
+  --danger-800: #991b1b;
+  --danger-900: #7f1d1d;
+  --info-50: #eff8ff;
+  --info-100: #dbeefe;
+  --info-200: #bfe2fe;
+  --info-300: #92d0fd;
+  --info-400: #61b6fa;
+  --info-500: #3b98f6;
+  --info-600: #257aeb;
+  --info-700: #1d63d8;
+  --info-800: #1e51af;
+  --info-900: #1e468a;
+  /* Neutres du poste. */
+  --slate-50: #f8fafc;
+  --slate-100: #f1f5f9;
+  --slate-200: #e2e8f0;
+  --slate-300: #cbd5e1;
+  --slate-400: #94a3b8;
+  --slate-500: #64748b;
+  --slate-600: #475569;
+  --slate-700: #334155;
+  --slate-800: #1e293b;
+  --slate-900: #0f172a;
+  --blanc: #ffffff;
+  --voile: rgb(11 30 61 / 0.4);
+  --survol-sombre: rgb(255 255 255 / 0.1);
+  --defilement-ombre: rgb(11 30 61 / 0.18);
+
+  /* Rôles : ce sont ces noms que le CSS et les vues emploient. */
+  --c-action: var(--coeur-500); --c-action-survol: var(--coeur-600); --c-action-actif: var(--coeur-700); --c-sur-action: var(--blanc);
+  --c-lien: var(--sante-700); --c-titre: var(--sante-900); --c-accent: var(--sante-600);
+  --c-texte: var(--slate-900); --c-texte-doux: var(--slate-600);
+  --c-fond: var(--slate-100); --c-surface: var(--blanc); --c-surface-douce: var(--slate-50);
+  --c-bord: var(--slate-200); --c-bord-champ: var(--slate-500);
+  --c-barre: var(--anthracite-900); --c-barre-profonde: var(--anthracite-950); --c-barre-texte: var(--slate-300); --c-barre-doux: var(--slate-400); --c-barre-titre: var(--blanc); --c-barre-devise: var(--coeur-300);
+  --c-focus: var(--sante-600); --c-focus-barre: var(--sante-300);
+  --c-ok-fond: var(--success-100); --c-ok-texte: var(--success-800); --c-ok-bord: var(--success-600);
+  --c-attention-fond: var(--warning-100); --c-attention-texte: var(--warning-800); --c-attention-bord: var(--warning-600);
+  --c-alerte-fond: var(--danger-100); --c-alerte-texte: var(--danger-800); --c-alerte-bord: var(--danger-600); --c-alerte-bouton: var(--danger-700);
+  --c-info-fond: var(--info-50); --c-info-texte: var(--info-900); --c-info-bord: var(--info-600);
+  --c-neutre-fond: var(--sante-50); --c-neutre-texte: var(--sante-800);
+  --c-note-fond: var(--sante-50); --c-note-bord: var(--sante-600); --c-note-texte: var(--sante-900);
+
+  /* Échelle d'espacement UNIQUE : 4 / 8 / 12 / 16 / 24 / 32 px. */
+  --e-1: 4px; --e-2: 8px; --e-3: 12px; --e-4: 16px; --e-6: 24px; --e-8: 32px;
+  /* Rayons (rounded-lg, rounded-xl de la maquette) et cible tactile minimale. */
+  --rayon: 8px; --rayon-lg: 12px; --rayon-pastille: 999px; --cible: 44px;
+  /* Ombres de la maquette. */
+  --ombre-carte: 0 1px 2px 0 rgb(11 30 61 / 0.05), 0 1px 3px 0 rgb(11 30 61 / 0.06);
+  --ombre-leve: 0 4px 12px -2px rgb(11 30 61 / 0.10), 0 2px 6px -2px rgb(11 30 61 / 0.06);
+  --ombre-pop: 0 12px 32px -8px rgb(11 30 61 / 0.22);
+  /* Typographie : Inter pour le texte, Montserrat pour les titres, Dancing Script EXCLUSIVEMENT pour la devise. */
+  --police-texte: Inter, "Segoe UI", system-ui, sans-serif;
+  --police-titres: Montserrat, Inter, "Segoe UI", system-ui, sans-serif;
+  --police-devise: "Dancing Script", "Segoe Script", cursive;
+  --police-code: Consolas, ui-monospace, monospace;
+  --t-base: 15px; --t-petit: 14px; --t-grand: 18px; --t-titre: 24px; --t-valeur: 28px;
+  --largeur-barre: 272px; --largeur-contenu: 1200px;
+}
