@@ -33,7 +33,7 @@ final colNumero = ColonneTableau(
                 height: 16 / 12,
                 fontWeight: FontWeight.w600)),
         if (f['numeroMecef'] != null)
-          Text('${f['numeroMecef']}',
+          Text(numeroMecefAffiche(f),
               style: const TextStyle(
                   fontFamily: 'LiberationMono',
                   color: JetonsShell.slate400,
@@ -156,7 +156,7 @@ Widget detailFacture(Fiche f) {
       (
         'N° MECeF',
         f['numeroMecef'] != null
-            ? Text('${f['numeroMecef']}',
+            ? Text(numeroMecefAffiche(f),
                 style: const TextStyle(
                     fontFamily: 'LiberationMono',
                     fontSize: 14,

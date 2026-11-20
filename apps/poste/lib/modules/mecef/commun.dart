@@ -63,7 +63,7 @@ ColonneTableau colFacture() => ColonneTableau(
               _mono('${f['numero']}',
                   couleur: JetonsShell.navy800, poids: FontWeight.w600),
               f['numeroMecef'] != null
-                  ? _mono('${f['numeroMecef']}',
+                  ? _mono(numeroMecefAffiche(f),
                       taille: 10, couleur: JetonsShell.slate400)
                   : const Text('Non transmise',
                       style: TextStyle(
@@ -110,7 +110,7 @@ PieceA4 pieceFactureNormalisee(Fiche f, ParamFiscal p,
   return PieceA4(
     identite: identite,
     titre: 'Facture de vente — normalisée',
-    sousTitre: '${f['numero']}${f['numeroMecef'] != null ? ' — ${f['numeroMecef']}' : ''}',
+    sousTitre: '${f['numero']}${f['numeroMecef'] != null ? ' — ${numeroMecefAffiche(f)}' : ''}',
     reference: reference,
     utilisateur: utilisateur,
     edite: edite,
@@ -135,6 +135,8 @@ PieceA4 pieceFactureNormalisee(Fiche f, ParamFiscal p,
       BlocTexte(fn.enLettres.toUpperCase(), gras: true),
       // Le bloc fiscal (QR, NIM, code, compteurs) ne s'imprime QUE sur une pièce réellement normalisée ; sinon le bandeau DEMO, jamais un faux code (E2299).
       if (fn.blocFiscal) ...[
+        if (numeroMecefDeDemonstration(f))
+          const BlocTexte('EXEMPLE DE DÉMONSTRATION — pièce non fiscale', gras: true),
         // Le QR est un EMPLACEMENT : la certification réelle vient du boîtier physique (protocole attendu de la Direction).
         const BlocTexte('QR CODE MECeF — emplacement réservé (simulation)',
             italique: true),
@@ -143,9 +145,9 @@ PieceA4 pieceFactureNormalisee(Fiche f, ParamFiscal p,
         BlocTexte('MECeF NIM : ${fn.nim}'),
         BlocTexte('MECeF Compteurs : ${fn.compteurs}'),
         BlocTexte('IFU émetteur : ${i.ifu} — RCCM : ${i.rccm}'),
-        if (f['mecefSimule'] == true)
+        if (numeroMecefDeDemonstration(f))
           const BlocTexte(
-              'Simulation de la maquette : ce numéro n’est pas un numéro fiscal.',
+              'EXEMPLE DE DÉMONSTRATION : le numéro et les codes ci-dessus ne sont pas fiscaux.',
               gras: true),
       ] else ...[
         for (final l in fn.bandeau) BlocTexte(l, gras: l == fn.bandeau.first),

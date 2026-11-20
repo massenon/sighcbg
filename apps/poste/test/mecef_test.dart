@@ -116,7 +116,7 @@ void main() {
         ];
     final ok = piece({...base, 'acheteurNom': 'Clinique X', 'mecefSimule': true});
     expect(textes(ok), contains('Code MECeF / DGI'));
-    expect(textes(ok).any((x) => x.contains('n’est pas un numéro fiscal')), isTrue);
+    expect(textes(ok).any((x) => x.contains('EXEMPLE DE DÉMONSTRATION')), isTrue);
     expect(ok.cartouche.any((c) => c.$1 == 'Nom de l’acheteur'), isFalse, reason: 'facture patient : aucun acheteur imprimé, même porté par une pièce ancienne');
     expect(textes(ok), contains(mecefMentionFacturePatient));
     final taxes = [for (final b in ok.blocs) if (b is BlocTableau) for (final r in b.tableau.lignes) '${r['k'] ?? ''}'];

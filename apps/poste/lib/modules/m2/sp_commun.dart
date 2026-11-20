@@ -158,6 +158,7 @@ EmissionSpec emettrePiece(ContexteEcran c, Fiche patient, List<Map<String, Objec
     final fiche = {...p, ...complement}..remove('mecef');
     if (p['mecef'] == true) {
       fiche['numeroMecef'] = numeroMecefSimule(c.aujourdhui.millisecondsSinceEpoch % 100000 + rang++);
+      fiche['mecefSimule'] = true; // numéro fabriqué : jamais présenté comme fiscal (E5252)
     }
     fiche['statut'] = 'actif';
     final ins = m.collection('factures').inserer(fiche, prefixe: 'FAC');
