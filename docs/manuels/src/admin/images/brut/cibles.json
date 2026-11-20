@@ -1,28 +1,4 @@
 {
-  "admin-14-mere-appareils": {
-    "largeur": 1950,
-    "hauteur": 1250,
-    "cibles": {
-      "Appairer un poste": [
-        25.0,
-        153.0,
-        220.0,
-        45.0
-      ],
-      "Appairer un mobile": [
-        255.0,
-        153.0,
-        232.0,
-        48.0
-      ],
-      "Révoquer": [
-        1810.0,
-        359.0,
-        98.0,
-        38.0
-      ]
-    }
-  },
   "admin-01-roles-matrice": {
     "largeur": 1800,
     "hauteur": 1250,
@@ -197,6 +173,30 @@
     "largeur": 1800,
     "hauteur": 1250,
     "cibles": {}
+  },
+  "admin-14-mere-appareils": {
+    "largeur": 1950,
+    "hauteur": 1250,
+    "cibles": {
+      "Appairer un poste": [
+        25.0,
+        153.0,
+        220.0,
+        45.0
+      ],
+      "Appairer un mobile": [
+        255.0,
+        153.0,
+        232.0,
+        48.0
+      ],
+      "Révoquer": [
+        1810.0,
+        359.0,
+        98.0,
+        38.0
+      ]
+    }
   },
   "admin-15-mere-appairer": {
     "largeur": 1950,
@@ -406,7 +406,7 @@
       ],
       "Régler à partir d’une date": [
         56.0,
-        -19598.0,
+        -20460.0,
         244.0,
         35.0
       ]
@@ -457,18 +457,6 @@
         698.0,
         210.0,
         38.0
-      ]
-    }
-  },
-  "admin-30-pastille-decisions": {
-    "largeur": 1800,
-    "hauteur": 875,
-    "cibles": {
-      "Pastille": [
-        935.0,
-        19.0,
-        388.0,
-        31.0
       ]
     }
   },
@@ -526,23 +514,6 @@
       ]
     }
   },
-  "admin-34-facture-tiers": {
-    "largeur": 1800,
-    "hauteur": 1250,
-    "cibles": {}
-  },
-  "admin-35-pta-referentiels": {
-    "largeur": 1800,
-    "hauteur": 1625,
-    "cibles": {
-      "Référentiels du plan": [
-        56.0,
-        861.0,
-        1688.0,
-        25.0
-      ]
-    }
-  },
   "admin-33-param-pta": {
     "largeur": 1800,
     "hauteur": 1625,
@@ -564,6 +535,23 @@
         726.0,
         55.0,
         21.0
+      ]
+    }
+  },
+  "admin-34-facture-tiers": {
+    "largeur": 1800,
+    "hauteur": 1250,
+    "cibles": {}
+  },
+  "admin-35-pta-referentiels": {
+    "largeur": 1800,
+    "hauteur": 1625,
+    "cibles": {
+      "Référentiels du plan": [
+        56.0,
+        861.0,
+        1688.0,
+        25.0
       ]
     }
   },
@@ -888,6 +876,90 @@
         1896.0,
         194.0,
         45.0
+      ]
+    }
+  },
+  "admin-30-pastille-decisions": {
+    "largeur": 1800,
+    "hauteur": 875,
+    "cibles": {
+      "Pastille": [
+        935.0,
+        19.0,
+        388.0,
+        31.0
+      ]
+    }
+  },
+  "admin-52-param-mobile": {
+    "largeur": 1800,
+    "hauteur": 1250,
+    "cibles": {
+      "Carte": [
+        56.0,
+        267.0,
+        1688.0,
+        25.0
+      ]
+    }
+  },
+  "admin-53-param-libelles": {
+    "largeur": 1800,
+    "hauteur": 1250,
+    "cibles": {
+      "Carte": [
+        56.0,
+        267.0,
+        1688.0,
+        25.0
+      ]
+    }
+  },
+  "admin-54-liasse-fileul": {
+    "largeur": 1800,
+    "hauteur": 1875,
+    "cibles": {
+      "Poste rattaché": [
+        30.0,
+        396.0,
+        1740.0,
+        63.0
+      ],
+      "Vérifier le fichier": [
+        56.0,
+        981.0,
+        365.0,
+        48.0
+      ]
+    }
+  },
+  "admin-55-fiches-fileul": {
+    "largeur": 1800,
+    "hauteur": 2375,
+    "cibles": {
+      "Poste rattaché": [
+        30.0,
+        396.0,
+        1740.0,
+        63.0
+      ],
+      "Valider": [
+        1559.0,
+        1898.0,
+        107.0,
+        35.0
+      ]
+    }
+  },
+  "admin-51-param-mere": {
+    "largeur": 1800,
+    "hauteur": 1250,
+    "cibles": {
+      "Carte": [
+        56.0,
+        267.0,
+        1688.0,
+        25.0
       ]
     }
   }

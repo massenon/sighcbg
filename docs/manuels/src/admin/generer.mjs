@@ -74,8 +74,8 @@ function preparer({ cibles, references, marqueurs }) {
       return esc(p.libellesChoix?.[p.defaut] ?? p.defaut);
     };
     dp.innerHTML = Object.entries(parFamille)
-      .map(([f, ps]) => `<h3 class="famille">${esc(references.familles[f] || f)}</h3><table class="tableau ref"><thead><tr><th style="width:34%">Clé</th><th>Paramètre</th><th style="width:16%">Défaut semé</th></tr></thead><tbody>`
-        + ps.map((p) => `<tr><td><code>${esc(p.cle)}</code></td><td>${esc(p.libelle)}${p.branche ? '' : ' <span class="pastille">non branché</span>'}</td><td>${val(p)}</td></tr>`).join('')
+      .map(([f, ps]) => `<h3 class="famille">${esc(references.familles[f] || f)}</h3><table class="tableau ref"><thead><tr><th style="width:34%">Clé</th><th>Paramètre</th><th style="width:15%">Défaut semé</th><th style="width:11%">Bornes</th></tr></thead><tbody>`
+        + ps.map((p) => `<tr><td><code>${esc(p.cle)}</code></td><td>${esc(p.libelle)}${p.branche ? '' : ' <span class="pastille">non branché</span>'}${p.geste ? ` <span class="petit">(geste <code>${esc(p.geste)}</code>)</span>` : ''}</td><td>${val(p)}</td><td>${p.min != null && p.max != null ? `${p.min} à ${p.max}` : ''}</td></tr>`).join('')
         + '</tbody></table>')
       .join('');
   }

@@ -7,7 +7,7 @@ Prérequis : Git, Flutter (avec Windows Desktop et Visual Studio 2022 C++ sous W
 ```bash
 git clone https://github.com/massenon/sighcbg.git
 cd sighcbg
-git checkout livraison/baguidi-v31
+git checkout livraison/baguidi-v32
 ```
 
 ## 2. Vérifier avant de lancer
@@ -17,7 +17,11 @@ cd packages/domaine && dart pub get && dart test && cd ../..
 cd packages/sync_dart && dart pub get && dart test && cd ../..
 cd packages/rbac && node --test && cd ../..
 node tools/baguidi/controle-identite.mjs
+node tools/baguidi/inventaire-en-dur.mjs --cliquet --famille=A,B,C,D,E,G,H
+cd packages/domaine && dart test test/roles_en_dur_global_test.dart && cd ../..
 ```
+
+Les deux dernières lignes sont les cliquets « valeurs en dur » (familles A à H) : elles échouent si une valeur de clinique réapparaît dans le code.
 
 ## 3. Lancer le poste (fileul)
 
@@ -72,7 +76,7 @@ Le build « release » exige la clé de signature de la clinique (`android/key.p
 cd apps/poste && flutter test          # environ 20 minutes, seule sur la machine
 cd apps/mobile && flutter test
 cd apps/web && php artisan test        # SQLite en mémoire
-npm run banc:sync                      # banc de synchronisation de référence
+npm run banc:sync                      # banc de synchronisation de référence (droits : packages/sync/banc/droits-banc.json)
 ```
 
 ## 7. Installateur Windows

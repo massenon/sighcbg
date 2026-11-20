@@ -42,6 +42,9 @@ void main() {
           'libellesChoix': d.libellesChoix,
           'branche': d.branche,
           'sensible': d.sensible,
+          if (d.min != null) 'min': d.min,
+          if (d.max != null) 'max': d.max,
+          if (d.geste != null) 'geste': d.geste,
           'aide': d.aide,
           'source': d.source,
         }

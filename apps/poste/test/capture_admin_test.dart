@@ -9,6 +9,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:sigh_poste/core/config_poste.dart';
+import 'package:sigh_poste/core/parametres_poste.dart' show ParametresPoste, StockageMemoire;
+import 'package:sigh_poste/core/service_installation.dart';
 import 'package:sigh_poste/core/theme.dart';
 import 'package:sigh_poste/core/donnees_navigation.dart';
 import 'package:sigh_poste/donnees/base_portable_poste.dart';
@@ -291,6 +293,17 @@ Future<void> _posteMere(WidgetTester t, String ecran, {String role = 'admin', Ma
 Future<void> _voir(WidgetTester t, Finder f) async {
   if (f.evaluate().isEmpty) return;
   await t.ensureVisible(f.first);
+  await _pomper(t, 4);
+}
+
+
+/// Amène [f] dans la vue, vers le haut de l'écran (liste paresseuse : la carte peut ne pas être construite avant d'y arriver).
+Future<void> _voirHaut(WidgetTester t, Finder f) async {
+  final vertical = find.byWidgetPredicate((w) => w is Scrollable && w.axisDirection == AxisDirection.down);
+  if (f.evaluate().isEmpty) {
+    await t.scrollUntilVisible(f, 600, scrollable: vertical.last, maxScrolls: 400);
+  }
+  await Scrollable.ensureVisible(f.first.evaluate().first, alignment: 0.12);
   await _pomper(t, 4);
 }
 
@@ -838,5 +851,50 @@ void main() {
   cas('Barre : décisions en attente de la mère', 1440, 700, (t) async {
     await _poste(t, 'cfg-systeme', magasin: _jeuAvecAttente());
     await _png(t, 'admin-30-pastille-decisions', {'Pastille': find.byKey(const Key('barre-decisions-mere'))});
+  });
+
+  // v32 (20/11/2026) : les réglages « plus aucune valeur en dur ».
+  cas('Paramètres : un réglage de la mère', 1440, 1000, (t) async {
+    await _posteMere(t, 'cfg-systeme');
+    await _toucher(t, _onglet('parametres'));
+    final carte = _texte('Appairage : durée de validité d\'un code (minutes)');
+    await _voirHaut(t, carte);
+    await _png(t, 'admin-51-param-mere', {'Carte': carte});
+  });
+
+  cas('Paramètres : une borne de saisie du téléphone', 1440, 1000, (t) async {
+    await _posteMere(t, 'cfg-systeme');
+    await _toucher(t, _onglet('parametres'));
+    final carte = _texte('La température : valeur la plus basse acceptée (°C)');
+    await _voirHaut(t, carte);
+    await _png(t, 'admin-52-param-mobile', {'Carte': carte.first});
+  });
+
+  cas('Paramètres : les libellés d’une énumération', 1440, 1000, (t) async {
+    await _posteMere(t, 'cfg-systeme');
+    await _toucher(t, _onglet('parametres'));
+    final carte = _texte('Modes de paiement');
+    await _voirHaut(t, carte);
+    await _png(t, 'admin-53-param-libelles', {'Carte': carte.first});
+  });
+
+  cas('Import de la liasse depuis un poste rattaché', 1440, 1500, (t) async {
+    final m = _jeu();
+    await t.runAsync(() => ServiceInstallation.de(m).attacher(StockageMemoire(), const ParametresPoste(uuidPoste: 'u', rejoint: true)));
+    await _poste(t, 'm12-liasse-import', role: 'comptable', magasin: m);
+    await _png(t, 'admin-54-liasse-fileul', {
+      'Poste rattaché': find.byKey(const Key('liasse:fileul')),
+      'Vérifier le fichier': find.byKey(const Key('liasse:verifier')),
+    });
+  });
+
+  cas('Fiches d’aide depuis un poste rattaché', 1440, 1900, (t) async {
+    final m = _jeuAvecFiches();
+    await t.runAsync(() => ServiceInstallation.de(m).attacher(StockageMemoire(), const ParametresPoste(uuidPoste: 'u', rejoint: true)));
+    await _poste(t, 'cfg-fiches-aide', role: 'da', magasin: m);
+    await _png(t, 'admin-55-fiches-fileul', {
+      'Poste rattaché': find.byKey(const Key('aide:fileul')),
+      'Valider': find.byKey(const Key('aide:valider:FAI-CAP-1')),
+    });
   });
 }

@@ -18,7 +18,7 @@
   </div>
   <div class="meta">
     <span>Clinique Baguidi « L’As du Cœur » · Parakou, Bénin</span>
-    <span>Édition du 18 novembre 2026</span>
+    <span>Édition du 20 novembre 2026</span>
   </div>
   <div class="pied"></div>
 </section>
@@ -63,6 +63,24 @@
 
 <div class="encadre info">
   <p>Chaque rôle d’administration lit la liste de ses écrans dans le ruban. Un écran absent du ruban est fermé au rôle : il ne s’atteint pas non plus par son adresse.</p>
+</div>
+
+<h2 id="nouveautes">Ce qui change dans l’édition du 20 novembre 2026</h2>
+<p>La livraison v32 applique une décision de la Direction : <b>plus aucune valeur de clinique écrite dans le code</b>. Ce qui vivait en dur est devenu un réglage daté, une liste de référence, un barème ou un référentiel du jeu. Le manuel passe de 146 à <b><span data-compte="parametres"></span> paramètres</b> déclarés (annexe C) ; les <span data-compte="gestes"></span> gestes réservés ne changent pas.</p>
+<table class="tableau">
+  <thead><tr><th style="width:34%">Famille de réglages nouveaux</th><th>Où la lire dans ce manuel</th></tr></thead>
+  <tbody>
+    <tr><td><b>Console de la mère</b> (16 réglages <code>mere.*</code> : validité du code d’appairage, fenêtre de réinitialisation, délais de sauvegarde, copies de fichiers, dix seuils de supervision)</td><td>6.15 ; 3.1, 11.2 et 12.2 pour l’effet à l’écran</td></tr>
+    <tr><td><b>Bornes de saisie du téléphone</b> (37 réglages de la famille <code>mobile</code>, la seule que le téléphone reçoit)</td><td>6.16 ; 4.2</td></tr>
+    <tr><td><b>Seuils isolés</b> : balance âgée des assureurs, terme maximal d’un certificat de grossesse, délai d’aberration de l’imagerie, validité de l’autorisation de mise à jour, plan de numérisation, taille d’un dépôt de liasse</td><td>6.17 ; 11.7</td></tr>
+    <tr><td><b>Libellés et listes</b> : dix-huit énumérations <code>libelles.*</code>, 79 listes <code>listes.*</code> (53 à l’édition précédente), barème des garanties du régime employeur au référentiel <code>garanties</code></td><td>6.11 et 6.18</td></tr>
+    <tr><td><b>Dépôts depuis un poste rattaché</b> : validation d’une fiche d’aide et import de la liasse fiscale</td><td>5.13, 9.10 et 10.2</td></tr>
+    <tr><td><b>Banc des droits</b> : fichier de données <code>droits-banc.json</code>, plus aucun rôle écrit dans la mère Dart</td><td>5.8 et A.1</td></tr>
+    <tr><td><b>Cliquets « valeurs en dur »</b> : familles A, B, C, D, E, F, G et H, état réel et commande de chacune</td><td>13.5</td></tr>
+  </tbody>
+</table>
+<div class="encadre info" data-titre="Les valeurs livrées sont des valeurs d’attente">
+  <p>Chaque réglage nouveau porte la valeur que le code employait avant : <b>rien ne change à l’écran sans décision</b>. Elles sont marquées « à confirmer par la Direction de Baguidi » (ou, pour les bornes de saisie du téléphone, « par les professionnels de la clinique »). Un réglage hors bornes ou illisible n’est jamais pris : la valeur d’attente s’applique, jamais zéro.</p>
 </div>
 
 <h2 id="legende">Légende</h2>
@@ -286,7 +304,7 @@ build_windows.bat</pre>
 
 <!-- ============================================================ 3. FILEUL -->
 <h1 id="fileul"><span class="no">3.</span> Rattacher un poste fileul</h1>
-<p class="chapo">Un fileul se rattache par un code d’appairage émis sur la mère. Le code vaut 15 minutes (durée réglée par la mère) et ne sert qu’une fois.</p>
+<p class="chapo">Un fileul se rattache par un code d’appairage émis sur la mère. Le code ne sert qu’une fois et expire après la durée que la mère annonce : 15 minutes par défaut, réglage <code>mere.validiteCodeAppairageMinutes</code> (6.15).</p>
 
 <h2 id="fileul-code">3.1 Émettre le code sur la mère</h2>
 <ol class="etapes">
@@ -296,6 +314,7 @@ build_windows.bat</pre>
   <li>Cliquer sur <b>Générer le code</b>.</li>
   <li>Communiquer le code de 8 caractères à la personne qui installe le fileul.</li>
 </ol>
+<p>La fenêtre du code dit la durée que la mère annonce : « À usage unique, valable 15 min. » avec le réglage d’attente. Les écrans <b>Appareils et appairage</b>, <b>Clé de clinique</b>, la console de la mère et l’assistant d’installation ne portent plus aucun nombre : ils lisent la durée renvoyée par la mère avec le code, pour un poste comme pour un mobile. La longueur du code (8 caractères) reste, elle, fixée par la mère.</p>
 <figure class="capture" data-capture="admin-14-mere-appareils" data-recadrage="0,0,1950,900" data-cibles='[{"c":"Appairer un poste","de":"bas"},{"c":"Appairer un mobile","de":"bas"},{"c":"Révoquer","de":"gauche"}]'>
 <figcaption><span class="tag reel">CAPTURE RÉELLE</span>Appareils et appairage (console de la mère, source simulée).</figcaption>
 </figure>
@@ -316,7 +335,7 @@ build_windows.bat</pre>
   <li>Cliquer sur <b>Rejoindre</b>.</li>
   <li>Attendre l’écran <b>Réception de la configuration</b>, puis cliquer sur <b>Aller à la connexion</b>.</li>
 </ol>
-<p>Les refus se nomment : code inconnu, code déjà servi, code expiré (15 minutes). Dans chaque cas, demander un nouveau code sur la mère.</p>
+<p>Les refus se nomment : code inconnu, code déjà servi, code expiré (la durée réglée à la mère, 15 minutes par défaut). Dans chaque cas, demander un nouveau code sur la mère.</p>
 <div class="encadre info">
   <p>« La mère n’a encore rien diffusé » signifie que la mère est éteinte ou que sa configuration n’est pas faite. La reprise est automatique : le fileul peut attendre sur cet écran.</p>
 </div>
@@ -332,7 +351,7 @@ build_windows.bat</pre>
   <p>La révocation est immédiate. Un poste révoqué doit être appairé de nouveau, avec un nouveau code, pour reprendre la synchronisation.</p>
 </div>
 <div class="encadre observer">
-  <p>« Horloge à vérifier » signale une dérive supérieure à 2 minutes. Corriger l’heure de Windows sur le poste concerné.</p>
+  <p>« Horloge à vérifier » signale une dérive supérieure à 2 minutes par défaut (réglage <code>mere.supervisionDeriveHorlogeMinutes</code>, 6.15). Corriger l’heure de Windows sur le poste concerné.</p>
 </div>
 
 <h2 id="fileul-reprise">3.4 Remplacer un fileul : la reprise d’identité</h2>
@@ -359,7 +378,7 @@ build_windows.bat</pre>
 <figcaption><span class="tag reel">CAPTURE RÉELLE</span>Le code de reprise, affiché une seule fois (code fictif de la capture) avec sa durée de validité.</figcaption>
 </figure>
 <ul>
-  <li><b>La durée de validité est celle que la mère annonce</b> (15 minutes par défaut pour la mère du poste) : l’écran n’en écrit aucune. Si la mère n’en annonce pas, il le dit (« non communiquée »).</li>
+  <li><b>La durée de validité est celle que la mère annonce</b> : le réglage <code>mere.validiteCodeAppairageMinutes</code> (15 minutes par défaut, de 1 à 120, 6.15). L’écran n’en écrit aucune. Si la mère n’en annonce pas, il le dit : « La durée de validité n’est pas communiquée par la mère : le code expire quand elle le décide. »</li>
   <li><b>Le droit</b> est le geste réservé <code>reprise_poste_emettre</code> (administrateur système et DAF d’origine, réglable en fiche de rôle, 5.7). Sans lui, la commande est <b>absente</b> et l’écran dit pourquoi.</li>
   <li><b>Le code n’est jamais journalisé</b> : le journal d’audit reçoit « Code de reprise émis », le poste repris et l’échéance, jamais le code.</li>
   <li><b>Refus nommés</b>, chacun avec son motif et le geste qui le corrige : <code>appareil_inconnu</code> (poste inconnu de la mère ou qui n’est pas un fileul), <code>deja_repris</code> (un poste ne se reprend <b>qu’une fois</b> ; reprendre celui qui l’a remplacé), <code>code_expire</code>, <code>code_utilise</code>, <code>code_inconnu</code>, <code>admin_requis</code> (secret d’administration non reconnu) et <code>acces_refuse</code> (rôle sans le geste). Un refus que l’écran ne connaît pas garde le motif de la mère.</li>
@@ -372,7 +391,7 @@ build_windows.bat</pre>
   -H "x-admin: &lt;secret d’administration&gt;" -H "content-type: application/json" ^
   -d "{\"etiquette\":\"Caisse principale\",\"reprise\":\"&lt;identifiant de l’ancien poste&gt;\"}"</pre>
 </div>
-<p class="non-verifie">Non vérifié sur deux postes Windows réels : l’enchaînement est prouvé par le banc de synchronisation (scénario BASEPORT1, mère Node et mère Dart) et par les tests de l’écran. Les écrans « Appareils et appairage » et « Clé de clinique » écrivent encore « 15 minutes » en dur pour le code d’appairage ordinaire et le code mobile</p>
+<p class="non-verifie">Non vérifié sur deux postes Windows réels : l’enchaînement est prouvé par le banc de synchronisation (scénarios BASEPORT1 et APP1, mère Node et mère Dart) et par les tests de l’écran</p>
 
 <!-- ============================================================ 4. TÉLÉPHONE -->
 <h1 id="telephone"><span class="no">4.</span> Appairer un téléphone</h1>
@@ -397,6 +416,7 @@ build_windows.bat</pre>
   <li>Toucher <b>Appairer ce téléphone</b>.</li>
   <li>Choisir un code PIN à 4 chiffres, puis le saisir une seconde fois.</li>
 </ol>
+<p>Un téléphone <b>neuf</b> reçoit, à l’appairage, les bornes de saisie que la clinique a déjà réglées (6.16) : il n’attend pas une version nouvelle. Sans réglage reçu, il applique les valeurs d’attente.</p>
 <div class="encadre info">
   <p>Sans verrouillage d’écran sur le téléphone, l’application reste fermée : elle ne peut pas protéger le PIN et les données de santé. Activer le verrouillage du téléphone avant l’appairage.</p>
 </div>
@@ -516,6 +536,10 @@ build_windows.bat</pre>
   <li>Les anciennes listes de rôles sont devenues des <b>gestes transverses</b> (module « * », libellé « Geste transverse ») : <code>systeme_administrer</code> (ruban <b>Système</b> et groupe <b>Poste mère</b>), <code>conflits_trancher</code>, <code>sync_valider_flux</code>, les treize gestes <code>alertes_*</code> du centre de notifications (<code>alertes_comptable</code>, <code>alertes_direction</code>, <code>alertes_laboratoire</code>, <code>alertes_creances</code>…), et les gestes de validation des référentiels <code>valider_ref_*</code>.</li>
   <li>Les gestes livrés en dernier : <code>imprimer_tableau</code>, <code>export_regler_limite</code>, <code>reglage_encaissement_sans_prix</code>, <code>reglage_sms</code>, <code>fiscal_confirmer</code>, <code>achats_valider</code>, <code>rh_regler</code>, puis <code>numerotation_modifier</code>, <code>cloture_inventaire</code>, <code>facture_tiers_emettre</code>, <code>rh_confirmer_valeur</code>, <code>tarif_proposer_achat</code>, les trois gestes du plan de travail annuel, <code>rh_planning_individuel</code> les trois gestes de la mise à jour du logiciel (<code>base_exporter</code>, <code>base_importer</code>, <code>maj_lever_blocage</code>), puis <code>reprise_poste_emettre</code>, <code>documents_fiscaux_importer</code> et <code>fiches_aide_valider</code> — voir 5.10.</li>
   <li>Leur origine reproduit les listes d’avant : <b>rien ne change à l’écran sans décision</b>. Une alerte n’est plus routée vers une liste figée : elle va aux rôles qui détiennent le geste dans la matrice en force.</li>
+</ul>
+<ul>
+  <li><b>Le banc des droits est une donnée, plus du code.</b> Les droits que la mère Dart applique en mode <code>--droits=banc</code> (le défaut des bancs d’essai) étaient une table d’environ quatre-vingts littéraux de rôle dans le domaine. Ils vivent maintenant dans <code>packages/sync/banc/droits-banc.json</code>, <b>mêmes droits, octet pour octet</b>, lus par la référence Node et par la mère Dart (<code>chargerDroitsBanc</code>, qui refuse en le nommant un fichier introuvable ou illisible). Les options <code>--droits-banc=chemin</code> des lanceurs le désignent ; sans option, le fichier se cherche en remontant depuis le dossier courant. <b>La production est inchangée</b> : elle applique la matrice <code>rbac.json</code>, réglée à l’écran (5.5 à 5.7).</li>
+  <li><b>Ce qui reste écrit en code, honnêtement.</b> Les rôles d’<b>origine</b> des gestes réservés (le fichier des gestes, environ 192 littéraux) <b>n’ont pas été déplacés</b> dans un fichier de données : la fonction qui les lit est appelée sans argument par vingt-neuf sites (domaine, poste, mobile, mère), et un registre global oublié retirerait en silence tous les droits d’origine. L’administrateur règle déjà chaque geste par fiche de rôle, sans toucher au code. Le détail des tolérances restantes est en 13.5 (famille F).</li>
 </ul>
 <div class="encadre observer">
   <p>L’onglet <b>Gestes réservés</b> de <span class="ch">Rôles &amp; permissions (RBAC)</span> les liste tous. L’annexe B donne les <span data-compte="gestes"></span> gestes avec leurs rôles d’origine, extraits du code.</p>
@@ -650,11 +674,31 @@ build_windows.bat</pre>
 <h3>Postes rattachés et synchronisation</h3>
 <ul>
   <li>La collection <code>fichesAide</code> est de la famille <b>A</b> (fiches descriptives, champ à champ) : un <b>fileul rédige et modifie</b> les fiches non validées, elles rejoignent la mère. Les identifiants portent l’étiquette du poste : deux postes hors ligne ne forment jamais la même fiche.</li>
-  <li>La <b>validation ne s’écrit que sur la mère</b> : la commande « Valider » est absente d’un poste rattaché, et la mère refuse sinon (<code>validation_reservee_mere</code>, <code>fiche_validee</code>). Une mère coupée suspend la validation, pas la rédaction.</li>
+  <li>La <b>validation se dépose depuis un poste rattaché</b> (genre <code>fiche_aide_valider</code> des validations déposées, 10.2) : voir ci-dessous. La mère la rejoue sous le rôle et le nom du déposant, avec sa matrice, sa fiche et ses rôles.</li>
   <li>Les fiches <b>ne vont jamais vers un téléphone</b>.</li>
   <li>Refus nommés du domaine, entre autres : <code>ROLE_INCONNU</code> (rôle absent de la matrice), <code>AUTEUR_NE_VALIDE_PAS</code>, <code>PROFESSIONNEL_REQUIS</code>, <code>PROFESSIONNEL_ABSENT</code>, <code>DATE_PROFESSIONNEL_*</code>.</li>
 </ul>
-<p class="non-verifie">Non fait : le dépôt d’une demande de validation par un fileul vers la mère. Un rôle créé en exploitation n’a pas l’écran tant qu’une surcharge ne le lui ouvre (5.6)</p>
+<h3>Valider depuis un poste rattaché</h3>
+<p>Un fileul rédigeait déjà ; il valide aussi, <b>si son rôle détient le geste</b> <code>fiches_aide_valider</code>. La note « Poste rattaché : vous pouvez rédiger, modifier et valider des fiches » l’annonce en haut de l’écran.</p>
+<figure class="capture" data-capture="admin-55-fiches-fileul" data-recadrage="0,360,1800,1700" data-cibles='[{"c":"Poste rattaché","de":"bas","long":50},{"c":"Valider","de":"gauche","long":120}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>L’écran des fiches d’aide sur un poste <b>rattaché</b>, sous le rôle DAF : la note du haut, et <b>Valider</b> toujours offert.</figcaption>
+</figure>
+<ul class="legende-fleches">
+  <li><span class="num-rouge">1</span><b>Note « Poste rattaché »</b> : une validation est <b>transmise</b> à la mère, qui la rejoue et répond sur cet écran.</li>
+  <li><span class="num-rouge">2</span><b>Valider</b> : le geste ouvre la même fenêtre qu’à la mère. Le contrôle à blanc se fait <b>sur le poste</b> (geste, auteur différent du validateur, professionnel nommé, fiche inconnue ou archivée) : un refus se nomme dès là, <b>rien n’est déposé</b>.</li>
+</ul>
+<ol class="etapes">
+  <li>Cliquer sur <b>Valider</b>, relire la fiche, cliquer sur <b>Valider la fiche</b>. Le message « Validation transmise à la mère. » (ou « Validation déjà transmise. ») s’affiche.</li>
+  <li>La fiche reste <b>proposée</b> et porte le badge « Validation transmise à la mère, en attente » ; la commande <b>Valider</b> disparaît, et aucun second geste ni aucune modification n’est possible pendant l’attente.</li>
+  <li>La mère répond sur la même fiche de dépôt : <b>confirmée</b> (la fiche devient validée, le nom du déposant et la date du geste sont portés), <b>déjà faite</b>, ou <b>refusée</b> avec son code, son motif et le geste pour corriger. L’auteur du geste est notifié.</li>
+</ol>
+<ul>
+  <li><b>On valide ce qu’on a lu.</b> La demande porte l’<b>empreinte du contenu relu</b> : si l’auteur a réécrit la fiche entre-temps, la mère refuse <code>FICHE_MODIFIEE</code> et dit le geste pour corriger. Seul le contenu compte, pas les marques de la fiche.</li>
+  <li>La mère refait les contrôles communs : compte signataire (<code>COMPTE_INCONNU</code>…, 10.2), geste relu à <b>sa</b> matrice, et pour une fiche qui engage le bloc, le geste du professionnel, son nom et sa date.</li>
+  <li><b>Mère coupée</b> : la demande reste « déposée », rien ne se perd, aucun doublon à la reprise (une demande identique en attente n’est pas doublée). Au-delà de <code>validations.delaiAlerteMereHeures</code> (4 h), l’alerte part vers les détenteurs de <code>fiches_aide_valider</code> et l’administrateur.</li>
+  <li>Une fiche <b>remplaçante</b> validée archive la fiche remplacée (RG-14).</li>
+</ul>
+<p>Un rôle créé en exploitation n’a pas l’écran tant qu’une surcharge ne le lui ouvre (5.6).</p>
 
 <!-- ============================================================ 6. PARAMÈTRES -->
 <h1 id="parametres"><span class="no">6.</span> Paramètres de clinique</h1>
@@ -692,7 +736,7 @@ build_windows.bat</pre>
 <h2 id="param-mere">6.4 Seule la mère écrit (famille R)</h2>
 <p>Les paramètres appartiennent à la famille R des collections : la mère seule écrit, les fileuls reçoivent. Sur un fileul, la commande <b>Régler à partir d’une date</b> est absente.</p>
 <ul>
-  <li>Les validations de référentiels (actes, valorisations, barèmes…) faites sur un fileul sont <b>déposées</b> : la mère les rejoue sous le rôle et le nom de leur auteur.</li>
+  <li>Les validations de référentiels (actes, valorisations, barèmes…) faites sur un fileul sont <b>déposées</b> : la mère les rejoue sous le rôle et le nom de leur auteur. Depuis cette édition, la <b>validation d’une fiche d’aide</b> (5.13) et l’<b>import de la liasse fiscale</b> (9.10) se déposent de même.</li>
   <li>Le badge « Transmise à la mère, en attente » reste affiché jusqu’à l’application.</li>
   <li>Un réglage qui a son droit (MECeF, fichiers numérisés, lecture des scans, circuit de clôture) exige en plus son geste réservé.</li>
 </ul>
@@ -821,11 +865,11 @@ build_windows.bat</pre>
 <ul>
   <li>Les autres seuils suivent la même règle et se trouvent par famille (caisse, assurances, hospitalisation, notifications, achats, validations, administration, fiscal, laboratoire, RH, consultation, assistant, qualité, console de la mère) : voir l’annexe C.</li>
   <li><b>Tous sont des valeurs d’attente</b> reprises du code, marquées « à valider par la Direction de Baguidi ». Les confirmer, ou les corriger, par une version datée.</li>
-  <li>Le <b>téléphone ne reçoit aucun paramètre de clinique</b> (RG-13). Les bornes de saisie du téléphone, les règles de la mère (fenêtre de réinitialisation, supervision) et les tranches de la balance âgée des assureurs <b>ne sont pas encore réglables</b>.</li>
+  <li>Le <b>téléphone ne reçoit aucun paramètre de clinique</b> (RG-13), à <b>une seule exception</b> : la liste blanche des 37 bornes de saisie de la famille <code>mobile</code> (6.16). Les règles de la mère (6.15) et les tranches de la balance âgée des assureurs (6.17) sont, elles, des réglages datés de cette édition : elles ne sont plus « non réglables ».</li>
 </ul>
 
 <h2 id="param-listes">6.11 Les listes de référence</h2>
-<p>Cinquante-trois listes de libellés (services de la clinique, motifs, natures, catégories…) sont des <b>réglages « texte »</b> datés, famille <b>Listes de référence</b> (une famille par module M1 à M13, MECeF, rapports, configuration et socle). Les valeurs sont séparées par un point-virgule.</p>
+<p>Soixante-dix-neuf listes de libellés (services de la clinique, motifs, natures, catégories…) sont des <b>réglages « texte »</b> datés, famille <b>Listes de référence</b> (une famille par module M1 à M13, MECeF, rapports, configuration et socle). Elles étaient 53 à l’édition précédente : 26 listes posées en ligne dans un formulaire ou lues par un écran ont rejoint le registre. Les valeurs sont séparées par un point-virgule ; quelques-unes portent un format propre (6.18).</p>
 <figure class="capture" data-capture="admin-40-param-liste" data-recadrage="0,125,1800,420" data-cibles='[{"c":"Carte","rect":[56,140,420,30],"de":"droite","long":160}]'>
 <figcaption><span class="tag reel">CAPTURE RÉELLE</span>La liste <b>Services de la clinique</b> (<code>listes.socle.services</code>) : une seule liste pour la RH, le planning, les comptes et la paie.</figcaption>
 </figure>
@@ -837,7 +881,8 @@ build_windows.bat</pre>
 <ul>
   <li>Une liste <b>vide, illisible ou archivée</b> retombe sur la liste d’attente. La saisie d’une liste vide n’est pas refusée : elle est ignorée à la lecture.</li>
   <li>Les quatre copies de la liste des services sont désormais <b>une seule</b> liste : <code>listes.socle.services</code>.</li>
-  <li><b>Ne sont pas des listes réglables</b> : les énumérations lues par la logique (codes des modes de paiement, familles de tarif, catégories de produit), les listes posées dans un formulaire et celles qu’une règle lit (états d’immobilisation, conclusions de la consultation pré-anesthésique). Un libellé changé ne doit pas changer une décision.</li>
+  <li><b>Les énumérations lues par la logique</b> (codes des modes de paiement, familles de tarif, catégories de produit…) sont réglables par leur <b>libellé seulement</b> : dix-huit réglages <code>libelles.*</code> au format « code=Libellé » (6.18). Le code n’est jamais un réglage.</li>
+  <li><b>Restent écrites en code, avec leur raison</b> : les listes que la règle lit par leur <b>valeur enregistrée</b> (états d’immobilisation, conclusions de la consultation pré-anesthésique, nature d’une opération de remboursement, évolution maternelle). Un libellé changé ne doit pas changer une décision déjà signée ; la liste complète est en 13.5.</li>
 </ul>
 
 <h2 id="param-routage">6.12 Le routage des notifications</h2>
@@ -863,6 +908,150 @@ build_windows.bat</pre>
 
 <h2 id="param-support">6.14 Le contact de l’éditeur et la version affichée</h2>
 <p>L’écran <b>Contactez l’éditeur</b> (menu du profil) lit cinq réglages de la famille <b>Contact de l’éditeur</b> : <code>support.editeurAuteur</code>, <code>support.editeurEmails</code>, <code>support.editeurTelephone</code>, <code>support.editeurHoraires</code> et <code>support.versionAffichee</code> (le libellé de version de l’écran <b>Aide &amp; À propos</b>). Ils se corrigent par une version datée. <b>Les quatre réglages de coordonnées (nom, adresses, téléphone, horaires) sont vides à la livraison</b> : aucune coordonnée de personne n’est une valeur d’attente. Tant qu’ils sont vides, l’écran affiche « Non renseigné » et le message d’aide n’est pas envoyé par courriel (il reste enregistré) ; l’annexe C écrit « à renseigner par la clinique ». La clinique les renseigne ici par une version datée. Le libellé de version affiché est une valeur d’attente : il ne se met pas à jour tout seul à chaque livraison.</p>
+
+<h2 id="param-mere-reglages">6.15 Les réglages de la console du poste mère (famille <code>mere</code>)</h2>
+<p>Seize règles de la mère, écrites en littéraux dans le code de synchronisation, sont devenues des <b>réglages datés</b> de la famille <b>Console du poste mère</b>. La mère les <b>relit dans sa propre base à chaque usage</b> : à chaque émission de code, à chaque ouverture de la fenêtre de réinitialisation, à chaque contrôle de supervision, à la date du jour. La version datée la plus récente dont la date d’effet est passée fait foi ; une version archivée est ignorée.</p>
+<figure class="capture" data-capture="admin-51-param-mere" data-recadrage="0,150,1800,550" data-cibles='[{"c":"Carte","rect":[50,258,640,34],"de":"droite","long":160}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>Un réglage de la mère dans <b>Paramètres système ➔ Paramètres</b> : la durée de validité d’un code d’appairage (15 minutes, de 1 à 120).</figcaption>
+</figure>
+<table class="tableau">
+  <thead><tr><th style="width:33%">Réglage (clé)</th><th>Ce qu’il commande</th><th style="width:9%">Unité</th><th style="width:9%">Attente</th><th style="width:11%">Bornes</th></tr></thead>
+  <tbody>
+    <tr><td><code>mere.validiteCodeAppairageMinutes</code></td><td>Durée de validité d’un code d’appairage (poste, mobile, reprise d’un poste). Un code déjà émis garde l’échéance qu’il a reçue.</td><td>min</td><td>15</td><td>1 à 120</td></tr>
+    <tr><td><code>mere.fenetreReinitMinutes</code></td><td>Fenêtre pendant laquelle la console autorise la réinitialisation de production, une fois ouverte (12.2). Elle se referme seule.</td><td>min</td><td>30</td><td>1 à 120</td></tr>
+    <tr><td><code>mere.delaiSauvegardeQuotidienneHeures</code></td><td>La sauvegarde chiffrée quotidienne part à l’heure réglée si la dernière date de plus que ce délai.</td><td>h</td><td>20</td><td>1 à 48</td></tr>
+    <tr><td><code>mere.ageLimiteCopieMagasinHeures</code></td><td>Au-delà de cet âge, la dernière copie de nuit du magasin est signalée en retard (11.2).</td><td>h</td><td>30</td><td>1 à 168</td></tr>
+    <tr><td><code>mere.copieFichiersCyclesTolerables</code></td><td>Nombre de fréquences de copie des fichiers qu’une copie peut manquer avant d’être en retard.</td><td>cycles</td><td>2</td><td>1 à 10</td></tr>
+    <tr><td><code>mere.toleranceRetardCopieFichiersMinutes</code></td><td>Minutes ajoutées au délai précédent (durée de la copie, lenteur du réseau).</td><td>min</td><td>5</td><td>0 à 120</td></tr>
+    <tr><td><code>mere.supervisionDisqueAttentionGo</code></td><td>Espace disque libre sous lequel le contrôle « Disque » passe en attention. Strictement supérieur au seuil d’alerte.</td><td>Go</td><td>10</td><td>1 à 10 000</td></tr>
+    <tr><td><code>mere.supervisionDisqueAlerteGo</code></td><td>Espace disque libre sous lequel le contrôle « Disque » passe en alerte.</td><td>Go</td><td>2</td><td>1 à 10 000</td></tr>
+    <tr><td><code>mere.supervisionSauvegardeAttentionHeures</code></td><td>Ancienneté de la dernière sauvegarde au-delà de laquelle le contrôle passe en attention. Strictement inférieur au seuil d’alerte.</td><td>h</td><td>26</td><td>1 à 720</td></tr>
+    <tr><td><code>mere.supervisionSauvegardeAlerteHeures</code></td><td>Ancienneté de la dernière sauvegarde au-delà de laquelle le contrôle passe en alerte.</td><td>h</td><td>50</td><td>1 à 720</td></tr>
+    <tr><td><code>mere.supervisionPosteSilenceAttentionMinutes</code></td><td>Silence d’un poste appairé en attention. Strictement inférieur au seuil d’alerte.</td><td>min</td><td>30</td><td>1 à 1 440</td></tr>
+    <tr><td><code>mere.supervisionPosteSilenceAlerteMinutes</code></td><td>Silence d’un poste appairé en alerte (éteint, hors réseau ou en panne).</td><td>min</td><td>240</td><td>1 à 10 080</td></tr>
+    <tr><td><code>mere.supervisionPosteRetardOperations</code></td><td>Retard d’un poste, en opérations du journal de la mère, au-delà duquel il passe en attention.</td><td>opérations</td><td>500</td><td>1 à 1 000 000</td></tr>
+    <tr><td><code>mere.supervisionRelaisRetardAttention</code></td><td>Opérations en attente d’envoi au relais à partir desquelles la liaison passe en attention. Strictement inférieur au seuil d’alerte.</td><td>opérations</td><td>50</td><td>1 à 1 000 000</td></tr>
+    <tr><td><code>mere.supervisionRelaisRetardAlerte</code></td><td>Opérations en attente d’envoi au relais à partir desquelles la liaison passe en alerte.</td><td>opérations</td><td>2 000</td><td>1 à 1 000 000</td></tr>
+    <tr><td><code>mere.supervisionDeriveHorlogeMinutes</code></td><td>Dérive d’horloge d’un poste, par rapport à la mère, à signaler (« Horloge à vérifier »).</td><td>min</td><td>2</td><td>1 à 60</td></tr>
+    <tr><td><code>mere.fenetreJournalAlterationsJours</code></td><td>Fenêtre de comptage des altérations du journal (déjà présent à l’édition précédente).</td><td>jours</td><td>30</td><td>1 à 365</td></tr>
+  </tbody>
+</table>
+<ul>
+  <li><b>Qui les change</b> : le détenteur du droit d’écrire <b>Paramètres système</b> (administrateur système, Direction / Gérance, DAF d’origine), <b>sur la mère</b> : un fileul lit, la commande <b>Régler à partir d’une date</b> y est absente (6.4). Aucun de ces réglages n’exige un geste réservé.</li>
+  <li><b>Les deux seuils d’une paire</b> (attention et alerte : disque, sauvegarde, silence d’un poste, retard du relais) doivent rester cohérents : l’attention est toujours plus clémente que l’alerte. Une paire inversée retombe <b>ensemble</b> sur les deux valeurs d’attente. Une base illisible n’empêche pas la supervision de le dire.</li>
+  <li><b>Les écrans ne portent plus aucun nombre</b> : « Appareils et appairage », « Clé de clinique », la console et l’assistant d’installation disent la durée du code que la mère renvoie (3.1) ; le bouton de réinitialisation annonce la fenêtre en vigueur (12.2).</li>
+  <li>La surcharge de lancement <code>--code-ttl</code> (en millisecondes) n’existe plus que pour les bancs d’essai qui éprouvent l’expiration : <b>on ne règle pas la clinique par là</b>.</li>
+</ul>
+<div class="encadre attention" data-titre="Attention : un poste déjà en service">
+  <p>La mère sème les réglages manquants au démarrage. Tant qu’elle ne l’a pas fait, la <b>valeur d’attente</b> s’applique (le comportement d’avant). Aucune migration n’est nécessaire.</p>
+</div>
+
+<h2 id="param-mobile">6.16 Les bornes de saisie du téléphone (famille <code>mobile</code>)</h2>
+<p>Dix-huit champs de l’application mobile refusent une valeur « improbable » (une température de 60 °C, un terme de 80 SA). Ces bornes vivaient en littéraux dans le code mobile et l’écran de réception. Elles sont devenues <b>37 réglages</b> (18 champs × borne basse et borne haute, plus l’âge déclaré maximal de la réception), famille <b>Téléphone : bornes de saisie</b>.</p>
+<figure class="capture" data-capture="admin-52-param-mobile" data-recadrage="0,150,1800,550" data-cibles='[{"c":"Carte","rect":[50,258,640,34],"de":"droite","long":160}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>Une borne de saisie du téléphone : la température la plus basse acceptée (30 °C, enveloppe de 20 à 50).</figcaption>
+</figure>
+<ul>
+  <li><b>Ce ne sont pas des seuils de décision.</b> Une borne de saisie dit « au-delà, c’est une faute de frappe » ; elle ne décide d’aucune conduite clinique. Les seuils d’alerte du téléphone (par exemple la fièvre à 38 °C ou l’âge à risque d’une CPN) <b>ne sont pas convertis</b> : ils attendent la validation des professionnels.</li>
+  <li><b>Une liste blanche, et rien d’autre.</b> Seules ces 37 clés sont livrées au téléphone ; elles sont déclarées « mobile », jamais sensibles, hors famille réservée. Tout autre réglage de clinique reste <b>interdit au téléphone</b> (RG-13). Un test rapproche la liste blanche de ce que le registre déclare.</li>
+  <li><b>Une enveloppe que la clinique ne franchit pas.</b> Chaque borne a un plancher et un plafond (dernière colonne) : un réglage ne peut pas désarmer le contrôle. Une paire (basse, haute) incohérente, ou hors enveloppe, retombe <b>ensemble</b> sur les deux valeurs d’attente. Hors bornes, la valeur d’attente s’applique ; la saisie d’une valeur hors enveloppe n’est pas refusée à l’écran des paramètres, elle est ignorée à la lecture.</li>
+  <li><b>Livraison.</b> La mère publie ces versions par le canal ordinaire des opérations. Un téléphone <b>neuf</b> les reçoit aussi dans l’instantané de configuration qu’il reçoit une fois à l’appairage (y compris un téléphone appairé avant cette édition) : il n’attend pas qu’on règle quelque chose.</li>
+  <li><b>Effet.</b> Le téléphone relit sa base <b>à chaque geste</b> : une borne réglée s’applique à la synchronisation suivante, sans redémarrage. Sans réglage reçu, base vide ou illisible : <b>les valeurs d’attente</b>, c’est-à-dire le comportement d’avant. Le refus nomme la borne en vigueur (« valeur improbable (30 à 47) »). La borne basse de l’âge (0) est structurelle.</li>
+  <li><b>Qui les change</b> : comme pour la mère (6.15), le détenteur du droit d’écrire <b>Paramètres système</b> sur la mère. Valeurs d’attente à confirmer par les professionnels de la clinique.</li>
+</ul>
+<table class="tableau">
+  <thead><tr><th style="width:20%">Écran du téléphone</th><th>Champ</th><th style="width:8%">Unité</th><th style="width:15%">Attente (basse – haute)</th><th style="width:21%">Enveloppe (plancher – plafond)</th></tr></thead>
+  <tbody>
+    <tr><td>Constantes</td><td>La température</td><td>°C</td><td>30 – 45</td><td>20 – 50</td></tr>
+    <tr><td>Constantes</td><td>La systolique</td><td>mmHg</td><td>50 – 260</td><td>30 – 350</td></tr>
+    <tr><td>Constantes</td><td>La diastolique</td><td>mmHg</td><td>30 – 160</td><td>20 – 250</td></tr>
+    <tr><td>Constantes</td><td>Le pouls</td><td>/min</td><td>20 – 250</td><td>10 – 350</td></tr>
+    <tr><td>Constantes</td><td>La FR</td><td>/min</td><td>5 – 80</td><td>1 – 150</td></tr>
+    <tr><td>Constantes</td><td>La SpO₂</td><td>%</td><td>50 – 100</td><td>0 – 100</td></tr>
+    <tr><td>Constantes</td><td>Le poids</td><td>kg</td><td>0,5 – 300</td><td>0 – 700</td></tr>
+    <tr><td>Prescription</td><td>La durée</td><td>jours</td><td>1 – 90</td><td>1 – 365</td></tr>
+    <tr><td>CPN (consultation prénatale)</td><td>Le terme</td><td>SA</td><td>4 – 45</td><td>1 – 60</td></tr>
+    <tr><td>CPN (consultation prénatale)</td><td>Le poids</td><td>kg</td><td>30 – 200</td><td>1 – 400</td></tr>
+    <tr><td>CPN (consultation prénatale)</td><td>La systolique</td><td>mmHg</td><td>60 – 260</td><td>30 – 350</td></tr>
+    <tr><td>CPN (consultation prénatale)</td><td>La diastolique</td><td>mmHg</td><td>30 – 160</td><td>20 – 250</td></tr>
+    <tr><td>CPN (consultation prénatale)</td><td>Le BCF</td><td>/min</td><td>60 – 220</td><td>30 – 300</td></tr>
+    <tr><td>CPoN (post-natale)</td><td>La température</td><td>°C</td><td>34 – 43</td><td>20 – 50</td></tr>
+    <tr><td>CPoN (post-natale)</td><td>Le poids du bébé</td><td>g</td><td>1000 – 6000</td><td>300 – 10 000</td></tr>
+    <tr><td>Surveillance maternité</td><td>Le pouls</td><td>/min</td><td>30 – 220</td><td>10 – 350</td></tr>
+    <tr><td>Surveillance maternité</td><td>La FR du bébé</td><td>/min</td><td>10 – 100</td><td>1 – 150</td></tr>
+    <tr><td>Surveillance maternité</td><td>La T° du bébé</td><td>°C</td><td>34 – 41</td><td>20 – 50</td></tr>
+    <tr><td>Réception</td><td>Âge déclaré (borne haute seule)</td><td>ans</td><td>0 – 120</td><td>borne haute : 100 – 150</td></tr>
+  </tbody>
+</table>
+<p>Les clés se forment ainsi : <code>mobile.saisie.&lt;écran&gt;.&lt;champ&gt;Min</code> et <code>…Max</code> (par exemple <code>mobile.saisie.constantes.temperatureMin</code>), et <code>mobile.saisie.reception.ageDeclareMaxAns</code> pour l’âge. Les 37 sont listées à l’annexe C.</p>
+
+<h2 id="param-seuils-isoles">6.17 Les autres seuils devenus réglages</h2>
+<p>Huit réglages isolés complètent les seuils de 6.10. Chacun remplace un littéral qui décidait en silence ; tous se règlent par une version datée et retombent sur leur attente hors bornes.</p>
+<table class="tableau">
+  <thead><tr><th style="width:33%">Réglage (clé)</th><th>Ce qu’il commande</th><th style="width:9%">Unité</th><th style="width:9%">Attente</th><th style="width:11%">Bornes</th></tr></thead>
+  <tbody>
+    <tr><td><code>assurances.balanceAgeeAssureurBorne1Jours</code></td><td>Première borne de la <b>balance âgée des assureurs</b> (tranche 1 jusqu’à cette borne incluse). Strictement inférieure à la seconde.</td><td>jours</td><td>30</td><td>1 à 365</td></tr>
+    <tr><td><code>assurances.balanceAgeeAssureurBorne2Jours</code></td><td>Seconde borne (tranche 2 jusqu’à elle, tranche 3 au-delà).</td><td>jours</td><td>90</td><td>2 à 730</td></tr>
+    <tr><td><code>consultation.termeMaxCertificatSemaines</code></td><td>Terme maximal accepté sur un <b>certificat de grossesse</b> ; la borne basse (1) est structurelle.</td><td>SA</td><td>45</td><td>30 à 60</td></tr>
+    <tr><td><code>imagerie.delaiAberrationJours</code></td><td>Un délai demande → compte rendu qui atteint ce nombre de jours est écarté de la moyenne des statistiques d’imagerie.</td><td>jours</td><td>30</td><td>1 à 365</td></tr>
+    <tr><td><code>maj.validiteAutorisationHeures</code></td><td>Validité de l’autorisation écrite par « Préparer la mise à jour » (11.7).</td><td>h</td><td>4</td><td>1 à 72</td></tr>
+    <tr><td><code>numerisation.fenetreDossiersActifsMois</code></td><td>Un dossier est « actif », donc prioritaire à la numérisation, s’il a eu une consultation, une admission ou une analyse dans cette fenêtre.</td><td>mois</td><td>24</td><td>1 à 120</td></tr>
+    <tr><td><code>numerisation.fondsPapierDossiers</code></td><td>Fonds de dossiers papier recensés : le dénominateur du plan de numérisation. Source : rapport de cadrage, « environ 18 000 dossiers ».</td><td>dossiers</td><td>18 000</td><td>0 à 1 000 000</td></tr>
+    <tr><td><code>comptabilite.tailleMaxDepotFiscalKo</code></td><td>Taille maximale d’un document de liasse ou de classeur déposé depuis un poste rattaché (9.10).</td><td>Ko</td><td>512</td><td>16 à 8 192</td></tr>
+  </tbody>
+</table>
+<ul>
+  <li><b>Balance âgée des assureurs.</b> Les identifiants « moins de 30 », « 30 à 90 » et « plus de 90 jours » portaient leurs bornes dans leur nom ; ils sont devenus <code>tranche1</code>, <code>tranche2</code> et <code>tranche3</code>, et <b>les libellés se calculent</b> à partir des deux réglages (filtre, compteur, en-têtes, état imprimé). Ces bornes sont <b>indépendantes</b> de celles de la balance des patients. Une paire incohérente retombe ensemble sur 30 et 90. Les écrans <b>créances</b> et <b>compagnies</b> de M9 les lisent ; l’assistant aussi : tant que les bornes des assureurs sont celles des patients, son tableau est celui d’avant ; dès qu’elles diffèrent, il classe chaque créance sur <b>ses</b> tranches et dit les deux séries.</li>
+  <li><b>Terme d’un certificat de grossesse.</b> Changement de comportement assumé : la borne est <b>désormais appliquée</b> à la saisie (la déclaration du champ portait 45, mais l’écran ne la faisait pas respecter) ; un terme hors de 1 à N est refusé en nommant N. Valeur à faire valider par les sages-femmes.</li>
+  <li><b>Plan de numérisation.</b> Il est <b>calculé</b> : numérisés = patients portant un fichier déposé ; prioritaires = patients actifs dans la fenêtre ; lots = liste ordonnée <code>listes.m1.lotsNumerisation</code>. Seul le <b>fonds papier</b> est déclaré. Le lot « Patients suivis (chroniques) » s’affiche « non calculable » (aucun champ ne marque une affection chronique) et le jeu livré montre donc des pourcentages minuscules : c’est sa vérité. Un fonds déclaré inférieur au répertoire est dit, et le répertoire est retenu.</li>
+  <li><b>Liasse déposée depuis un fileul.</b> La taille est contrôlée au dépôt <b>et</b> à l’application par la mère.</li>
+</ul>
+
+<h2 id="param-libelles">6.18 Libellés des énumérations et listes à format propre</h2>
+<h3>Les dix-huit réglages <code>libelles.*</code></h3>
+<p>Certaines valeurs sont lues par la logique : le mode de paiement « assurance » n’est pas un règlement du patient, la famille de tarif « GYNECO » ne se tarife pas comme une consultation. Leur <b>code</b> est un invariant du logiciel ; leur <b>libellé</b> affiché se règle. Le réglage se lit « code=Libellé ; code=Libellé ».</p>
+<figure class="capture" data-capture="admin-53-param-libelles" data-recadrage="0,150,1800,550" data-cibles='[{"c":"Carte","rect":[50,258,380,34],"de":"droite","long":160}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>Le réglage <b>Modes de paiement</b> (<code>libelles.m8.modesPaiement</code>) : cinq codes, cinq libellés d’attente.</figcaption>
+</figure>
+<table class="tableau">
+  <thead><tr><th style="width:31%">Réglage (clé)</th><th style="width:25%">Ce qu’il nomme</th><th style="width:6%">Codes</th><th>Codes (invariants)</th></tr></thead>
+  <tbody>
+    <tr><td><code>libelles.m8.modesPaiement</code></td><td>Modes de paiement</td><td>5</td><td class="petit">especes, tpe, mtn, moov, assurance</td></tr>
+    <tr><td><code>libelles.m6.categoriesProduit</code></td><td>Catégories de produit</td><td>8</td><td class="petit">medicament, reactif, conso_labo, conso_medical, fourniture, entretien, petit_materiel, immobilisation</td></tr>
+    <tr><td><code>libelles.m6.typesStock</code></td><td>Types de stock</td><td>3</td><td class="petit">gros, detail, labo</td></tr>
+    <tr><td><code>libelles.m6.naturesPerte</code></td><td>Natures de perte</td><td>3</td><td class="petit">casse, peremption, perte</td></tr>
+    <tr><td><code>libelles.cfg.famillesTarif</code></td><td>Familles de tarif</td><td>8</td><td class="petit">CONSULTATION, ACTE, HOSPITALISATION, AMI, GYNECO, CERTIFICAT, LABO, IMAGERIE</td></tr>
+    <tr><td><code>libelles.m12.categoriesDepense</code></td><td>Catégories de dépenses (lecture de gestion)</td><td>7</td><td class="petit">medical, fonctionnement, logistique, entretien, personnel, fiscal, divers</td></tr>
+    <tr><td><code>libelles.m2.postesFile</code></td><td>Postes de la file d'attente</td><td>7</td><td class="petit">accueil, consultation, caisse, prelevement, pharmacie, salle_soins, imagerie</td></tr>
+    <tr><td><code>libelles.m5.servicesDemandeurs</code></td><td>Services demandeurs d'un examen</td><td>3</td><td class="petit">maternite, medecine, specialite</td></tr>
+    <tr><td><code>libelles.m11.fonctionsPaie</code></td><td>Fonctions du personnel (colonnes de la grille des primes)</td><td>15</td><td class="petit">aide_soignant, caissiere, accueil, infirmier, sage_femme, tsl, biomedical, medecin, direction, comptable, stock, dispensatrice, securite, entretien, chauffeur</td></tr>
+    <tr><td><code>libelles.m1.tempsExamen</code></td><td>Temps de l'examen physique</td><td>4</td><td class="petit">inspection, palpation, percussion, auscultation</td></tr>
+    <tr><td><code>libelles.m1.categoriesAntecedent</code></td><td>Catégories d'antécédents</td><td>3</td><td class="petit">medicaux, chirurgicaux, gyneco_obstetricaux</td></tr>
+    <tr><td><code>libelles.m13.typesQuestion</code></td><td>Types de question d'une enquête</td><td>3</td><td class="petit">note, choix, texte</td></tr>
+    <tr><td><code>libelles.m13.categoriesDocument</code></td><td>Catégories de la GED</td><td>11</td><td class="petit">ordonnance, resultat, rapport, facture_patient, bon_commande, bon_livraison, facture_fournisseur, contrat, bulletin, courrier, cloture_exercice</td></tr>
+    <tr><td><code>libelles.m10.typesPlanning</code></td><td>Types de planning</td><td>12</td><td class="petit">garde, garde_hospi, garde_soins, permanence, soiree, entretien_general, repos24, repos48, conge, absence, remplacement, incineration</td></tr>
+    <tr><td><code>libelles.m9.categoriesGarantie</code></td><td>Catégories de garantie d'assurance</td><td>16</td><td class="petit">consultation, analyse, medicament, vitamine, soin, chirurgie, maternite, hospitalisation, imagerie, ambulance, dentaire, optique, vaccin, kinesitherapie, certificat, autre</td></tr>
+    <tr><td><code>libelles.m9.categoriesAssurance</code></td><td>Catégories d'assurance d'un souscripteur</td><td>3</td><td class="petit">entreprise, particulier, personnel</td></tr>
+    <tr><td><code>libelles.m11.naturesPret</code></td><td>Natures de prêt ou d'avance</td><td>3</td><td class="petit">pret_etudes, avance, pret_social</td></tr>
+    <tr><td><code>libelles.mecef.codesRejet</code></td><td>Motifs de rejet d'une transmission</td><td>5</td><td class="petit">E-101, E-204, E-307, E-412, E-500</td></tr>
+  </tbody>
+</table>
+<ul>
+  <li><b>Code inconnu : ignoré.</b> Un code que le logiciel ne connaît pas n’ajoute rien (la logique ne saurait qu’en faire). <b>Code oublié</b> : il garde son libellé d’attente. <b>Texte vide, illisible ou mal formé</b> : les libellés d’attente reviennent. La saisie d’une liste mal formée n’est pas refusée à l’écran : elle est ignorée à la lecture.</li>
+  <li><b>Les fiches déjà saisies gardent le libellé d’origine</b> : un libellé changé ne réécrit rien.</li>
+  <li>Un <b>sous-ensemble</b> se dit par ses codes, jamais par « les quatre premiers » : la caisse propose quatre <b>codes</b> de règlement du patient, et l’ordre du réglage ne fait pas entrer l’assurance.</li>
+  <li>Le libellé de la famille de tarif « GYNECO » est <b>unifié</b> sur « Gynéco-obstétrique et kits » : les écrans en portaient deux versions.</li>
+</ul>
+<h3>Les listes à format propre</h3>
+<ul>
+  <li><b>« code=Libellé|ton »</b> : <code>listes.m10.naturesPrestationPersonnel</code> et <code>listes.m3.originesReleveSurveillance</code>. Renommer ou recolorer ne change ni le code ni les décomptes.</li>
+  <li><b>Listes de marquage</b> : <code>listes.m2.typesRendezvousUrgents</code> (attente : Urgence) et <code>listes.m13.motifsInterventionUrgents</code> (attente : Urgence médicale ; Urgence obstétricale) disent <b>quels libellés sont rouges</b>. Différence assumée avec l’avant : un motif « Urgence… » <b>ajouté</b> à la liste n’est plus rouge tout seul, il faut le marquer. Un champ <code>urgent</code> porté par la fiche l’emporte sur la liste.</li>
+  <li><b>Tranches d’âge</b> : <code>listes.m5.tranchesAgeStatistiques</code> (laboratoire) et <code>listes.socle.tranchesAgeStatistiquesPilotage</code> (pilotage) donnent les <b>bornes supérieures</b> (« 5 ; 15 ; 25 ; 45 ; 65 »). Les deux écrans gardent leur découpage d’avant : les aligner (format DHIS2) revient à recopier les mêmes bornes dans les deux réglages. Bornes non entières, non croissantes ou hors de 0 à 150 : l’attente revient.</li>
+  <li><b>Association « service=SECTEUR »</b> : <code>listes.socle.secteurParService</code> relie un service à son secteur NS 145.</li>
+  <li><b>Check-listes du bloc</b> (entrée et sortie), issues d’une variable de laboratoire (binaire, ternaire, titre), types d’inventaire, destinations d’un transfert, natures de facture, devises d’un compte, modes de transmission MECeF, motifs de changement de couverture : de simples listes à point-virgule.</li>
+</ul>
+<h3>Le barème des garanties du régime employeur</h3>
+<p>Le barème des conditions de prise en charge (document du 18/06/2026 : vingt garanties, quatorze actes exclus, vingt-trois produits exclus, quinze accords préalables) n’est plus transcrit en constante : c’est le <b>référentiel <code>garanties</code> du jeu livré</b>, daté (version, date et source du document), versé au socle à l’amorçage. Les écrans de M9 le lisent. <b>Sans référentiel, le barème est vide et l’écran le dit</b> (« Aucun barème de référence n’est installé sur ce poste : la grille se saisit ligne à ligne ») : on n’invente pas une grille. La collection des conventions signées reste vide à l’amorçage, faute de convention signée.</p>
 
 <!-- ============================================================ 7. MODULES -->
 <h1 id="modules"><span class="no">7.</span> Activité des modules</h1>
@@ -1215,8 +1404,27 @@ build_windows.bat</pre>
   <li><b>Des versions, jamais un écrasement</b> : un import <b>ajoute</b> une fiche (genre, exercice, date de dépôt, source, instant d’import, auteur). La plus récente <b>fait foi</b> (« Fait foi », « Antérieure », « Archivée »). Un dépôt rectifié le même jour est une version de plus.</li>
   <li><b>Archiver</b> une version exige un <b>motif</b> ; la fiche reste lisible, la précédente reprend si elle était la plus récente (RG-14).</li>
   <li><b>Le droit</b> est le geste réservé <code>documents_fiscaux_importer</code> (comptable et DAF d’origine, réglable en fiche de rôle). Sans lui l’écran est en lecture seule et les commandes d’import et d’archivage sont absentes.</li>
-  <li><b>Sur un fileul</b>, l’écran se lit et dit que la liasse est tenue par la mère : <b>l’import et l’archivage se font sur la mère</b>, la version revient par la synchronisation. La collection ne part <b>jamais vers un téléphone</b> (donnée financière, RG-13).</li>
+  <li><b>Depuis un poste rattaché</b>, le détenteur du geste <b>importe aussi</b> : voir ci-dessous. L’<b>archivage</b> d’une version reste à la mère. La collection reste de famille R (la mère seule écrit : un fileul qui l’écrirait serait refusé <code>droit_refuse</code>) et ne part <b>jamais vers un téléphone</b> (donnée financière, RG-13).</li>
   <li><b>Le journal d’audit</b> garde l’identité, la source et des <b>nombres de lignes</b> par formulaire, jamais un montant, un compte ni un libellé du document.</li>
+</ul>
+<h3>Importer depuis un poste rattaché</h3>
+<figure class="capture" data-capture="admin-54-liasse-fileul" data-recadrage="0,330,1800,760" data-cibles='[{"c":"Poste rattaché","de":"bas","long":50},{"c":"Vérifier le fichier","de":"droite","long":120}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>L’écran d’import sur un poste <b>rattaché</b>, sous le rôle Comptable : la note du haut et la commande de vérification.</figcaption>
+</figure>
+<ul class="legende-fleches">
+  <li><span class="num-rouge">1</span><b>Note « Poste rattaché »</b> : le document est vérifié <b>ici</b> (validateur strict), puis <b>transmis</b> à la mère ; la taille maximale (512 Ko par défaut) est lue du réglage <code>comptabilite.tailleMaxDepotFiscalKo</code> (6.17).</li>
+  <li><span class="num-rouge">2</span><b>Vérifier le fichier (sans rien écrire)</b> : même contrôle qu’à la mère ; un document invalide ou trop volumineux est refusé dès le poste, en le nommant, et <b>rien n’est déposé</b>.</li>
+</ul>
+<ol class="etapes">
+  <li>Choisir le fichier, <b>Vérifier</b>, contrôler la date de dépôt et la source, puis <b>Importer ce document</b> : « Demande d’import transmise à la mère. » (ou « Demande déjà transmise. »). Rien n’est importé avant sa confirmation.</li>
+  <li>Le bloc <b>Demandes d’import transmises</b> liste chaque demande avec son état : « Transmise à la mère, en attente », « Appliquée par la mère » (avec la référence de la version écrite) ou « Refusée par la mère ».</li>
+  <li>La mère (genre <code>liasse_importer</code>) <b>rejoue la validation stricte</b> sur le contenu reçu, sans aucune confiance en la lecture d’un autre poste : elle vérifie que la demande est ce qu’elle annonce, relit le <b>geste</b> <code>documents_fiscaux_importer</code> du compte signataire à sa matrice, applique <b>sous son nom</b> et à la date du geste, puis renvoie un verdict nommé. La version arrive ensuite par la synchronisation.</li>
+</ol>
+<ul>
+  <li><b>Le contenu n’est pas gardé.</b> Après le verdict (accepté, refusé, ou refusé pour compte), la mère <b>vide le contenu</b> de la demande : le document n’est pas dupliqué dans le registre des demandes, seuls l’identité et des nombres de lignes restent, jamais un montant.</li>
+  <li><b>Limite à connaître.</b> Tant que la demande attend, le document voyage <b>dans le journal d’opérations</b> du poste vers la mère : c’est inhérent à un protocole qui transporte la demande.</li>
+  <li><b>Mère coupée</b> : la demande reste « déposée », sans doublon à la reprise ; l’alerte de 4 heures (10.2) part vers les détenteurs de <code>documents_fiscaux_importer</code> et l’administrateur.</li>
+  <li><b>Les refus sont lisibles.</b> Une phrase de refus se compose toujours de la même façon : « code : motif (chemin). geste. » : la ponctuation finale de chaque morceau est retirée puis reposée <b>une fois</b>, de sorte qu’aucun refus ne porte plus de double point.</li>
 </ul>
 <div class="encadre attention" data-titre="Attention : le jeu livré porte des documents de démonstration">
   <p>Le jeu livré contient une liasse et un classeur <b>fictifs</b>, marqués « données de démonstration, à remplacer par la liasse réellement déposée par la clinique ». Avant l’exploitation, importer la liasse réellement déposée et le classeur réel : la nouvelle version fait foi, la démonstration reste lisible, ou s’archive avec motif. Un classeur produit par un autre outil que le générateur de démonstration, dont un total ne se recoupe pas au centime, est refusé en le nommant : la correction se fait dans le document.</p>
@@ -1238,6 +1446,20 @@ build_windows.bat</pre>
 
 <h2 id="synchro-attente">10.2 Les décisions en attente de la mère</h2>
 <p>Trois files attendent la mère : les validations déposées, les demandes de prix et les demandes d’import. La pastille « N décisions en attente de la mère » les compte et donne l’âge de la plus ancienne. Elle est absente à zéro.</p>
+<p>Les <b>validations déposées</b> couvrent plusieurs genres, chacun avec son destinataire d’alerte, lu dans la matrice :</p>
+<table class="tableau">
+  <thead><tr><th style="width:34%">Genre déposé</th><th>Destinataire de l’alerte (détenteurs du geste)</th></tr></thead>
+  <tbody>
+    <tr><td>Circuit d’achat</td><td><code>achats_valider</code></td></tr>
+    <tr><td>Plan de travail annuel</td><td>le geste d’adoption du plan (6.8)</td></tr>
+    <tr><td>Planning RH</td><td>les deux étapes du circuit : Surveillant et DAF</td></tr>
+    <tr><td>Série de numérotation</td><td><code>numerotation_modifier</code></td></tr>
+    <tr><td>Facture à une entreprise</td><td><code>facture_tiers_emettre</code></td></tr>
+    <tr><td><b>Validation d’une fiche d’aide</b> (<code>fiche_aide_valider</code>)</td><td><code>fiches_aide_valider</code></td></tr>
+    <tr><td><b>Import de la liasse fiscale</b> (<code>liasse_importer</code>)</td><td><code>documents_fiscaux_importer</code></td></tr>
+    <tr><td>Réglage posé sous un geste réservé (5.9)</td><td>le geste du réglage</td></tr>
+  </tbody>
+</table>
 <ul>
   <li>Tant que la mère n’a pas confirmé, l’élément reste « à valider » et porte le badge « Transmise à la mère, en attente ». Jamais « Validé ».</li>
   <li>Un dépôt rejoué ne produit aucun effet double. Le verdict revient sur la même fiche : appliquée, sans effet ou refusée avec son motif.</li>
@@ -1249,7 +1471,7 @@ build_windows.bat</pre>
 </figure>
 <p>La pastille passe à l’orange dès la première décision, au rouge au-delà du délai d’alerte. Son info-bulle détaille chaque file.</p>
 <div class="encadre param" data-titre="Paramétrage : l’alerte au bout de 4 heures">
-  <p><code>validations.delaiAlerteMereHeures</code> (défaut : 4, versionné par date). Au-delà, <b>une</b> notification par décision et par destinataire part vers le validateur concerné et vers l’administrateur. Le validateur est lu dans la matrice : rôles qui détiennent le geste (<code>achats_valider</code> pour un circuit d’achat, <code>tarif_decider</code> pour une demande de prix…). Rien n’est bloqué, rien n’est validé à la place de la mère.</p>
+  <p><code>validations.delaiAlerteMereHeures</code> (défaut : 4, versionné par date, décision de la Direction du 16/11/2026). Au-delà, <b>une</b> notification par décision et par destinataire part vers le validateur concerné et vers l’administrateur. Le validateur est lu dans la matrice : rôles qui détiennent le geste (<code>achats_valider</code> pour un circuit d’achat, <code>tarif_decider</code> pour une demande de prix, <code>fiches_aide_valider</code> pour une fiche d’aide, <code>documents_fiscaux_importer</code> pour une liasse…). Un second réglage, <code>validations.delaiPieceAbsenteMinutes</code> (10 minutes), signale une validation déposée dont la pièce n’est pas arrivée. Rien n’est bloqué, rien n’est validé à la place de la mère.</p>
 </div>
 <h3>La vérification du compte signataire</h3>
 <p>Chaque décision déposée porte le compte nominatif de l’agent qui l’a prise. Avant tout rejeu, la mère vérifie ce compte dans SES comptes de la clinique. Le verdict revient au fileul sur la même fiche :</p>
@@ -1326,6 +1548,7 @@ build_windows.bat</pre>
     <tr><td>Heure du contrôle nocturne</td><td><code>horssite.heureControle</code></td><td>2 h</td></tr>
   </tbody>
 </table>
+<p>Quatre réglages de la famille <b>Console du poste mère</b> complètent ce tableau : l’âge limite d’une copie de nuit du magasin (<code>mere.ageLimiteCopieMagasinHeures</code>, 30 h : au-delà, la copie est signalée en retard), le délai de la sauvegarde quotidienne (<code>mere.delaiSauvegardeQuotidienneHeures</code>, 20 h), les cycles manqués tolérés pour les fichiers (<code>mere.copieFichiersCyclesTolerables</code>, 2) et la tolérance de retard des fichiers (<code>mere.toleranceRetardCopieFichiersMinutes</code>, 5 minutes). Une copie de fichiers est en retard quand elle date de plus que « cycles tolérés × fréquence de copie + tolérance » (par défaut 2 × 60 + 5 = 125 minutes). Détail en 6.15.</p>
 <div class="encadre attention">
   <p>Seuls l’administrateur et la Directrice Administrative règlent et restaurent la copie hors site (refus <code>REGLAGE_RESERVE</code> sinon). Un fileul lit le réglage sans pouvoir le changer.</p>
 </div>
@@ -1363,7 +1586,7 @@ build_windows.bat</pre>
   <p>La restauration écrit toujours dans un dossier neuf et vérifie chaque bloc avant d’écrire. Un bloc altéré ou manquant est refusé et nommé (<code>BLOC_ALTERE</code>, <code>BLOC_MANQUANT</code>, <code>MANIFESTE_ALTERE</code>) : rien n’est restauré à moitié.</p>
 </div>
 <div class="encadre attention" data-titre="Attention : ce qui peut manquer">
-  <p>Tout ce que la mère a écrit depuis la dernière copie du magasin (copie de nuit : jusqu’à 30 heures) et les scans déposés depuis la dernière copie des fichiers.</p>
+  <p>Tout ce que la mère a écrit depuis la dernière copie du magasin (copie de nuit : jusqu’à 30 heures par défaut, réglage <code>mere.ageLimiteCopieMagasinHeures</code>) et les scans déposés depuis la dernière copie des fichiers.</p>
 </div>
 <p class="non-verifie">Non vérifié : la réouverture de la base restaurée sous la clé de stockage et le rattachement d’un fileul plus avancé que la copie</p>
 <div class="encadre bonne">
@@ -1469,7 +1692,7 @@ build_windows.bat</pre>
 <ol class="etapes">
   <li><b>Préparer</b>, sur le poste à mettre à jour, avant d’installer : ouvrir <span class="ch">Système ➔ Configuration Clinique ➔ Export, import et mise à jour</span> ou, sur la mère, <span class="ch">Poste mère ➔ Cycle de vie ➔ Mises à jour et compatibilité</span> ; cliquer sur <b>Préparer la mise à jour</b> (repère 4).</li>
   <li><b>Lire le verdict.</b> Sur la <b>mère</b>, le bouton fait la sauvegarde chiffrée de la base, la <b>relit</b> (déchiffrement, ouverture de la copie, contrôle d’intégrité), puis fait l’export portable et le relit. Sur un <b>fileul</b>, l’export portable tient lieu de sauvegarde.</li>
-  <li>Si les <b>deux preuves ont moins de N heures et sont vérifiées</b>, la note verte « Mise à jour AUTORISÉE » apparaît et le fichier <code>autorisation-mise-a-jour.txt</code> est écrit dans le dossier des données : valable <b>4 heures</b>, pour <b>une seule</b> mise à jour.</li>
+  <li>Si les <b>deux preuves ont moins de N heures et sont vérifiées</b>, la note verte « Mise à jour AUTORISÉE » apparaît et le fichier <code>autorisation-mise-a-jour.txt</code> est écrit dans le dossier des données : valable <b>4 heures par défaut</b> (réglage <code>maj.validiteAutorisationHeures</code>, 6.17), pour <b>une seule</b> mise à jour.</li>
   <li><b>Installer</b> : lancer <code>SIGH_Poste_Setup_&lt;version&gt;.exe</code> (1.4). Sans autorisation valable, l’installeur refuse : « Mise à jour BLOQUÉE » suivi de <code>AUTORISATION_ABSENTE</code>, <code>AUTORISATION_EXPIREE</code> ou <code>AUTORISATION_ILLISIBLE</code>. À la fin, il retire l’autorisation.</li>
   <li><b>Contrôler</b> au premier démarrage : le poste joue les migrations nécessaires (le journal d’audit et la méta <code>migrations</code> en font foi). Comparer le nombre de fiches par ensemble avec le manifeste de l’export d’avant. Sur la mère, lire « Mises à jour et compatibilité » (version, appareils) ; vérifier qu’un fileul se resynchronise (journal de la mère, « À traiter »).</li>
 </ol>
@@ -1481,7 +1704,7 @@ build_windows.bat</pre>
   </tbody>
 </table>
 <div class="encadre param">
-  <p><code>maj.sauvegardeMaxHeures</code> (famille <b>Mise à jour du logiciel</b>) : ancienneté maximale de la sauvegarde et de l’export avant une mise à jour. <b>24 h par défaut</b>, de 1 à 168 — <b>valeur d’attente à valider par la Direction</b>. La durée de l’autorisation (4 h) l’est aussi. « Préparer » exige le geste <code>base_exporter</code>.</p>
+  <p><code>maj.sauvegardeMaxHeures</code> (famille <b>Mise à jour du logiciel</b>) : ancienneté maximale de la sauvegarde et de l’export avant une mise à jour. <b>24 h par défaut</b>, de 1 à 168 — <b>valeur d’attente à valider par la Direction</b>. La durée de l’autorisation est un réglage de la même famille : <code>maj.validiteAutorisationHeures</code> (4 h par défaut, de 1 à 72, valeur d’attente à valider) ; le refus d’une autorisation expirée nomme la durée en vigueur. « Préparer » exige le geste <code>base_exporter</code>.</p>
 </div>
 <h3>Cas de force majeure : lever le blocage</h3>
 <ol class="etapes">
@@ -1552,7 +1775,7 @@ build_windows.bat</pre>
 <h2 id="prod-mere">12.2 Archiver à la mère, pour tous les postes</h2>
 <ol class="etapes">
   <li>Ouvrir <span class="ch">Poste mère ➔ Sécurité et continuité ➔ Réinitialisation de production</span>.</li>
-  <li>Cliquer sur <b>Ouvrir la fenêtre (30 min)</b>.</li>
+  <li>Cliquer sur <b>Ouvrir la fenêtre (30 min)</b>. Le nombre de minutes est celui du réglage <code>mere.fenetreReinitMinutes</code> (30 par défaut, de 1 à 120) : le bouton annonce la durée en vigueur.</li>
   <li>Saisir le nom de la clinique, à l’identique.</li>
   <li>Saisir le <b>Second profil confirmant (DAF ou Direction)</b> : une personne différente de l’auteur.</li>
   <li>Saisir le <b>Motif de l’archivage (obligatoire)</b>.</li>
@@ -1641,23 +1864,54 @@ node tools/baguidi/demo-liasse.mjs --verifier</pre>
 </div>
 
 <h2 id="audit-controles">13.5 Les contrôles automatiques contre les valeurs en dur</h2>
-<p>La règle du projet est « <b>rien en dur</b> » : toute valeur métier vient d’un référentiel administrable, d’un paramètre daté, de la matrice ou de l’identité de la clinique. Trois contrôles la gardent, en plus du cliquet des rôles (5.8). Ils s’adressent aux <b>développeurs</b> et au prestataire : l’administrateur n’a pas à les lancer.</p>
+<p>La règle du projet est « <b>rien en dur</b> » : toute valeur métier vient d’un référentiel administrable, d’un paramètre daté, d’une liste de référence, de la matrice ou de l’identité de la clinique. Huit contrôles, appelés <b>cliquets</b>, la gardent. Un cliquet <b>ne se desserre jamais</b> : il échoue si une valeur nouvelle apparaît, <b>et</b> si un site disparaît sans que son plafond soit abaissé (la place libérée ne doit pas resservir). Un fichier absent de la ligne de base a un plafond de zéro. Ils s’adressent aux <b>développeurs</b> et au prestataire : l’administrateur n’a pas à les lancer.</p>
 <table class="tableau">
-  <thead><tr><th style="width:26%">Contrôle</th><th>Ce qu’il refuse</th></tr></thead>
+  <thead><tr><th style="width:5%">Famille</th><th style="width:24%">Ce qu’elle garde</th><th style="width:14%">État réel</th><th>Ce qui reste, et pourquoi</th></tr></thead>
   <tbody>
-    <tr><td><b>Années</b></td><td>Une année nouvelle écrite dans le code, une année tolérée qui se répand, une tolérance devenue sans objet. Liste fermée et motivée : <code>tools/baguidi/annees-tolerees.json</code>.</td></tr>
-    <tr><td><b>Taux et barèmes</b></td><td>Un pourcentage, un montant ou une tranche écrits dans le code hors de leur semence. Un fichier toléré doit porter son motif.</td></tr>
-    <tr><td><b>Numérotation</b></td><td>Un préfixe de pièce ou un millésime écrit dans le code : toute série passe par le référentiel.</td></tr>
-    <tr><td><b>Rôles</b></td><td>Un nom de rôle écrit dans le code (5.8).</td></tr>
+    <tr><td><b>A</b></td><td>Années et dates fixes écrites dans le code</td><td><b>0</b> site toléré</td><td>Liste fermée et motivée : <code>tools/baguidi/annees-tolerees.json</code>.</td></tr>
+    <tr><td><b>B</b></td><td>Taux, pourcentages, montants</td><td><b>0</b></td><td>Rien : le plan de numérisation est <b>calculé</b> (6.17).</td></tr>
+    <tr><td><b>C</b></td><td>Seuils et durées</td><td><b>0</b> (32 avant le lot du 18/11)</td><td>Bornes du téléphone, règles de la mère, balance âgée des assureurs, terme d’un certificat, délai d’imagerie : tous réglages (6.15 à 6.17). Un site est classé <b>structurel</b> et écarté à la main avec son motif : le septième jour de la semaine ISO (dimanche), fait de calendrier et non valeur de clinique.</td></tr>
+    <tr><td><b>D</b></td><td>Listes de choix métier</td><td><b>16</b> sites en code, dans 14 fichiers</td><td><b>Gardés avec leur motif écrit</b>, un par un : voir la liste ci-dessous. Aucun n’est masqué.</td></tr>
+    <tr><td><b>E</b></td><td>Préfixes et formats de numérotation</td><td><b>0</b></td><td>Toute série passe par le référentiel de numérotation.</td></tr>
+    <tr><td><b>F</b></td><td>Noms de rôles qui décident d’un droit</td><td><b>270</b> littéraux tolérés, dans 41 fichiers</td><td><b>192</b> sont les rôles d’<b>origine</b> des gestes réservés, non déplacés (5.8). Les <b>78 autres</b> sont des tolérances motivées une à une : axe « fonction » du personnel (et non un rôle), identifiants d’étape du circuit RH stockés sur les pièces, noms de champ ou de section, profil mobile « réception », compte administrateur d’installation. Le total ne fait que descendre : 85 sites ont été retirés lors du lot de la table des droits du banc (80) et du descripteur des tâches d’aval (5).</td></tr>
+    <tr><td><b>G</b></td><td>Libellés d’organisation, contacts</td><td><b>0</b> (12 avant le lot « coordonnées »)</td><td>Deux faux positifs vérifiés à la main : la formule de l’arrêté de facture (le gabarit est littéral, la formule est lue de l’identité) et les adresses d’API de deux fournisseurs de SMS (déjà surchargeables par le <code>.env</code>, 14.5).</td></tr>
+    <tr><td><b>H</b></td><td>Règles de calcul figées (barèmes, tranches, grilles)</td><td><b>0</b></td><td>Le barème du régime employeur est au référentiel <code>garanties</code> et les tranches d’âge sont des réglages datés (6.18).</td></tr>
   </tbody>
 </table>
-<pre>node tools/baguidi/inventaire-en-dur.mjs --cliquet --famille=A     <span class="c"># années</span>
-node tools/baguidi/inventaire-en-dur.mjs --cliquet --famille=B,H   <span class="c"># taux et barèmes</span>
-node tools/baguidi/inventaire-en-dur.mjs --cliquet --famille=E     <span class="c"># numérotation</span></pre>
+<h3>Famille D : les seize sites gardés en code</h3>
+<p>Ces sites ont <b>le même point commun</b> : la valeur <b>enregistrée</b> est le libellé, ou le protocole lui-même la lit, de sorte que la rendre réglable sans codes ni migration changerait la décision d’une pièce déjà signée. Le motif complet est écrit dans <code>tools/baguidi/valeurs-en-dur.plafonds.json</code>.</p>
+<table class="tableau">
+  <thead><tr><th style="width:30%">Site (fichier)</th><th>Ce qui reste en code, et la raison</th></tr></thead>
+  <tbody>
+    <tr><td><code>cfb_numerotation.dart</code> (1)</td><td>Les trois séquences de pièces <b>fiscales</b> (factures, proformas, avoirs) dont le format est protégé : l’écran les lit pour refuser la modification d’un format déjà employé.</td></tr>
+    <tr><td><code>cft_tarifs.dart</code>, <code>cfa_regles.dart</code>, <code>jeux_import_tarifs.dart</code>, <code>m8/commun.dart</code> (4 sites)</td><td>Des <b>portées d’écran</b> dites par leurs <b>codes</b> : familles de l’écran des tarifs, de l’imagerie et du laboratoire, huit codes du modèle d’import, les quatre modes que le patient règle au guichet. Les libellés viennent des réglages <code>libelles.*</code>.</td></tr>
+    <tr><td><code>cfa_regles.dart</code> (1 de plus)</td><td>Les six <b>textes d’amorçage</b> des modèles de message : une semence proposée une fois, administrée ensuite.</td></tr>
+    <tr><td><code>mat_suivis.dart</code> (1)</td><td>L’évolution maternelle (Favorable, Référée, Décédée) : la valeur enregistrée est le libellé et le ton du badge se décide dessus.</td></tr>
+    <tr><td><code>remboursement.dart</code> (1)</td><td>La nature d’une opération de remboursement (Facture avoir, Remboursement, Annulation) : la règle compare la valeur enregistrée.</td></tr>
+    <tr><td><code>cpb_gestion.dart</code> (1)</td><td>Les états d’une immobilisation : « Cédé » sort le bien du bilan à sa date de sortie.</td></tr>
+    <tr><td><code>bloc_regles.dart</code> (2)</td><td>Les conclusions de la consultation pré-anesthésique et les décisions de réveil, lues <b>par position</b> : des libellés réglables changeraient la décision d’un compte rendu signé. À porter avec des codes et la validation des praticiens du bloc.</td></tr>
+    <tr><td><code>pat_pieces.dart</code> (1)</td><td>Les six examens que le certificat prénuptial exige validés avant délivrance : règle médico-légale.</td></tr>
+    <tr><td><code>qual_ged.dart</code> (1)</td><td>Les quatre natures de rattachement d’un document (Patient, Employé, Fournisseur, Administration), portées en toutes lettres par chaque catégorie.</td></tr>
+    <tr><td><code>qual_validations.dart</code> (1)</td><td>Liste <b>documentaire</b> des validations de la Direction du 01/09/2026 : aucune logique ne la lit, seulement son nombre.</td></tr>
+    <tr><td><code>rhb_regles.dart</code> (1)</td><td>Le barème d’origine de la note NS 131, lu <b>seulement comme repli</b> d’un magasin sans barème : le barème administrable vit dans ses collections.</td></tr>
+    <tr><td><code>sync_dart/…/mere.dart</code> (1)</td><td>La table collection → famille de synchronisation (A à R) : c’est le protocole lui-même ; la rendre réglable romprait l’accord entre postes.</td></tr>
+  </tbody>
+</table>
+<div class="encadre info" data-titre="Les quatre vrais restes de la famille D">
+  <p>Seuls <b>quatre</b> sites sont de vrais restes à traiter : la nature d’une opération de remboursement, les états d’une immobilisation, les conclusions de la CPA et les décisions de réveil. Les rendre réglables demande de <b>passer à des codes et de migrer les fiches existantes</b> : ce n’est pas fait.</p>
+</div>
+<h3>Les commandes</h3>
+<pre>node tools/baguidi/inventaire-en-dur.mjs --cliquet --famille=A,B,C,D,E,G,H    <span class="c"># toutes les familles du balayage</span>
+cd packages/domaine &amp;&amp; dart test test/roles_en_dur_global_test.dart       <span class="c"># famille F : rôles</span>
+cd packages/domaine &amp;&amp; dart test test/valeurs_en_dur_cliquet_test.dart    <span class="c"># rejoue en test les familles B, D, G et H</span></pre>
+<p>Chaque famille se lance seule (<code>--famille=A</code>, <code>--famille=B,H</code>, <code>--famille=C</code>…). Un résultat conforme dit par exemple : « familles A, B, C, D, E, G, H conformes à leurs plafonds (A = 0, B = 0, C = 0, D = 16, E = 0, G = 0, H = 0) ». L’option <code>--injecter=&lt;chemin fictif&gt;:&lt;fichier&gt;</code> ajoute un source au balayage pour <b>éprouver que le cliquet mord</b>.</p>
+<div class="encadre attention" data-titre="Ce qui n’est pas dit « zéro »">
+  <p>Les familles D et F gardent des sites <b>en code</b>, avec leur motif : ce ne sont pas des défauts masqués, mais ils ne sont pas non plus réglables. Les rôles d’origine des gestes réservés n’ont <b>pas été déplacés</b> dans un fichier de données (5.8), et les tolérances de la famille F ne sont pas convertibles sans changer un comportement. Le balayage est <b>heuristique</b> : il écarte à la main des faux positifs (phénotypes de l’électrophorèse de l’hémoglobine, clés techniques d’une réponse de la mère), chacun avec sa raison.</p>
+</div>
 <p>Le <b>contrôle d’identité</b> complète le dispositif : il refuse toute trace d’une autre clinique, dans le code, les données livrées, les documents <b>et</b> les données de test.</p>
 <pre>node tools/baguidi/controle-identite.mjs</pre>
 <div class="encadre bonne">
-  <p>Avant toute livraison d’une nouvelle version, lancer ces quatre commandes : un résultat à zéro anomalie est la condition. Elles lisent le dépôt seulement et ne touchent à aucune base.</p>
+  <p>Avant toute livraison d’une nouvelle version, lancer ces contrôles : un résultat conforme, <b>zéro anomalie</b> d’identité, est la condition. Ils lisent le dépôt seulement et ne touchent à aucune base.</p>
 </div>
 
 <!-- ============================================================ 14. RELAIS -->
@@ -2006,7 +2260,7 @@ php /chemin/vers/apps/web/artisan queue:work --stop-when-empty</pre></li>
     <tr><td><b>Horloge décalée</b></td><td>« Horloge à vérifier » sur la supervision.</td><td>Corriger l’heure de Windows du poste concerné.</td></tr>
     <tr><td><b>Disque plein</b></td><td>Contrôle « Disque » en alerte sur la supervision ; sauvegarde refusée.</td><td>Libérer de la place sur la mère. Ne jamais supprimer le dossier des données ni les sauvegardes récentes.</td></tr>
     <tr><td><b>Conflit</b></td><td>Compteur de <b>Conflits et doublons</b> non nul.</td><td>Ouvrir l’écran, comparer les deux valeurs et trancher.</td></tr>
-    <tr><td><b>Code d’appairage refusé</b></td><td>« Code inconnu », « déjà servi » ou « expiré ».</td><td>Émettre un nouveau code sur la mère (15 minutes, usage unique).</td></tr>
+    <tr><td><b>Code d’appairage refusé</b></td><td>« Code inconnu », « déjà servi » ou « expiré ».</td><td>Émettre un nouveau code sur la mère (usage unique, durée de validité réglée à la mère : 15 minutes par défaut).</td></tr>
     <tr><td><b>Relais injoignable</b></td><td>Retard vers le relais qui grandit ; liaison en erreur sur <b>Relais en ligne</b>.</td><td>Cliquer sur <b>Tester la liaison</b>. Vérifier l’adresse, le secret et l’hébergement. Les opérations attendent, chiffrées.</td></tr>
     <tr><td><b>Mère perdue</b></td><td>La machine mère ne démarre plus.</td><td>Suivre la restauration du chapitre 11.4.</td></tr>
     <tr><td><b>Facture bloquée à la caisse</b></td><td>Refus <code>FACTURE_EN_ATTENTE_DE_PRIX</code> : une ligne attend son prix.</td><td>Poser le prix daté du jour de la pièce, ou régler le réglage de la section 6.5.</td></tr>
@@ -2032,21 +2286,21 @@ php /chemin/vers/apps/web/artisan queue:work --stop-when-empty</pre></li>
 
 <!-- ============================================================ ANNEXES -->
 <h1 id="annexe-a"><span class="no">A.</span> Commandes de production</h1>
-<p class="chapo">Chaque commande a été relue dans le code du dépôt (scripts, fichiers de configuration, outils) : aucune n’est inventée. Elles se lancent depuis la racine du dépôt, sauf mention contraire. <b>« Non vérifié »</b> marque ce qui n’a pas été exécuté : l’installateur Windows, l’APK signé, l’hébergement réel, les SMS réels, le boîtier CC300 et la suite PHPUnit du relais (dépendances Composer non installables hors ligne sur le poste de rédaction).</p>
+<p class="chapo">Chaque commande a été relue dans le code du dépôt (scripts, fichiers de configuration, outils) : aucune n’est inventée. Elles se lancent depuis la racine du dépôt, sauf mention contraire. <b>« Non vérifié »</b> marque ce qui n’a pas été exécuté : l’installateur Windows, l’APK signé, l’hébergement réel, les SMS réels, le boîtier CC300 et la suite PHPUnit du relais (dépendances Composer non installables sur le poste de rédaction).</p>
+<p>Ont, en revanche, été <b>exécutées</b> pour cette édition : les cliquets de 13.5, les tests du domaine consacrés aux valeurs en dur, <code>dart test</code> de <code>packages/sync_dart</code> (166 tests), <code>node --test</code> de <code>packages/rbac</code> (22 tests), <code>npm run banc:sync</code> (67 scénarios, 702 vérifications), l’extraction des références et la capture des écrans de ce manuel.</p>
 
 <h2 id="annexe-a-cloner">A.1 Cloner et vérifier</h2>
 <pre>git clone https://github.com/massenon/sighcbg.git
 cd sighcbg
-git checkout livraison/baguidi-v31      <span class="c"># la branche de livraison de cette édition</span></pre>
+git checkout livraison/baguidi-v32      <span class="c"># la branche de livraison de cette édition</span></pre>
 <pre>cd packages/domaine &amp;&amp; dart pub get &amp;&amp; dart test &amp;&amp; cd ../..
 cd packages/sync_dart &amp;&amp; dart pub get &amp;&amp; dart test &amp;&amp; cd ../..
 cd packages/rbac &amp;&amp; node --test &amp;&amp; cd ../..
 node tools/baguidi/controle-identite.mjs                          <span class="c"># 0 trace d’une autre clinique</span>
-node tools/baguidi/inventaire-en-dur.mjs --cliquet --famille=A    <span class="c"># années (13.5)</span>
-node tools/baguidi/inventaire-en-dur.mjs --cliquet --famille=B,H  <span class="c"># taux et barèmes</span>
-node tools/baguidi/inventaire-en-dur.mjs --cliquet --famille=E    <span class="c"># numérotation</span></pre>
+node tools/baguidi/inventaire-en-dur.mjs --cliquet --famille=A,B,C,D,E,G,H   <span class="c"># cliquets « valeurs en dur » (13.5)</span>
+cd packages/domaine &amp;&amp; dart test test/roles_en_dur_global_test.dart &amp;&amp; cd ../..   <span class="c"># cliquet F : rôles</span></pre>
 <div class="encadre info" data-titre="Les suites complètes sont longues">
-  <p><code>cd apps/poste &amp;&amp; flutter test</code> dure une vingtaine de minutes, seule sur la machine ; <code>cd apps/mobile &amp;&amp; flutter test</code> et <code>cd apps/web &amp;&amp; php artisan test</code> (SQLite en mémoire) sont plus courtes. <code>npm run banc:sync</code> lance le banc de synchronisation de référence.</p>
+  <p><code>cd apps/poste &amp;&amp; flutter test</code> dure une vingtaine de minutes, seule sur la machine ; <code>cd apps/mobile &amp;&amp; flutter test</code> et <code>cd apps/web &amp;&amp; php artisan test</code> (SQLite en mémoire) sont plus courtes. <code>npm run banc:sync</code> lance le banc de synchronisation de référence (mère, fileuls et mobiles Node) ; <code>npm run banc:dart</code> y met la mère, les fileuls et les mobiles Dart, et <code>npm run banc:cible</code> y ajoute le relais Laravel. Le banc lit ses droits dans <code>packages/sync/banc/droits-banc.json</code> (5.8).</p>
 </div>
 
 <h2 id="annexe-a-local">A.2 Tester en local</h2>
@@ -2170,8 +2424,10 @@ node docs/manuels/src/admin/generer.mjs docs/manuels/src/admin docs/manuels/Manu
 <h1 id="glossaire">Glossaire</h1>
 <table class="tableau">
   <tbody>
-    <tr><td style="width:28%"><b>Appairage</b></td><td>Rattachement d’un poste ou d’un téléphone à la mère par un code à usage unique (15 minutes par défaut, durée réglée par la mère).</td></tr>
+    <tr><td style="width:28%"><b>Appairage</b></td><td>Rattachement d’un poste ou d’un téléphone à la mère par un code à usage unique (durée de validité réglée par la mère : 15 minutes par défaut, <code>mere.validiteCodeAppairageMinutes</code>).</td></tr>
     <tr><td><b>Archivage</b></td><td>Suppression logique : la fiche quitte les listes, reste restaurable depuis la Corbeille (RG-14).</td></tr>
+    <tr><td><b>Borne de saisie</b></td><td>Valeur au-delà de laquelle le téléphone refuse une saisie comme improbable. Réglable dans une <b>enveloppe</b> (plancher, plafond) que la clinique ne franchit pas (6.16).</td></tr>
+    <tr><td><b>Cliquet</b></td><td>Contrôle automatique qui échoue si une valeur écrite en dur apparaît, ou si un plafond n’est pas abaissé quand un site disparaît (13.5).</td></tr>
     <tr><td><b>Clé de clinique</b></td><td>Secret qui chiffre tout ce qui quitte la mère : relais, sauvegardes, mobiles. Jamais envoyée au relais.</td></tr>
     <tr><td><b>Dépôt</b></td><td>Geste fait sur un fileul et transmis à la mère, qui le rejoue sous le rôle de son auteur.</td></tr>
     <tr><td><b>Famille R</b></td><td>Collections de configuration : la mère seule écrit, les fileuls reçoivent.</td></tr>
@@ -2183,6 +2439,7 @@ node docs/manuels/src/admin/generer.mjs docs/manuels/src/admin docs/manuels/Manu
     <tr><td><b>Relais</b></td><td>Site web opaque qui transporte les enveloppes chiffrées et garde la copie hors site.</td></tr>
     <tr><td><b>Reprise d’identité</b></td><td>Remplacement d’un poste fileul : un code émis par la mère remet au poste neuf les plages de numéros et les baux de l’ancien, qui est révoqué (3.4).</td></tr>
     <tr><td><b>Secret d’administration</b></td><td>Secret compilé dans le programme (<code>SIGH_ADMIN</code>, 16 caractères au moins) avec lequel les postes parlent à la console de la mère ; sans lui, une version de production ne démarre pas en mère (1.2).</td></tr>
+    <tr><td><b>Valeur d’attente</b></td><td>Valeur semée d’un réglage, reprise du code d’avant et marquée « à confirmer » : elle s’applique tant qu’aucune version datée n’est posée, et chaque fois qu’une valeur est illisible ou hors bornes.</td></tr>
     <tr><td><b>Surcharge d’écran</b></td><td>Droit réglé pour un écran précis ; il l’emporte sur le droit du module.</td></tr>
     <tr><td><b>Version datée</b></td><td>Nouvelle valeur d’un paramètre, effective à partir d’une date ; l’ancienne reste lisible.</td></tr>
   </tbody>
