@@ -30,6 +30,10 @@
         "plafond": 1,
         "motif": "STRUCTUREL, justifié site par site (lot « famille D », 18/11/2026) : `cpbEtatsImmobilisation` (En service | En maintenance | Hors service | Cédé) : l'amortissement et le bilan lisent l'état ENREGISTRÉ (« Cédé » sort le bien du bilan à sa date de sortie) ; la fiche porte le libellé. Réglable seulement avec des codes et une migration des fiches."
       },
+      "packages/domaine/lib/src/mere/sms.dart": {
+        "plafond": 1,
+        "motif": "STRUCTUREL, justifié (E5202, 20/11/2026) : `smsModelesProposes` est la SEMENCE des quatre modèles NEUTRES du canal SMS (collection `modelesMessage`, administrée ensuite), à valider par la Direction — une semence proposée une fois, pas une règle, comme `cfaModelesProposes` ; elle existe parce que deux vœux de la maquette disent « santé » et que le SMS les refuse. Le jeu et l'amorçage de l'écran « Rappels & messages » lisent cette seule définition."
+      },
       "packages/domaine/lib/src/configuration/cfa_regles.dart": {
         "plafond": 2,
         "motif": "STRUCTUREL, justifié site par site (lot « famille D », 18/11/2026) : (1) `_codesFamillesTarifCfa` : sous-ensemble ORDONNÉ de codes de `enumFamillesTarif` (UNE définition), la portée de l'écran des tarifs d'imagerie et de laboratoire ; libellés au réglage. (2) `cfaModelesProposes` : les six TEXTES d'amorçage des modèles de message (collection `modelesMessage`, administrée ensuite), à valider par la Direction — une semence proposée une fois, pas une règle ; le jeu livré porte déjà les mêmes fiches."

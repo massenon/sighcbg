@@ -192,6 +192,8 @@ export 'src/mere/mrc_regles.dart';
 export 'src/mere/reprise_poste_regles.dart';
 export 'src/mere/synchro_fileuls.dart';
 export 'src/mere/sms.dart';
+export 'src/mere/sms_auto.dart';
+export 'src/mere/sms_consentement.dart';
 export 'src/mobile/mob_bornes.dart';
 export 'src/mobile/mob_droits.dart';
 export 'src/mobile/mob_pin.dart';
