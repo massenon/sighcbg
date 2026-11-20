@@ -1,0 +1,580 @@
+{
+ "nom": "224-paiements-historique",
+ "ecran": "m8-paiements",
+ "role": "comptable",
+ "taille": [
+  1440.0,
+  1000.0
+ ],
+ "echelle": 1.25,
+ "boutons": [
+  {
+   "libelle": "Tableau de bord facturation",
+   "rect": [
+    790.1,
+    141.0,
+    245.5,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Nouvelle facture",
+   "rect": [
+    1043.6,
+    141.0,
+    168.1,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Facturation & Caisse",
+   "rect": [
+    1219.7,
+    141.0,
+    196.3,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Colonnes",
+   "rect": [
+    697.0,
+    597.0,
+    102.3,
+    30.0
+   ]
+  },
+  {
+   "libelle": "Exporter",
+   "rect": [
+    807.3,
+    597.0,
+    97.1,
+    30.0
+   ]
+  },
+  {
+   "libelle": "Reçu de paiement",
+   "icone": true,
+   "rect": [
+    1327.0,
+    707.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Annuler un règlement",
+   "icone": true,
+   "rect": [
+    1367.0,
+    707.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Reçu de paiement",
+   "icone": true,
+   "rect": [
+    1367.0,
+    769.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Reçu de paiement",
+   "icone": true,
+   "rect": [
+    1367.0,
+    836.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Reçu de paiement",
+   "icone": true,
+   "rect": [
+    1367.0,
+    903.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Reçu de paiement",
+   "icone": true,
+   "rect": [
+    1367.0,
+    970.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    717.0,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    779.0,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    846.0,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    913.0,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    980.0,
+    16.0,
+    16.0
+   ]
+  }
+ ],
+ "cles": {
+  "cap-manuel": [
+   0.0,
+   0.0,
+   1440.0,
+   1000.0
+  ],
+  "actualisation-0": [
+   0.0,
+   0.0,
+   1440.0,
+   1000.0
+  ],
+  "barre-superieure": [
+   0.0,
+   0.0,
+   1440.0,
+   56.0
+  ],
+  "barre-marque": [
+   12.0,
+   0.0,
+   270.0,
+   56.0
+  ],
+  "barre-logo": [
+   16.0,
+   10.0,
+   52.0,
+   36.0
+  ],
+  "logo-clinique": [
+   19.0,
+   12.0,
+   46.0,
+   32.0
+  ],
+  "barre-nom-clinique": [
+   78.0,
+   13.0,
+   131.3,
+   17.0
+  ],
+  "recherche-globale": [
+   294.0,
+   10.0,
+   349.8,
+   36.0
+  ],
+  "barre-actions": [
+   995.6,
+   10.0,
+   99.4,
+   36.0
+  ],
+  "barre-plein-ecran": [
+   1099.0,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "barre-cloche": [
+   1248.4,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "cloche-badge": [
+   1268.4,
+   12.0,
+   16.0,
+   14.0
+  ],
+  "barre-profil": [
+   1294.4,
+   0.0,
+   133.6,
+   56.0
+  ],
+  "nom-courant": [
+   1340.4,
+   14.5,
+   65.6,
+   14.0
+  ],
+  "role-courant": [
+   1340.4,
+   28.5,
+   56.3,
+   13.0
+  ],
+  "onglets-domaines": [
+   0.0,
+   56.0,
+   1392.0,
+   40.0
+  ],
+  "domaine-Accueil": [
+   8.0,
+   60.0,
+   105.4,
+   36.0
+  ],
+  "domaine-Soins": [
+   113.4,
+   60.0,
+   92.2,
+   36.0
+  ],
+  "domaine-Logistique": [
+   205.7,
+   60.0,
+   126.2,
+   36.0
+  ],
+  "domaine-Financier": [
+   331.9,
+   60.0,
+   119.0,
+   36.0
+  ],
+  "domaine-RH": [
+   450.8,
+   60.0,
+   74.0,
+   36.0
+  ],
+  "domaine-Administration": [
+   524.8,
+   60.0,
+   154.7,
+   36.0
+  ],
+  "domaine-Pilotage": [
+   679.5,
+   60.0,
+   110.2,
+   36.0
+  ],
+  "raccourci-Patients": [
+   806.7,
+   60.0,
+   99.1,
+   36.0
+  ],
+  "raccourci-Pharmacie": [
+   907.7,
+   60.0,
+   115.9,
+   36.0
+  ],
+  "raccourci-Facturation": [
+   1025.6,
+   60.0,
+   120.7,
+   36.0
+  ],
+  "ruban-bascule": [
+   1392.0,
+   56.0,
+   48.0,
+   40.0
+  ],
+  "ruban-filet-coeur": [
+   0.0,
+   96.0,
+   1440.0,
+   2.0
+  ],
+  "ruban-filet-sante": [
+   0.0,
+   98.0,
+   1440.0,
+   2.0
+  ],
+  "m8-paiements|fileul": [
+   0.0,
+   100.0,
+   1440.0,
+   871.0
+  ],
+  "fil-ariane": [
+   24.0,
+   116.0,
+   1392.0,
+   17.0
+  ],
+  "fil-lien:0": [
+   24.0,
+   116.0,
+   43.6,
+   17.0
+  ],
+  "fil-lien:2": [
+   170.1,
+   116.0,
+   121.3,
+   17.0
+  ],
+  "titre-page": [
+   24.0,
+   141.0,
+   112.8,
+   28.0
+  ],
+  "kit:note": [
+   24.0,
+   231.0,
+   1392.0,
+   34.0
+  ],
+  "kit:kpi": [
+   24.0,
+   281.0,
+   339.0,
+   106.0
+  ],
+  "kit:kpi-libelle": [
+   41.0,
+   298.0,
+   50.4,
+   16.0
+  ],
+  "kit:kpi-valeur": [
+   41.0,
+   318.0,
+   157.6,
+   32.0
+  ],
+  "kit:kpi-pastille": [
+   310.0,
+   298.0,
+   36.0,
+   36.0
+  ],
+  "kit:onglets-barre": [
+   24.0,
+   521.0,
+   1392.0,
+   43.0
+  ],
+  "kit:onglet:aregler": [
+   24.0,
+   521.0,
+   138.6,
+   42.0
+  ],
+  "kit:onglet:historique:actif": [
+   162.6,
+   521.0,
+   210.2,
+   42.0
+  ],
+  "kit:tableau": [
+   24.0,
+   580.0,
+   1392.0,
+   1168.0
+  ],
+  "kit:tableau-barre": [
+   25.0,
+   581.0,
+   1390.0,
+   63.0
+  ],
+  "kit:tableau-recherche": [
+   41.0,
+   593.0,
+   320.0,
+   38.0
+  ],
+  "kit:tableau-table": [
+   25.0,
+   644.0,
+   1390.0,
+   1048.0
+  ],
+  "kit:tableau-entete": [
+   65.0,
+   652.0,
+   335.3,
+   37.0
+  ],
+  "kit:tableau-ligne": [
+   1311.0,
+   697.0,
+   104.0,
+   57.0
+  ],
+  "pied-legal": [
+   0.0,
+   971.0,
+   1440.0,
+   29.0
+  ],
+  "pied-legal:texte": [
+   24.0,
+   978.0,
+   1392.0,
+   16.0
+  ]
+ },
+ "infobulles": [
+  {
+   "message": "Actions rapides",
+   "rect": [
+    995.6,
+    10.0,
+    99.4,
+    36.0
+   ]
+  },
+  {
+   "message": "Plein écran (F11)",
+   "rect": [
+    1099.0,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "5 alerte(s) en attente",
+   "rect": [
+    1248.4,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Profil utilisateur",
+   "rect": [
+    1294.4,
+    0.0,
+    133.6,
+    56.0
+   ]
+  },
+  {
+   "message": "Déplier le menu",
+   "rect": [
+    1396.0,
+    56.0,
+    40.0,
+    40.0
+   ]
+  },
+  {
+   "message": "Mode",
+   "rect": [
+    369.0,
+    593.0,
+    320.0,
+    38.0
+   ]
+  },
+  {
+   "message": "Reçu de paiement",
+   "rect": [
+    1327.0,
+    707.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Annuler un règlement",
+   "rect": [
+    1367.0,
+    707.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Reçu de paiement",
+   "rect": [
+    1367.0,
+    769.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Reçu de paiement",
+   "rect": [
+    1367.0,
+    836.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Reçu de paiement",
+   "rect": [
+    1367.0,
+    903.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Reçu de paiement",
+   "rect": [
+    1367.0,
+    970.0,
+    36.0,
+    36.0
+   ]
+  }
+ ],
+ "onglets": []
+}
