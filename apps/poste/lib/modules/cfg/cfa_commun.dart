@@ -249,7 +249,11 @@ class CfaTableau extends StatelessWidget {
     this.largeurTiroir = 672,
     this.validation,
     this.archivage,
+    this.peutEcrire,
   });
+
+  /// Un GESTE RÉSERVÉ plutôt que le droit d'éditer l'écran (types et modalités de versement : `versement_regler`) : quand il est fourni, il décide seul de la création, de la modification et de l'archivage ; refusé, ces commandes sont ABSENTES.
+  final bool Function(ContexteEcran)? peutEcrire;
 
   final String collection;
   final List<ColonneTableau> colonnes;
@@ -301,6 +305,8 @@ class CfaTableau extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = ContexteEcran.of(context);
     final col = c.magasin.collection(collection);
+    final peutEditer = peutEcrire != null ? peutEcrire!(c) : c.droit.editer;
+    final peutArchiver = peutEcrire != null ? peutEcrire!(c) : c.droit.annuler;
     return ListenableBuilder(
         listenable: validation == null ? col : Listenable.merge([col, c.magasin.collection(valCollectionValidations)]),
         builder: (ctx, _) {
@@ -316,7 +322,7 @@ class CfaTableau extends StatelessWidget {
             nomExport: nomExport,
             messageVide: messageVide,
             actions: [
-              if (creer && c.droit.editer)
+              if (creer && peutEditer)
                 BoutonSigh(
                     libelle: libelleNouveau,
                     icone: LucideIcons.plus,
@@ -346,12 +352,12 @@ class CfaTableau extends StatelessWidget {
                         corps: detail!(ctx2, f))),
               if (validation != null) ...ValidationPoste(c).boutonsDeLigne(ctx2, validation!, f),
               ...?actionsLigneSup?.call(ctx2, f),
-              if (modifiable && c.droit.editer)
+              if (modifiable && peutEditer)
                 BoutonIcone(
                     icone: LucideIcons.pencil,
                     libelle: 'Modifier',
                     onPressed: () => cfaSaisir(ctx2, col: col, champs: champs(f), fiche: _fiche, existante: f, titreCreation: titreCreation, entite: entite, taille: taille, avant: avant, preparer: preparer, validation: validation)),
-              if (archivable && c.droit.annuler) BoutonIcone(icone: LucideIcons.archive, libelle: 'Archiver', onPressed: () => (archivage ?? cfaArchiver)(ctx2, col, f)),
+              if (archivable && peutArchiver) BoutonIcone(icone: LucideIcons.archive, libelle: 'Archiver', onPressed: () => (archivage ?? cfaArchiver)(ctx2, col, f)),
               ...?actionsLigneApres?.call(ctx2, f),
             ],
           );

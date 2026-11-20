@@ -69,6 +69,8 @@ const Map<String, ({String champ, String marqueur})> champsNumero = {
   'factures': (champ: 'numero', marqueur: 'numeroEnDoublon'),
   'avoirs': (champ: 'reference', marqueur: 'numeroEnDoublon'),
   'ecritures': (champ: 'numero', marqueur: 'numeroEnDoublon'),
+  // Un versement et sa contre-passation prennent chacun un numéro VRS dans la série du poste : deux postes hors ligne peuvent en donner le même, jamais corrigé en silence.
+  'versements': (champ: 'numero', marqueur: 'numeroEnDoublon'),
   // PLANNING (17/11/2026) : la référence humaine d'un congé ou d'un ordre de mission (`CG-…`, `OM-…`) se prend dans la série du poste ; deux postes hors ligne peuvent en donner la même : jamais corrigée en silence.
   'conges': (champ: 'reference', marqueur: 'numeroEnDoublon'),
   'missions': (champ: 'reference', marqueur: 'numeroEnDoublon'),

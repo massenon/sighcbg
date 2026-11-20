@@ -1,0 +1,7 @@
+[
+{"id":"TV01","code":"especes","libelle":"Espèces","compteTresorerie":"571000","referenceExigee":false,"actif":true,"ordre":1,"aConfirmer":true,"source":"Valeur d’attente (libellés des modes de paiement) — à confirmer par la Direction : libellé, compte de trésorerie réel, référence exigée."},
+{"id":"TV02","code":"tpe","libelle":"TPE (carte bancaire)","compteTresorerie":"521000","referenceExigee":false,"actif":true,"ordre":2,"aConfirmer":true,"source":"Valeur d’attente (libellés des modes de paiement) — à confirmer par la Direction : libellé, compte de trésorerie réel, référence exigée."},
+{"id":"TV03","code":"mtn","libelle":"MTN Mobile Money","compteTresorerie":"521000","referenceExigee":false,"actif":true,"ordre":3,"aConfirmer":true,"source":"Valeur d’attente (libellés des modes de paiement) — à confirmer par la Direction : libellé, compte de trésorerie réel, référence exigée."},
+{"id":"TV04","code":"moov","libelle":"Moov Money","compteTresorerie":"521000","referenceExigee":false,"actif":true,"ordre":4,"aConfirmer":true,"source":"Valeur d’attente (libellés des modes de paiement) — à confirmer par la Direction : libellé, compte de trésorerie réel, référence exigée."},
+{"id":"TV05","code":"mobile_money","libelle":"Mobile Money","compteTresorerie":"521000","referenceExigee":true,"actif":true,"ordre":5,"aConfirmer":true,"source":"Valeur d’attente (libellés des modes de paiement) — à confirmer par la Direction : libellé, compte de trésorerie réel, référence exigée."}
+]

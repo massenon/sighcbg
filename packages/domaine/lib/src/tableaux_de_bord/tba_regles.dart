@@ -18,6 +18,7 @@ import '../rh/rhb_regles.dart' show vacationCompteRh;
 import '../comptabilite/cpa_referentiels.dart' show cpaCentresCout;
 import '../administration/adm_notes_donnees.dart' show admNs131, admNs132, AdmNoteService;
 import '../parametres/enumerations.dart';
+import '../caisse/versements.dart' show repartitionParType, libelleDeType;
 
 typedef FicheTba = Map<String, Object?>;
 
@@ -523,11 +524,13 @@ class TbaCaissier {
   final TbaGraphique recettesQuotidiennes;
 }
 
-TbaCaissier tbaCaissier({required Iterable<FicheTba> taches, required Iterable<FicheTba> factures, required DateTime auj}) {
+/// [versements] / [typesVersement] (20/11/2026) : la répartition par mode lit les VERSEMENTS (un règlement 5 000 Mobile Money + 3 000 espèces compte 5 000 d'un côté, 3 000 de l'autre) ;
+/// une facture d'avant les versements compte pour son mode unique.
+TbaCaissier tbaCaissier({required Iterable<FicheTba> taches, required Iterable<FicheTba> factures, required DateTime auj, Iterable<FicheTba> versements = const [], Iterable<FicheTba> typesVersement = const []}) {
   final fs = factures.toList();
   final aEncaisser = taches.where((t) => t['type'] == 'encaissement' && t['statut'] != 'fait').length;
   final fj = tbaDuJour(fs, 'date', auj);
-  final g = tbaGrouper(fs, (f) => f['modePaiement']);
+  final parType = repartitionParType(fs, versements);
   final jours = [for (var d = 1; d <= auj.day; d++) d];
   // Écart E922 : la maquette fixe le mois de la série à AOÛT 2026 (`new Date(2026, 7, d)`) ; portée sur le mois du poste, comme E20.
   final data = [
@@ -552,8 +555,7 @@ TbaCaissier tbaCaissier({required Iterable<FicheTba> taches, required Iterable<F
       TbaKpi('Factures impayées', nombre(fs.where((x) => x['statutPaiement'] == 'impayee').length), ton: 'danger', icone: 'file-x'),
     ],
     dernieres: fs.take(10).toList(),
-    parMode: TbaGraphique([for (final k in g.keys) tbaModesPaiement[k] ?? k],
-        [TbaSerie('Montant encaissé', [for (final v in g.values) tbaSomme(v, (f) => f['montantPaye'])])]),
+    parMode: TbaGraphique([for (final k in parType.keys) libelleDeType(typesVersement, k)], [TbaSerie('Montant encaissé', parType.values.toList())]),
     recettesQuotidiennes: TbaGraphique([for (final d in jours) '$d'], [TbaSerie('Encaissé', data)]),
   );
 }

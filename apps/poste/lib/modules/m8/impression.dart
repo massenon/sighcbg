@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sigh_domaine/sigh_domaine.dart' show IdentiteImprimee;
+import 'package:sigh_domaine/sigh_domaine.dart' show IdentiteImprimee, colTypesVersement, colVersements, versementsDeFacture, libelleDeType;
 
 import '../../core/service_parametres.dart';
 import '../../donnees/magasin.dart';
@@ -40,7 +40,13 @@ Future<void> imprimerRecu(BuildContext ctx, Fiche f, {Fiche? versement}) => affi
 /// Le reçu de caisse d'une facture, tel qu'[imprimerRecu] l'imprime (extrait pour « Imprimer la sélection », un reçu par page).
 PieceA4 pieceRecuDe(BuildContext ctx, Fiche f, {Fiche? versement}) {
   final c = ContexteEcran.of(ctx);
-  return pieceRecu(f, versement: versement, utilisateur: acteur(c).nom, edite: c.aujourdhui, reference: _ref(c), identite: _identite(c, f));
+  final types = c.magasin.collection(colTypesVersement).toutes;
+  return pieceRecu(f,
+      versement: versement,
+      // Le reçu DÉTAILLÉ liste chaque versement en vigueur (mode, modalité, référence, montant) ; une pièce d'avant les versements en porte un implicite (son mode unique).
+      versements: versementsDeFacture(f, c.magasin.collection(colVersements).toutes),
+      libelleType: (code) => libelleDeType(types, code, repli: modeLabel),
+      utilisateur: acteur(c).nom, edite: c.aujourdhui, reference: _ref(c), identite: _identite(c, f));
 }
 
 Future<void> imprimerEngagement(BuildContext ctx, Fiche f) {

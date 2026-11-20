@@ -25,7 +25,7 @@ class EcranDashboardFacturation extends StatelessWidget with EcranMaquette {
     final col = c.magasin.collection('factures');
     final auj = c.aujourdhui;
     return ListenableBuilder(
-      listenable: col,
+      listenable: Listenable.merge([col, c.magasin.collection(colVersements)]),
       builder: (context, _) {
         final f = col.actives;
         num som(Iterable<Fiche> r, String k) =>
@@ -44,12 +44,11 @@ class EcranDashboardFacturation extends StatelessWidget with EcranMaquette {
         final fa = parMois(f, 'date', champValeur: 'montantTTC', ref: auj);
         final en = parMois(f, 'date', champValeur: 'montantPaye', ref: auj);
         final parType = <String, num>{};
-        final parMode = <String, num>{};
+        // Le graphique par mode lit les VERSEMENTS (Direction, 20/11/2026) ; une facture d'avant les versements compte pour son mode unique.
+        final parMode = repartitionParType(f, c.magasin.collection(colVersements).toutes);
         for (final x in f) {
           parType['${x['type']}'] =
               (parType['${x['type']}'] ?? 0) + n(x['montantTTC']);
-          parMode['${x['modePaiement']}'] =
-              (parMode['${x['modePaiement']}'] ?? 0) + n(x['montantPaye']);
         }
         final jours = [for (var d = 1; d <= auj.day; d++) d];
         final parJour = [
@@ -137,7 +136,7 @@ class EcranDashboardFacturation extends StatelessWidget with EcranMaquette {
                 CarteSigh(
                     titre: 'Répartition des modes de paiement',
                     child: GraphiqueBarres(horizontal: true, etiquettes: [
-                      for (final k in parMode.keys) modeLabel(k)
+                      for (final k in parMode.keys) libelleDeType(c.magasin.collection(colTypesVersement).toutes, k, repli: modeLabel)
                     ], series: [
                       SerieGraphique(
                           'Montant encaissé', parMode.values.toList())

@@ -32,6 +32,7 @@ class ResultatCaisse {
     this.normalisation,
     this.lignesRefusees = const [],
     this.lignesValorisees = const [],
+    this.versements = const [],
     String? Function()? refusAnnulationLu,
   }) : _refusAnnulation = refusAnnulationLu;
   final Fiche facture;
@@ -66,6 +67,9 @@ class ResultatCaisse {
 
   /// Les lignes « prix à valoriser » que ce geste a VALORISÉES (prix d'achat désormais fixé) avant de les encaisser.
   final List<String> lignesValorisees;
+
+  /// Les VERSEMENTS écrits par ce règlement (une ligne de journal par versement, famille B) ; vide pour une pièce réglée par l'ancienne voie (mode inconnu des types en service).
+  final List<Fiche> versements;
 }
 
 /// `PR.encaisser` côté poste : le cœur arithmétique est celui du domaine (vecteurs de la maquette) ; ici l'ORCHESTRATION — le laboratoire et
@@ -77,6 +81,7 @@ ResultatCaisse encaisserFacture(
   List<String>? lignes,
   num? montant,
   String? mode,
+  List<d.VersementSaisi>? versements,
   required DateTime maintenant,
 }) {
   // La facture de la caisse est celle d'un PATIENT (décision de la Direction de Baguidi du 16/11/2026, E3770) : ni acheteur ni AIB ne se saisissent ni ne
@@ -173,18 +178,53 @@ ResultatCaisse encaisserFacture(
   final mecefActif = d
       .fermeturesEnVigueur(m.collection('modulesActifs').toutes)
       .mecefEnService;
-  final r = d.encaisser(
-    fac,
-    lignes: lignes,
-    montant: montant,
-    mode: mode,
-    aujourdhui: aujourdhui,
-    maintenant: maintenant.toIso8601String(),
-    utilisateur: m.utilisateur,
-    mecefActif: mecefActif,
-    ecritures: m.collection('ecritures').actives,
-    encaisserResteSansPrix: resteOuvert,
-  );
+  final ecrituresActives = m.collection('ecritures').actives;
+  final typesFiches = m.collection(d.colTypesVersement).toutes;
+  final modalitesFiches = m.collection(d.colModalitesVersement).toutes;
+  final versementsExistants = m.collection(d.colVersements).toutes;
+  final Fiche facAct = fac;
+  d.ResultatEncaissement essai() => d.encaisser(
+        facAct,
+        lignes: lignes,
+        montant: montant,
+        mode: mode,
+        aujourdhui: aujourdhui,
+        maintenant: maintenant.toIso8601String(),
+        utilisateur: m.utilisateur,
+        mecefActif: mecefActif,
+        ecritures: ecrituresActives,
+        encaisserResteSansPrix: resteOuvert,
+      );
+  // LES VERSEMENTS (Direction, 20/11/2026) : le règlement passe par les versements saisis ; l'appel d'avant (un mode, un montant ou des lignes) en devient UN seul, du type que
+  // ce mode désigne. Un mode qu'aucun type en service ne désigne retombe sur l'ancienne voie (aucun versement écrit, la facture se lit alors par son mode unique).
+  List<d.VersementSaisi>? saisis = versements;
+  if (saisis == null) {
+    final types = d.typesVersementEnService(typesFiches);
+    final code = (mode != null && mode.isNotEmpty) ? mode : (types.isEmpty ? null : types.first.code);
+    if (code != null && types.any((t) => t.code == code)) {
+      final e = essai();
+      if (e.refus == null && !e.deja && (e.montantRegle ?? 0) > 0) saisis = [d.VersementSaisi(montant: e.montantRegle!, type: code)];
+    }
+  }
+  d.ResultatVersements? rv;
+  if (saisis != null) {
+    rv = d.reglerParVersements(facAct, saisis,
+        lignes: lignes,
+        aujourdhui: aujourdhui,
+        maintenant: maintenant.toIso8601String(),
+        utilisateur: m.utilisateur,
+        mecefActif: mecefActif,
+        encaisserResteSansPrix: resteOuvert,
+        ecritures: ecrituresActives,
+        versementsExistants: versementsExistants,
+        typesFiches: typesFiches,
+        modalitesFiches: modalitesFiches);
+    if (!rv.ok) {
+      defaire();
+      throw RefusCaisse(rv.refusCode ?? 'VERSEMENT_REFUSE', rv.refus!, lignes: rv.encaissement?.lignesRefusees ?? const []);
+    }
+  }
+  final r = rv?.encaissement ?? essai();
   // E2 (corrigé le 31/10/2026) : un versement au-delà du dû d'une pièce sans lignes est REFUSÉ en nommant le défaut ; rien n'est écrit.
   if (r.refus != null) {
     // Une valorisation faite pour ce versement se défait avec lui : rien n'est écrit sur un refus (la ligne se revalorisera au geste suivant, au même prix).
@@ -221,6 +261,15 @@ ResultatCaisse encaisserFacture(
       if (f.containsKey(k)) k: f[k],
   }));
 
+  // Le journal des versements : une ligne par versement, ajout seul.
+  final versementsEcrits = <Fiche>[];
+  for (final v in rv?.versements ?? const <Map<String, Object?>>[]) {
+    final colV = m.collection(d.colVersements);
+    final ins = colV.inserer(v, prefixe: 'VRS');
+    versementsEcrits.add(ins.fiche);
+    // L'« Annuler » du toast, dans la seconde qui suit le geste, retire la ligne (archivage logique) : la garde du journal, qui refuse toute modification, est levée pour ce seul retour.
+    annulations.add(() => colV.sansGardes(ins.annuler));
+  }
   final liberees = <String>[];
   final iso = maintenant.toIso8601String();
   final reglees = [
@@ -360,6 +409,7 @@ ResultatCaisse encaisserFacture(
     ecritures: ecr,
     lignesRefusees: r.lignesRefusees,
     lignesValorisees: valorisees,
+    versements: versementsEcrits,
     // L'annulation d'un encaissement dont une ligne libérée a DÉJÀ été délivrée est REFUSÉE, nommée (E3304) : le produit est sorti du stock et remis ; défaire
     // la caisse le laisserait sorti sans pièce réglée. La voie prudente du projet : l'avoir pour la caisse, un mouvement d'entrée justifié pour le retour.
     annuler: () {
@@ -372,3 +422,89 @@ ResultatCaisse encaisserFacture(
 }
 
 num n0(Object? v) => v is num ? v : (num.tryParse('${v ?? ''}') ?? 0);
+
+/// Ce qu'une annulation de règlement (contre-passation) a écrit.
+class ResultatContrepassationCaisse {
+  const ResultatContrepassationCaisse({required this.contrepassations, required this.ecritures, required this.lignesRouvertes, required this.facture});
+  final List<Fiche> contrepassations;
+  final List<Fiche> ecritures;
+  final List<String> lignesRouvertes;
+  final Fiche facture;
+}
+
+/// ANNULER UN RÈGLEMENT (Direction, 20/11/2026, §13) : le geste réservé `versement_annuler` (comptable et Directrice Administrative d'origine, réglable en fiche de rôle) — le caissier
+/// n'annule pas. Le versement désigné et tous ceux du MÊME règlement reçoivent chacun une CONTRE-PASSATION (nouvelle ligne de journal, motif obligatoire, écriture inverse en brouillon) ;
+/// les prestations du règlement redeviennent dues et leurs examens se REBLOQUENT. Refus nommés, rien n'est écrit : sans droit (`DROIT_REFUSE`), motif absent, déjà annulé, facture normalisée,
+/// prestation déjà exécutée (examen prélevé, médicament délivré : le produit est sorti, la voie prudente est l'avoir).
+ResultatContrepassationCaisse contrepasserVersement(
+  Magasin m,
+  String versementId, {
+  required String motif,
+  required DateTime maintenant,
+  required bool Function() droit,
+}) {
+  if (!droit()) {
+    throw const RefusCaisse('DROIT_REFUSE', 'Annuler un règlement est un geste réservé (« Annuler un règlement »), accordé par la fiche de rôle : ce profil ne le détient pas. Le caissier n’annule pas.');
+  }
+  final colV = m.collection(d.colVersements);
+  final v = colV.parId(versementId);
+  if (v == null) throw const RefusCaisse(d.codeVersementIntrouvable, 'Versement introuvable.');
+  final factureId = '${v['factureId']}';
+  final fac = m.collection('factures').parId(factureId);
+  if (fac == null) throw const RefusCaisse('FACTURE_INTROUVABLE', 'Facture introuvable.');
+  final aujourdhui = d.iso(maintenant);
+  final mecefActif = d.fermeturesEnVigueur(m.collection('modulesActifs').toutes).mecefEnService;
+  final r = d.contrepasserReglement(fac, versementId, colV.toutes.where((x) => x['factureId'] == factureId).toList(),
+      motif: motif, aujourdhui: aujourdhui, maintenant: maintenant.toIso8601String(), utilisateur: m.utilisateur, ecritures: m.collection('ecritures').actives, mecefActif: mecefActif);
+  if (!r.ok) {
+    final i = r.refus!.indexOf(' : ');
+    throw RefusCaisse(r.refusCode ?? 'CONTREPASSATION_REFUSEE', r.refus!.substring(i < 0 ? 0 : i + 3));
+  }
+  final rouvertes = r.lignesRouvertes.toSet();
+  final lignes = [for (final l in (fac['lignes'] as List? ?? const []).cast<Map>()) if (rouvertes.contains('${l['id']}')) l.cast<String, Object?>()];
+  final analyses = m.collection('demandesAnalyses');
+  final imagerie = m.collection('demandesImagerie');
+  // Une prestation DÉJÀ exécutée ne se rebloque pas : refus nommé, rien n'est écrit.
+  for (final l in lignes) {
+    if (l['categorie'] == 'analyse' && l['demandeId'] != null) {
+      final dem = analyses.parId(l['demandeId']);
+      if (dem != null && dem['etatAnalyse'] != 'attente_prelevement' && dem['etatAnalyse'] != 'en_attente') {
+        throw RefusCaisse('PRESTATION_DEJA_EXECUTEE', 'L’examen « ${l['designation']} » est déjà au laboratoire (${dem['etatAnalyse']}) : le règlement ne s’annule plus. Passer par une facture d’avoir.');
+      }
+    }
+    if (l['categorie'] == 'imagerie' && l['demandeImagerieId'] != null) {
+      final di = imagerie.parId(l['demandeImagerieId']);
+      if (di != null && di['statut'] != 'payee' && di['statut'] != 'demandee') {
+        throw RefusCaisse('PRESTATION_DEJA_EXECUTEE', 'L’examen « ${l['designation']} » est déjà exécuté : le règlement ne s’annule plus. Passer par une facture d’avoir.');
+      }
+    }
+  }
+  final ordId = fac['ordonnanceId'];
+  final ord = ordId == null ? null : m.collection('ordonnances').parId(ordId);
+  final refusDelivrance = d.refusAnnulationEncaissement(ord, fac, r.lignesRouvertes);
+  if (refusDelivrance != null) throw RefusCaisse('PRESTATION_DEJA_EXECUTEE', refusDelivrance);
+
+  m.collection('factures').mettreAJour(factureId, {for (final e in r.facture.entries) e.key: e.value});
+  for (final l in lignes) {
+    if (l['categorie'] == 'analyse' && l['demandeId'] != null && analyses.parId(l['demandeId']) != null) {
+      analyses.mettreAJour(l['demandeId'], {'bloqueParPaiement': true, 'statutPaiement': 'du', 'etatAnalyse': 'en_attente'});
+    }
+    if (l['categorie'] == 'imagerie' && l['demandeImagerieId'] != null && imagerie.parId(l['demandeImagerieId']) != null) {
+      imagerie.mettreAJour(l['demandeImagerieId'], {'bloqueParPaiement': true, 'statut': 'demandee'});
+    }
+  }
+  final apres = m.collection('factures').parId(factureId)!;
+  final taches = m.collection('taches');
+  final resteMedicamentPaye = [for (final l in (apres['lignes'] as List? ?? const []).cast<Map>()) if (l['categorie'] == 'medicament' && l['statutPaiement'] == 'paye') l].isNotEmpty;
+  for (final t in taches.actives.where((t) => t['factureId'] == factureId || (ordId != null && t['ordonnanceId'] == ordId))) {
+    if (t['type'] == 'dispensation' && t['statut'] == 'en_attente' && !resteMedicamentPaye) taches.mettreAJour(t['id'], {'statut': 'bloque'});
+    if (t['type'] == 'encaissement' && t['statut'] == 'fait') taches.mettreAJour(t['id'], {'statut': 'en_attente'});
+  }
+  if (ordId != null && ord != null) m.collection('ordonnances').mettreAJour(ordId, {'statutPaiement': 'impayee'});
+  final contre = [for (final c in r.contrepassations) colV.inserer(c, prefixe: 'VRS').fiche];
+  final ecr = [for (final e in r.ecritures) m.collection('ecritures').inserer(e, prefixe: 'ECR').fiche];
+  m.journaliser('Annulation de règlement (contre-passation)', 'M8', 'facture', '${fac['numero']}',
+      {'montantPaye': fac['montantPaye'], 'statutPaiement': fac['statutPaiement']},
+      {'montantPaye': apres['montantPaye'], 'statutPaiement': apres['statutPaiement'], 'versementsContrepasses': contre.length, 'motif': motif.trim()});
+  return ResultatContrepassationCaisse(contrepassations: contre, ecritures: ecr, lignesRouvertes: r.lignesRouvertes, facture: apres);
+}

@@ -88,6 +88,10 @@ const familleDeBase = <String, String>{
   // Q26 (Direction, 16/11/2026) : budgets et immobilisations rejoignent la synchronisation (sinon un import fait chez un fileul resterait local au poste, contre la continuité de service). Fiches
   // descriptives sans invariant entre fiches : famille A, champ à champ, dans les deux sens ; les numéros de référence en doublon sont des marqueurs que chaque poste déduit (`numeroEnDoublon`).
   'budgets': 'A', 'immobilisations': 'A',
+  // LES VERSEMENTS (Direction de Baguidi, 20/11/2026, §13) : le règlement d'une facture en plusieurs versements de modes différents. Un versement est une ligne de JOURNAL (famille B, ajout seul) :
+  // jamais réécrit, son annulation est une contre-passation (une autre ligne). Deux postes qui encaissent deux versements sur la même facture le même jour ajoutent deux lignes, jamais un doublon
+  // (identité propre à chaque ligne) ; le numéro (VRS) se prend dans la série du poste, un doublon éventuel est MARQUÉ par le pont. Montants et références de transaction : jamais vers un téléphone.
+  'versements': 'B',
   // SATISFACTION EN LIGNE (Direction, 16/11/2026) : les LIENS de partage d'une enquête (le poste en ouvre un, la mère le publie au relais et écrit l'issue sur la même fiche) et les
   // RÉPONSES (recueillies au guichet d'un poste, ou relevées du relais et déchiffrées par la mère) : des fiches descriptives, champ à champ, dans les deux sens, pour que les statistiques
   // comptent partout les mêmes réponses. Jamais vers un téléphone (voir `collectionsPosteSeulement`).
@@ -146,7 +150,7 @@ const Set<String> collectionsRemunerationJamaisMobile = {'prestataires', 'regime
 /// police : donnée nominative, RG-13). Aucun écran du mobile ne les lit ; l'exclusion est posée ici, au chemin de lecture du mobile, comme celle des prix.
 const Set<String> collectionsAssuranceJamaisMobile = {'garanties', 'couverturesAssurance'};
 /// Q26 : le prévisionnel financier (budgets) et le patrimoine (immobilisations) ne partent JAMAIS vers un téléphone : donnée financière, réservée aux profils comptables (RG-13) ; aucun écran du mobile ne les lit.
-const Set<String> collectionsFinanceJamaisMobile = {'budgets', 'immobilisations'};
+const Set<String> collectionsFinanceJamaisMobile = {'budgets', 'immobilisations', 'versements'};
 /// Lot PTA (17/11/2026) : le plan de travail annuel porte des budgets prévus et des liens vers les budgets : il ne part JAMAIS vers un téléphone (RG-13) ; aucun écran du mobile ne le lit.
 final Set<String> collectionsPlanTravailJamaisMobile = {...ptaCollections};
 /// Décision 12 du 17/11/2026 : le planning (vacations, propositions, congés, missions, présences) porte des honoraires, des motifs d'absence et des horaires nominatifs : il ne part JAMAIS vers un téléphone

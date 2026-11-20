@@ -133,6 +133,18 @@ List<TypeVersement> typesVersementEnService(Iterable<Map<String, Object?>> fiche
   return l;
 }
 
+/// Le libellé affiché d'un type : celui de sa fiche (archivée comprise), sinon le libellé du mode du réglage `libelles.m8.modesPaiement` (les pièces d'avant les versements), sinon
+/// [repli], sinon le code. Le code « mixte » (facture réglée de plusieurs types) se lit au même réglage.
+String libelleDeType(Iterable<Map<String, Object?>> typesFiches, Object? code, {String Function(String)? repli}) {
+  final t = typeVersementDe(typesFiches, code);
+  if (t != null) return t.libelle;
+  final c = '${code ?? ''}';
+  if (c.isEmpty) return 'Mode non renseigné';
+  final enum_ = enumModesPaiement.libelles[c];
+  if (enum_ != null) return enum_;
+  return repli != null ? repli(c) : c;
+}
+
 /// Tous les types, archivés compris (la lecture d'une pièce ancienne retrouve le libellé d'un type archivé depuis).
 TypeVersement? typeVersementDe(Iterable<Map<String, Object?>> fiches, Object? code) {
   final f = fiches.toList();
@@ -195,30 +207,52 @@ List<VersementLu> versementsDeFacture(Map<String, Object?> facture, Iterable<Map
   final siens = [for (final v in versements) if (v['factureId'] == id && v['statut'] != 'archive') v];
   if (siens.isNotEmpty) {
     final annules = {for (final v in siens) if (v['sens'] == sensContrepassation) '${v['annule']}'};
+    // Dans l'ordre où ils ont été reçus (date et heure, puis rang dans le règlement), quel que soit l'ordre de rangement de la collection.
+    final vivants = [for (final v in siens) if (v['sens'] != sensContrepassation && !annules.contains('${v['id']}')) v]
+      ..sort((a, b) {
+        final c = '${a['dateHeure'] ?? a['date'] ?? ''}'.compareTo('${b['dateHeure'] ?? b['date'] ?? ''}');
+        return c != 0 ? c : _n(a['rang']).compareTo(_n(b['rang']));
+      });
     return [
-      for (final v in siens)
-        if (v['sens'] != sensContrepassation && !annules.contains('${v['id']}'))
-          VersementLu(
-              montant: _n(v['montant']),
-              type: '${v['type']}',
-              libelleType: v['typeLibelle'] as String?,
-              modalite: v['modaliteLibelle'] as String?,
-              reference: '${v['reference'] ?? ''}',
-              date: '${v['date'] ?? ''}',
-              id: '${v['id']}')
+      for (final v in vivants)
+        VersementLu(
+            montant: _n(v['montant']),
+            type: '${v['type']}',
+            libelleType: v['typeLibelle'] as String?,
+            modalite: v['modaliteLibelle'] as String?,
+            reference: '${v['reference'] ?? ''}',
+            date: '${v['date'] ?? ''}',
+            id: '${v['id']}')
     ];
   }
-  final paye = _n(facture['montantPaye']);
+  final mode = _faux(facture['modePaiement']) ? 'especes' : '${facture['modePaiement']}';
+  final refTransaction = '${facture['referenceTransaction'] ?? ''}';
+  String jour(Object? v) {
+    final t = '${v ?? ''}';
+    return t.length >= 10 ? t.substring(0, 10) : t;
+  }
+
+  // La date : celle des règlements portés par les LIGNES payées (un versement implicite par jour de règlement), sinon celle du dernier règlement, sinon celle de la facture.
+  final parJour = <String, double>{};
+  for (final l in (facture['lignes'] as List? ?? const [])) {
+    if (l is Map && !_faux(l['payeLe']) && _n(l['montantRegle'] ?? l['partPatient']) > 0 && l['statutPaiement'] != 'du') {
+      final j = jour(l['payeLe']);
+      parJour[j] = (parJour[j] ?? 0) + _n(l['montantRegle'] ?? l['partPatient']);
+    }
+  }
+  // Le montant payé de la pièce ; une pièce qui ne le porte pas se lit par ses lignes réglées.
+  final somme0 = parJour.values.fold<double>(0, (a, b) => a + b);
+  final paye = _n(facture['montantPaye']) > 0 ? _n(facture['montantPaye']) : somme0;
   if (paye <= 0) return const [];
   final dr = facture['dernierReglement'];
-  final date = '${(dr is Map ? dr['date'] : null) ?? facture['date'] ?? ''}';
+  if (parJour.isEmpty) parJour[jour((dr is Map ? dr['date'] : null) ?? facture['date'])] = paye;
+  // Ce que les lignes ne portent pas (règlement d'une pièce sans lignes, arrondi) va au dernier jour : la somme des versements implicites est TOUJOURS le montant payé.
+  final somme = parJour.values.fold<double>(0, (a, b) => a + b);
+  final dernierJour = (parJour.keys.toList()..sort()).last;
+  if ((paye - somme).abs() > 0.5) parJour[dernierJour] = (parJour[dernierJour] ?? 0) + (paye - somme);
   return [
-    VersementLu(
-        montant: paye,
-        type: _faux(facture['modePaiement']) ? 'especes' : '${facture['modePaiement']}',
-        reference: '${facture['referenceTransaction'] ?? ''}',
-        date: date.length >= 10 ? date.substring(0, 10) : date,
-        implicite: true)
+    for (final j in (parJour.keys.toList()..sort()))
+      VersementLu(montant: parJour[j]!, type: mode, reference: refTransaction, date: j, implicite: true)
   ];
 }
 
@@ -501,3 +535,9 @@ ResultatContrepassation contrepasserReglement(
         if (mecefActif && facture.containsKey('baseMecef')) 'baseMecef': base ?? paye,
       });
 }
+
+/// LA GARDE DU JOURNAL (RG-12, RG-14) : un versement ne se modifie ni ne s'archive — l'erreur se corrige par une CONTRE-PASSATION tracée ([contrepasserReglement]). Posée AU MOTEUR sur la
+/// collection `versements` : masquer un bouton ne protège rien. `null` : l'opération est permise (l'insertion d'une nouvelle ligne).
+String? gardeVersement(String operation, Map<String, Object?> fiche) => operation == 'inserer'
+    ? null
+    : 'VERSEMENT_NON_MODIFIABLE : un versement est une ligne de journal, elle ne se modifie ni ne s’archive. Pour corriger une erreur, annuler le règlement : une contre-passation est écrite avec son motif (geste réservé).';

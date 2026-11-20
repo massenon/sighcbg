@@ -67,6 +67,7 @@ void generer(Contexte ctx) {
   _calendrierFiscal(ctx);
   _caisse(ctx);
   _planTravail(ctx);
+  _versements(ctx);
 }
 
 // --- Génériques --------------------------------------------------------------------------------------------------------------------------------
@@ -483,6 +484,17 @@ void _caisse(Contexte ctx) {
     for (final b in ctx.reference('banques'))
       if (b['nature'] == 'caisse') b
   ]);
+}
+
+// --- Versements (Direction de Baguidi, 20/11/2026, §13) ----------------------------------------------------------------------------------------------
+
+/// Les TYPES et les MODALITÉS de versement sont SEMÉS depuis le domaine : valeurs d'ATTENTE (les modes de `libelles.m8.modesPaiement` que le patient règle, plus « Mobile Money » et ses
+/// opérateurs MTN, Moov, Celtiis), toutes marquées « à confirmer par la Direction » (aucun document ne fixe la liste, ni les comptes de trésorerie réels). Le journal des versements
+/// reste VIDE : les factures du jeu gardent leur mode unique et se lisent par un versement implicite — aucune pièce n'est réécrite.
+void _versements(Contexte ctx) {
+  ctx.remplacer(d.colTypesVersement, d.typesVersementSemence());
+  ctx.remplacer(d.colModalitesVersement, d.modalitesVersementSemence());
+  ctx.remplacer(d.colVersements, const <Fiche>[]);
 }
 
 // --- Plan de travail annuel (lot PTA, Direction de Baguidi, 17/11/2026) ------------------------------------------------------------------------------

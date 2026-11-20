@@ -15,6 +15,7 @@ import 'annonce_normalisation.dart';
 import 'commun.dart';
 import 'factures.dart';
 import 'impression.dart';
+import 'saisie_versements.dart';
 
 const _categories = {
   'analyse': 'Analyse',
@@ -87,7 +88,7 @@ class _EcranCaisseState extends State<EcranCaisse> {
     final c = ContexteEcran.of(context);
     final col = c.magasin.collection('factures');
     return ListenableBuilder(
-      listenable: col,
+      listenable: Listenable.merge([col, c.magasin.collection(colVersements)]),
       builder: (context, _) {
         final f = [
           for (final x in col.actives)
@@ -95,17 +96,20 @@ class _EcranCaisseState extends State<EcranCaisse> {
         ];
         num som(Iterable<Fiche> r, String k) =>
             r.fold<num>(0, (a, x) => a + n(x[k]));
+        // L'ARRÊTÉ PAR MODE lit les VERSEMENTS (Direction, 20/11/2026) : un règlement 5 000 Mobile Money + 3 000 espèces compte 5 000 d'un côté et 3 000 de l'autre ; une facture
+        // d'avant les versements compte pour son mode unique. Un type archivé depuis garde sa ligne tant qu'il porte un montant.
+        final versementsCol = c.magasin.collection(colVersements).toutes;
+        final typesFiches = c.magasin.collection(colTypesVersement).toutes;
+        final parTypeJour = repartitionParType(f, versementsCol);
+        final codesType = [for (final t in typesVersementEnService(typesFiches)) t.code, for (final k in parTypeJour.keys) if (!typesVersementEnService(typesFiches).any((t) => t.code == k)) k];
         final parMode = [
-          for (final mp in modesPaiementPatient)
+          for (final code in codesType)
             () {
-              final sel = [
-                for (final x in f)
-                  if (x['modePaiement'] == mp.$1) x
-              ];
+              final nb = f.where((x) => versementsDeFacture(x, versementsCol).any((v) => v.type == code)).length;
               return <String, Object?>{
-                'mode': mp.$2,
-                'nb': sel.length,
-                'montant': som(sel, 'montantPaye')
+                'mode': libelleDeType(typesFiches, code, repli: modeLabel),
+                'nb': nb,
+                'montant': parTypeJour[code] ?? 0,
               };
             }()
         ];
@@ -293,8 +297,8 @@ class _EcranCaisseState extends State<EcranCaisse> {
                   ColonneTableau(
                       cle: 'modePaiement',
                       libelle: 'Mode',
-                      texte: (x) => modeLabel(x['modePaiement']),
-                      rendu: (_, x) => BadgeSigh(modeLabel(x['modePaiement']),
+                      texte: (x) => modeDeFacture(c.magasin, x),
+                      rendu: (_, x) => BadgeSigh(modeDeFacture(c.magasin, x),
                           ton: TonSigh.navy)),
                   colStatutPaiement,
                 ],
@@ -440,19 +444,12 @@ class _EcranCaisseState extends State<EcranCaisse> {
     final jourPieceCaisse = tarJourDe(fac['date'], tarIso(c.aujourdhui));
     final choisies = {for (final l in lignes) '${l['id']}'};
     final version = ValueNotifier(0);
-    final form = ControleurFormulaire([
-      ChampDef(
-          nom: 'mode',
-          libelle: 'Mode de règlement',
-          type: TypeChamp.select,
-          options: [for (final x in modesPaiement) OptionChamp(x.$1, x.$2)]),
-      const ChampDef(
-          nom: 'reference',
-          libelle: 'Référence de transaction',
-          indicatif: 'N° de transaction, chèque…'),
-    ], {
-      'mode': 'especes'
-    });
+    // LES VERSEMENTS (Direction, 20/11/2026) : la somme à répartir est celle des prestations cochées ; le caissier ajoute autant de versements (types, modalités, références) qu'il faut.
+    num totalCoche() => lignes.where((l) => choisies.contains('${l['id']}')).fold<num>(0, (a, l) => a + n(vue(l)['partPatient']));
+    final sv = SaisieVersements(
+        magasin: c.magasin,
+        aRepartir: () => lignes.isEmpty ? n(fac['reliquat']) : totalCoche(),
+        toast: (titre, detail) => ToastsSigh.afficher(ctx, titre, type: TypeToast.erreur, detail: detail));
     afficherModale<void>(ctx,
         titre: 'Encaisser ${tache['reference']}',
         sousTitre: '${fac['numero']}',
@@ -710,7 +707,7 @@ class _EcranCaisseState extends State<EcranCaisse> {
                           ]),
                         ),
                         const SizedBox(height: 12),
-                        FormulaireSigh(controleur: form),
+                        sv.construire(),
                         const SizedBox(height: 12),
                         // Facture d'un PATIENT : normalisée sans acheteur ni AIB (Direction de Baguidi, 16/11/2026, E3770) — plus de fenêtre « Facture normalisée ».
                         if (mecefEnService(c.magasin)) const NoteSigh(mecefMentionFacturePatient, icone: LucideIcons.receipt),
@@ -740,12 +737,15 @@ class _EcranCaisseState extends State<EcranCaisse> {
                           detail: 'Cocher au moins une prestation à régler.');
                       return;
                     }
+                    // Les versements saisis (ceux de la liste, plus celui du formulaire s'il reste à répartir) : validés ensemble, d'un seul geste.
+                    final saisis = sv.finaliser();
+                    if (saisis == null) return;
                     ResultatCaisse res;
                     try {
                       res = encaisserFacture(c.magasin, '${fac['id']}',
                           lignes: lignes.isNotEmpty ? choisies.toList() : null,
                           montant: lignes.isEmpty ? n(fac['reliquat']) : null,
-                          mode: '${form['mode']}',
+                          versements: saisis,
                           maintenant: c.aujourdhui);
                     } on RefusCaisse catch (e) {
                       if (e.code == codeFactureEnAttenteDePrix) {
@@ -772,9 +772,6 @@ class _EcranCaisseState extends State<EcranCaisse> {
                           type: TypeToast.erreur);
                       return;
                     }
-                    if ('${form['reference']}'.isNotEmpty)
-                      col.mettreAJour(fac['id'],
-                          {'referenceTransaction': form['reference']});
                     fermer();
                     annoncerNormalisation(ctx, res.normalisation);
                     final detail = [
@@ -807,6 +804,11 @@ class _EcranCaisseState extends State<EcranCaisse> {
                             children: [
                               DescListeSigh([
                                 ('Encaissé', money(res.montantRegle)),
+                                for (final (i, v) in res.versements.indexed)
+                                  (
+                                    'Versement ${i + 1}',
+                                    '${v['typeLibelle'] ?? v['type']}${v['modaliteLibelle'] == null ? '' : ' — ${v['modaliteLibelle']}'}${'${v['reference'] ?? ''}'.isEmpty ? '' : ' · réf. ${v['reference']}'} : ${money(v['montant'])}'
+                                  ),
                                 (
                                   'Prestations réglées',
                                   nombre(res.lignesReglees.length)
@@ -832,13 +834,7 @@ class _EcranCaisseState extends State<EcranCaisse> {
                               BoutonSigh(
                                   libelle: 'Imprimer le reçu',
                                   icone: LucideIcons.printer,
-                                  onPressed: () => imprimerRecu(
-                                          ctx, col.parId(fac['id'])!,
-                                          versement: {
-                                            'montant': res.montantRegle,
-                                            'modePaiement': form['mode'],
-                                            'reference': form['reference']
-                                          })),
+                                  onPressed: () => imprimerRecu(ctx, col.parId(fac['id'])!)),
                             ]);
                   }),
             ]);
