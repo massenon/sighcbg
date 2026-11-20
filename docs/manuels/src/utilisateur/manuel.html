@@ -22,7 +22,7 @@
   </div>
   <div class="meta">
     <span>Version du poste : 0.1.0</span>
-    <span>Édition du 20 novembre 2026 — livraison v32</span>
+    <span>Édition du 20 novembre 2026 — livraison v33</span>
     <span>Document interne</span>
   </div>
 </section>
@@ -177,8 +177,9 @@
   <li>Cliquez sur <strong>Se connecter</strong>. Votre tableau de bord s’ouvre.</li>
 </ol>
 <figure class="capture" data-capture="captures/01-connexion" data-cibles='[{"cle":"acces:identifiant","de":"gauche"},{"cle":"acces:motdepasse","de":"gauche"},{"bouton":"Se connecter","de":"gauche"}]'>
-  <figcaption>L’écran <strong>Connexion</strong>.</figcaption>
+  <figcaption>L’écran <strong>Connexion</strong> : à gauche la présentation de la clinique, à droite le formulaire d’identification.</figcaption>
 </figure>
+<div class="encadre info"><span class="titre">Information</span><p>Les écrans d’accès (<strong>Connexion</strong>, <strong>Session verrouillée</strong>, demande et définition d’un mot de passe) ne montrent <strong>plus de pastilles de spécialités</strong> : seuls y figurent la présentation de la clinique, sa devise et le formulaire. Les spécialités de la clinique se lisent à l’écran <strong>Spécialités</strong>, dans le domaine <strong>Soins</strong>.</p></div>
 <p>À votre première connexion, le logiciel vous demande de remplacer le mot de passe provisoire. Saisissez le <strong>Nouveau mot de passe</strong>, puis <strong>Confirmer le mot de passe</strong>, et cliquez sur <strong>Définir le mot de passe et se connecter</strong>.</p>
 <div class="encadre attention"><span class="titre">Attention</span><p>Après <strong>3 tentatives infructueuses</strong>, le compte est verrouillé <strong>15 minutes</strong>. Toutes les tentatives, réussies ou refusées, sont enregistrées au journal.</p></div>
 <div class="encadre astuce"><span class="titre">Astuce</span><p>Mot de passe oublié ? Cliquez sur <strong>Mot de passe oublié ?</strong>, saisissez votre identifiant, puis <strong>Envoyer les instructions</strong>. La demande est transmise à l’administrateur, qui vous donne un nouveau mot de passe provisoire.</p></div>
@@ -268,8 +269,8 @@
   <li>Saisissez votre <strong>mot de passe</strong>.</li>
   <li>Cliquez sur <strong>Déverrouiller</strong>. Vous retrouvez l’écran que vous aviez, avec votre saisie en cours.</li>
 </ol>
-<figure class="capture" data-capture="captures/02-verrou" data-recadrage="240,40,960,820" data-cibles='[{"cle":"acces:motdepasse","de":"gauche","long":70},{"bouton":"Déverrouiller","de":"gauche","long":70}]'>
-  <figcaption>L’écran <strong>Session verrouillée</strong>.</figcaption>
+<figure class="capture" data-capture="captures/02-verrou" data-recadrage="120,100,1200,680" data-cibles='[{"cle":"acces:motdepasse","de":"gauche","long":70},{"bouton":"Déverrouiller","de":"gauche","long":70}]'>
+  <figcaption>L’écran <strong>Session verrouillée</strong> : seul le mot de passe du compte ouvert est demandé ; <strong>Se connecter avec un autre compte</strong> ramène à l’écran de connexion.</figcaption>
 </figure>
 <div class="encadre info"><span class="titre">Information</span><p>Le verrouillage <strong>suspend</strong> la session, il ne la ferme pas : votre travail en cours n’est pas perdu.</p></div>
 
@@ -441,7 +442,7 @@
 </figure>
 <ol class="etapes" start="3" style="counter-reset: etape 2">
   <li>Remplissez l’<strong>IDENTIFICATION</strong> : <strong>Nom</strong>, <strong>Prénom(s)</strong>, <strong>Sexe</strong> et <strong>Date de naissance</strong>. Si la date est inconnue, choisissez de saisir l’âge déclaré.</li>
-  <li>Remplissez les <strong>COORDONNÉES</strong> : <strong>Téléphone</strong>, <strong>Quartier</strong>, <strong>Adresse</strong>, <strong>Personne à prévenir</strong>.</li>
+  <li>Remplissez les <strong>COORDONNÉES</strong> : <strong>Téléphone</strong>, <strong>Quartier</strong>, <strong>Adresse</strong>, <strong>Personne à prévenir</strong>, puis le <strong>Consentement aux SMS</strong> (voir l’encadré ci-dessous).</li>
   <li>Renseignez les <strong>ÉLÉMENTS MÉDICAUX</strong> connus : <strong>Allergies connues</strong>, <strong>Traitement en cours</strong>.</li>
   <li>Si le patient est assuré, remplissez la <strong>COUVERTURE ASSURANCE</strong> : <strong>Compagnie d’assurance</strong>, <strong>Numéro de police</strong>, <strong>Taux de prise en charge (%)</strong>, <strong>Expiration de la carte</strong>.</li>
   <li>Enregistrez en bas de la page.</li>
@@ -454,6 +455,24 @@
 <div class="encadre attention"><span class="titre">Attention</span><p>Une allergie déclarée bloque la délivrance du produit correspondant à la pharmacie. Laissez le champ vide si aucune allergie n’est connue : n’écrivez pas « néant ».</p></div>
 <div class="encadre attention"><span class="titre">Attention</span><p>Au-delà de la date d’<strong>Expiration de la carte</strong>, l’assurance ne s’applique plus : la facture est intégralement à la charge du patient. Vérifiez la carte à chaque venue.</p></div>
 <p>La colonne de droite, <strong>Enchaînement du parcours</strong>, rappelle la suite : constantes, file d’attente, dossier et fiche de consultation, caisse.</p>
+
+<h3 id="consentement-sms">Demander et noter le consentement aux SMS</h3>
+<p>Un SMS (rappel de rendez-vous, vœux d’anniversaire) ne part qu’à un patient qui l’a <strong>accepté</strong>. La liste <strong>Consentement aux SMS</strong> du dossier a donc <strong>trois états</strong>, dont deux se choisissent :</p>
+<table class="simple">
+  <tr><th style="width:34%">État</th><th>Ce que cela veut dire</th></tr>
+  <tr><td><strong>Accepte de recevoir des SMS</strong></td><td>Le patient a donné son accord. Les rappels et les vœux automatiques peuvent lui être envoyés, si la clinique les a ouverts.</td></tr>
+  <tr><td><strong>Refuse de recevoir des SMS</strong></td><td>Le patient a refusé. Aucun SMS ne lui est envoyé, ni automatique ni composé à la main. Respectez ce refus : joignez-le autrement.</td></tr>
+  <tr><td><strong>Non renseigné</strong> (liste laissée vide)</td><td>Personne n’a encore posé la question. <strong>Ce n’est pas un accord</strong> : sans réponse, aucun SMS ne part. Tous les dossiers ouverts avant cette liste sont « non renseignés ».</td></tr>
+</table>
+<ol class="etapes">
+  <li>Posez la question au patient à l’accueil, puis choisissez sa réponse dans <strong>Consentement aux SMS</strong>, à l’ouverture du dossier ou plus tard par <strong>Modifier le dossier</strong>.</li>
+  <li>Laissez la liste <strong>vide</strong> tant que le patient n’a pas répondu. Modifier le dossier pour une autre raison (un quartier, un téléphone) ne change jamais ce consentement.</li>
+  <li>Retrouvez la réponse dans la fiche du patient, rubrique <strong>Administratif</strong>, ligne <strong>Consentement aux SMS</strong>.</li>
+</ol>
+<figure class="capture" data-capture="captures/211-patient-consentement-sms" data-recadrage="0,700,1000,480" data-cibles='[{"rect":[45,1000,880,44],"de":"droite","long":60,"num":1}]'>
+  <figcaption>La page <strong>Ouvrir un dossier patient</strong> : <span class="pastille">1</span> la liste <strong>Consentement aux SMS</strong>, laissée sur « Sélectionner » tant que le patient n’a pas répondu.</figcaption>
+</figure>
+<div class="encadre info"><span class="titre">Information</span><p>Chaque changement de consentement est <strong>daté et signé</strong> (qui l’a noté, quand) et inscrit au journal d’audit. Il n’est pas réservé à un rôle de santé : c’est un renseignement d’accueil, de la catégorie « coordonnées ».</p></div>
 </div>
 
 <h2 id="fiche-patient">Consulter la fiche d’un patient</h2>
@@ -462,7 +481,7 @@
 <p class="chemin">Soins ➔ Patients &amp; Dossier médical ➔ Fiche patient</p>
 <ol class="etapes">
   <li>Choisissez le patient dans <strong>Sélectionner un dossier patient</strong>. Depuis le répertoire, l’action <strong>Consulter</strong> d’une ligne mène au même résultat.</li>
-  <li>Lisez le bloc <strong>Identité et couverture</strong>. Les allergies déclarées apparaissent dans un bandeau orange.</li>
+  <li>Lisez le bloc <strong>Identité et couverture</strong>. Les allergies déclarées apparaissent dans un bandeau orange. Dans la rubrique <strong>Administratif</strong>, la ligne <strong>Consentement aux SMS</strong> dit si le patient accepte, refuse ou n’a pas encore répondu.</li>
   <li>Cliquez sur une rubrique à droite : <strong>Administratif</strong>, <strong>Médical</strong>, <strong>Antécédents &amp; allergies</strong>, <strong>Hospitalisations</strong>, <strong>Maternité</strong>, <strong>Analyses &amp; résultats</strong>, <strong>Imagerie médicale</strong>…</li>
   <li>Utilisez les boutons du haut : <strong>Modifier le dossier</strong>, <strong>Fiche de consultation</strong>, <strong>Documents numérisés</strong>, <strong>Imprimer la fiche</strong>.</li>
 </ol>
@@ -638,14 +657,18 @@
 <p class="but">Vous enregistrez l’entrée d’un patient dans un lit.</p>
 <p class="chemin">Soins ➔ Hospitalisation ➔ Admissions ➔ Nouveau</p>
 <ol class="etapes">
-  <li>Cliquez sur <strong>Nouveau</strong>.</li>
+  <li>Cliquez sur <strong>Nouveau</strong> : la fenêtre <strong>Nouvelle admission</strong> s’ouvre.</li>
   <li>Renseignez le <strong>Dossier patient</strong>, le <strong>Lit</strong>, l’<strong>Infirmier référent</strong>, la <strong>Date d’entrée</strong>, le <strong>Type de prise en charge</strong>, le <strong>Diagnostic d’entrée</strong> et les <strong>Symptômes constatés</strong>.</li>
   <li>Enregistrez. Le lit apparaît occupé sur le <strong>Plan des lits</strong>.</li>
 </ol>
 <figure class="capture" data-capture="captures/24-admissions" data-recadrage="0,120,1440,620" data-cibles='[{"bouton":"Nouveau","de":"bas","long":60},{"bouton":"Plan des lits","de":"bas","long":60}]'>
-  <figcaption>L’écran <strong>Admissions</strong>.</figcaption>
+  <figcaption>L’écran <strong>Admissions</strong> : l’onglet de la liste s’intitule <strong>Toutes les admissions</strong>.</figcaption>
+</figure>
+<figure class="capture" data-capture="captures/217-admission-nouvelle" data-recadrage="270,40,900,720" data-cibles='[{"bouton":"Créer","de":"haut","long":50,"num":3}]'>
+  <figcaption>La fenêtre <strong>Nouvelle admission</strong>. Pour corriger une admission, l’icône crayon d’une ligne ouvre <strong>Modifier l’admission</strong>.</figcaption>
 </figure>
 <div class="encadre info"><span class="titre">Information</span><p>Un lit ne porte qu’une admission active. Pour une surveillance courte (24 heures de référence), utilisez plutôt <strong>Mise en observation</strong>.</p></div>
+<div class="encadre info"><span class="titre">Information</span><p><strong>Les intitulés s’accordent avec le nom de la fiche</strong> sur tous les registres : « Nouvelle admission », « Nouveau patient », « Nouvel accouchement », « Toutes les consultations », « Modifier la facture », « Modifier l’admission ». Une ancienne capture ou un ancien guide qui porterait un intitulé mal accordé désigne le même écran.</p></div>
 <p>Pendant le séjour, l’équipe utilise la <strong>Feuille de température</strong>, la <strong>Feuille de soins</strong>, l’<strong>Administration des traitements</strong> et la <strong>Fiche de surveillance</strong>.</p>
 <div class="encadre attention"><span class="titre">Attention</span><p>La sortie (<strong>Sorties d’hospitalisation</strong>) exige le solde apuré à la caisse, la signature du patient, celle de l’infirmier et le constat du gardien. Une sortie contre avis médical se note dans <strong>Sortie contre avis médical</strong>, avec son motif.</p></div>
 </div>
@@ -672,6 +695,10 @@
 </ol>
 <figure class="capture" data-capture="captures/26-dossier-obstetrical" data-recadrage="0,120,1440,620" data-cibles='[{"bouton":"Nouveau","de":"bas","long":60}]'>
   <figcaption>L’écran <strong>Dossier obstétrical</strong>.</figcaption>
+</figure>
+<p>À l’écran <strong>Accouchements</strong>, le bouton <strong>Nouveau</strong> ouvre la fenêtre <strong>Nouvel accouchement</strong> (le mot s’élide devant une voyelle, au masculin) ; l’onglet de la liste s’intitule <strong>Tous les accouchements</strong>.</p>
+<figure class="capture" data-capture="captures/218-accouchement-nouvel" data-recadrage="270,40,900,760" data-cibles='[{"bouton":"Créer","de":"haut","long":50,"num":1}]'>
+  <figcaption>La fenêtre <strong>Nouvel accouchement</strong> : la parturiente, la date et l’heure, le type d’accouchement, le praticien, les complications et l’issue.</figcaption>
 </figure>
 <div class="encadre info"><span class="titre">Information</span><p>Le niveau de risque de la grossesse n’est pas un champ à remplir : il se déduit des facteurs cochés. Les consultations après l’accouchement se saisissent dans <strong>Consultations post-natales (CPoN)</strong>, les naissances et décès dans leurs registres.</p></div>
 
@@ -888,6 +915,7 @@
 
 <h2 id="recu">Imprimer le reçu et le ticket 80 mm</h2>
 <p>Après l’encaissement, cliquez sur <strong>Imprimer le reçu</strong>. Le reçu détaille chaque prestation payée, la part de l’assureur, la part du patient et le reste dû. Sur l’imprimante de caisse, le reçu sort au format <strong>ticket 80 mm</strong>.</p>
+<div class="encadre attention"><span class="titre">Attention</span><p><strong>Un numéro MECeF peut n’être qu’un exemple.</strong> Le jeu de démonstration livré avec le poste porte des numéros « MECEF… » <strong>fabriqués</strong> : ils ne sortent d’aucun boîtier et n’ont aucune valeur fiscale. Chaque fois que l’un d’eux est montré, il est suivi de la mention <strong>« exemple de démonstration — numéro non fiscal »</strong>, et la pièce imprimée porte <strong>« EXEMPLE DE DÉMONSTRATION »</strong> en gras (voir « La facture normalisée MECeF »). Ne remettez jamais à un patient une pièce portant cette mention comme justificatif fiscal.</p></div>
 <p>Pour réimprimer un reçu plus tard, ouvrez le registre des pièces du jour de l’<strong>État de caisse journalier</strong> et cliquez sur l’icône <strong>Réimprimer le reçu détaillé</strong>. Dans la fenêtre d’une facture, le bouton <strong>Réimprimer le reçu</strong> fait de même.</p>
 <p>Sur l’écran <strong>Nouvelle facture</strong>, le bouton <strong>Ticket de caisse</strong> ouvre l’aperçu du ticket des prestations ajoutées (il faut au moins une prestation : sinon le logiciel affiche « Ajouter au moins une prestation. »). Le ticket s’ouvre en <strong>aperçu</strong> et s’enregistre en PDF, à la largeur réglée dans <strong>Imprimante de caisse</strong> (80 mm par défaut) : aucun pilote d’imprimante n’est branché dans cette version. Le ticket est destiné au boîtier ELTRADE CC300, qui est aussi l’imprimante de caisse.</p>
 <figure class="schema">
@@ -941,7 +969,21 @@
 </figure>
 <div class="encadre info"><span class="titre">Information</span><p><strong>Une machine, deux fonctions.</strong> Case cochée (réglage par défaut), l’imprimante prend le modèle et l’interface du boîtier : la carte l’écrit (« Le boîtier ELTRADE CC300 est à la fois le MECeF et l’imprimante de caisse… »), et la carte du boîtier porte la même mention. Il n’y a donc pas une seconde machine à décrire. Case décochée, les champs propres reprennent la main, et la carte affiche « À valider : à renseigner par la clinique » tant que le modèle manque. Ce réglage <strong>décrit</strong> l’appareil ; la largeur règle l’aperçu du ticket. La largeur de 80 mm reste une valeur d’attente à valider par la clinique.</p></div>
 </div>
-<div class="encadre attention"><span class="titre">Attention</span><p>Dans cette version, l’adaptateur du boîtier ELTRADE CC300 n’est <strong>pas encore branché</strong> au logiciel, et l’e-MECeF est « Non configuré » (le dossier d’interface de la DGI n’est pas remis) : une vente reste <strong>en attente de certification</strong>. Le logiciel ne fabrique <strong>jamais</strong> de numéro fiscal, ni ne le simule. Les factures se certifieront dès que l’adaptateur fourni par l’éditeur du boîtier sera installé.</p></div>
+<div class="encadre attention"><span class="titre">Attention</span><p>Dans cette version, l’adaptateur du boîtier ELTRADE CC300 n’est <strong>pas encore branché</strong> au logiciel, et l’e-MECeF est « Non configuré » (le dossier d’interface de la DGI n’est pas remis) : une vente reste <strong>en attente de certification</strong>. En exploitation, le poste ne fabrique <strong>jamais</strong> de numéro fiscal, ni ne le simule : une pièce sans certification réelle n’affiche <strong>aucun</strong> numéro. Les factures se certifieront dès que l’adaptateur fourni par l’éditeur du boîtier sera installé.</p></div>
+<h3 id="mecef-demonstration">Les numéros MECeF de démonstration</h3>
+<p>Le jeu de démonstration contient des factures déjà « normalisées », avec un numéro MECeF tiré au hasard pour que les écrans aient quelque chose à montrer. Ces numéros sont <strong>marqués partout où ils paraissent</strong> :</p>
+<ul>
+  <li><strong>À l’écran</strong> — dans le registre <strong>Factures</strong> (colonne <strong>N° facture</strong>), dans le registre fiscal <strong>Factures normalisées</strong>, dans les fenêtres de détail et dans les écrans MECeF — le numéro est suivi de « <strong>exemple de démonstration — numéro non fiscal</strong> ».</li>
+  <li><strong>Sur le papier</strong> — la pièce de caisse et la <strong>Facture de vente — normalisée</strong> portent, sous leur titre, la même mention, et un bloc « <strong>EXEMPLE DE DÉMONSTRATION</strong> » en gras avec la phrase « le numéro et les codes ci-dessus ne sont pas fiscaux ».</li>
+  <li><strong>Un numéro réel n’est jamais marqué</strong> : un numéro qui viendra d’un boîtier branché se lit nu. Une pièce non certifiée affiche « Non transmise » ou un tiret, jamais un numéro.</li>
+</ul>
+<figure class="capture" data-capture="captures/207-mecef-demonstration" data-recadrage="0,440,1440,500" data-cibles='[{"rect":[76,612,350,42],"de":"gauche","long":60,"num":1}]'>
+  <figcaption>Le registre <strong>Factures normalisées</strong> : <span class="pastille">1</span> le numéro d’une facture de démonstration, suivi de « exemple de démonstration — numéro non fiscal ». La première ligne, <strong>En attente de transmission</strong>, n’a aucun numéro.</figcaption>
+</figure>
+<figure class="capture" data-capture="captures/216-mecef-piece-demonstration" data-recadrage="300,40,860,1100" data-cibles='[{"rect":[505,368,430,24],"de":"droite","long":70,"num":1},{"rect":[366,890,280,24],"de":"droite","long":70,"num":2},{"rect":[366,1086,450,24],"de":"droite","long":70,"num":3}]'>
+  <figcaption>L’aperçu de la <strong>Facture de vente — normalisée</strong> d’une pièce de démonstration : <span class="pastille">1</span> la mention sous le titre, <span class="pastille">2</span> « EXEMPLE DE DÉMONSTRATION — pièce non fiscale », <span class="pastille">3</span> « le numéro et les codes ci-dessus ne sont pas fiscaux ».</figcaption>
+</figure>
+<div class="encadre info"><span class="titre">Information</span><p>Ces numéros n’ont pas été retirés du jeu : retirer les 262 numéros aurait laissé 262 pièces « Validée » sans numéro, ou les aurait toutes passées « En attente », et faussé les indicateurs de la caisse et de la MECeF. On les <strong>marque</strong> plutôt que de les cacher. Quand la clinique ouvrira sa vraie exploitation, ses factures n’en porteront aucun.</p></div>
 <div class="encadre info"><span class="titre">Information</span><p>Seule la part réglée par le patient entre dans la base MECeF : ni la part de l’assureur ni les remises. L’IFU d’un acheteur (assureur, entreprise), quand il se saisit, compte 13 chiffres.</p></div>
 
 <!-- ============================================================== 9. ASSURANCES -->
@@ -1123,14 +1165,19 @@
 <p>Le planning, les vacations, les propositions de planning, les congés, les ordres de mission et les présences voyagent entre les postes et la mère. Ils ne vont <strong>jamais vers un téléphone</strong> : ils portent des honoraires et des horaires nominatifs.</p>
 <ul>
   <li><strong>Une vacation posée depuis un poste rattaché est « À valider »</strong>. Le message dit « Décision transmise à la mère, en attente » : la mère l’applique sous votre rôle, en refaisant tous les contrôles. Tant qu’elle ne l’a pas fait, la vacation ne compte ni pour les primes ni pour les honoraires. Le filtre <strong>Validation</strong> du planning (<strong>Validées</strong> ou <strong>À valider</strong>) et la colonne <strong>Statut</strong> de la fiche de l’agent la distinguent.</li>
-  <li><strong>La paie ne compte que les vacations validées.</strong> Une vacation « À valider » n’entre dans aucun calcul de prime de garde ou de permanence.</li>
+  <li><strong>La paie ne compte que les vacations validées.</strong> Une vacation « À valider » n’entre dans aucun calcul de prime de garde ou de permanence, ni dans aucun honoraire ; le bulletin le dit (« N vacation(s) en attente de validation ne sont pas payées », voir « Calculer la paie et éditer les bulletins »).</li>
+  <li><strong>Trois états, trois libellés.</strong> Le registre, l’état imprimé et la fiche de l’agent disent <strong>Validée</strong>, <strong>À valider</strong> ou <strong>Refusée</strong> — jamais « Validée » par défaut. Une vacation <strong>Refusée</strong> (la mère l’a écartée : double affectation, repos obligatoire…) n’est pas payée non plus, et son auteur en lit le motif.</li>
   <li>Deux postes hors ligne qui posent chacun une vacation pour le même agent le même jour : la première appliquée par la mère l’emporte, la seconde est <strong>refusée</strong> (double affectation) et son auteur en lit le motif.</li>
   <li><strong>Pas de double paiement.</strong> Un honoraire de régime individuel qui répète une prime de la grille NS 132 déjà versée pour la même vacation est <strong>refusé</strong> à la saisie, avec un message qui nomme la prime, la vacation, le montant et le jour. Une version déjà posée est écartée du bulletin avec le même message, à l’attention du validateur.</li>
 </ul>
 <figure class="capture" data-capture="captures/133-planning-a-valider" data-recadrage="0,1190,1440,460" data-cibles='[{"rect":[1120,1344,130,28],"de":"gauche","long":50,"num":1}]'>
   <figcaption>Le calendrier de l’onglet <strong>Planning individuel</strong> : <span class="pastille">1</span> trois vacations posées depuis un poste rattaché sont marquées <strong>À valider</strong> dans la colonne <strong>Validation</strong> (données de démonstration fictives, saisies pour la capture).</figcaption>
 </figure>
-<div class="encadre info"><span class="titre">Information</span><p>La capture montre l’état « À valider » tel que la fiche l’affiche. Le <em>dépôt</em> lui-même, depuis un poste réellement rattaché, et l’application par la mère n’ont pas de capture : ils demandent deux postes reliés.</p></div>
+<div class="encadre info"><span class="titre">Information</span><p>La capture de l’onglet <strong>Planning individuel</strong> montre l’état « À valider » tel que la fiche l’affiche. Le <em>dépôt</em> lui-même, depuis un poste réellement rattaché, et l’application par la mère n’ont pas de capture : ils demandent deux postes reliés.</p></div>
+<figure class="capture" data-capture="captures/210-planning-registre-refusee" data-recadrage="0,2200,1440,640" data-cibles='[{"rect":[24,2234,1392,34],"de":"haut","long":40,"num":1},{"rect":[1125,2618,80,26],"de":"bas","long":50,"num":2},{"rect":[1125,2762,80,26],"de":"bas","long":50,"num":3}]'>
+  <figcaption>Le <strong>Registre des vacations</strong> de <strong>Planning &amp; gardes</strong> : <span class="pastille">1</span> la note « 1 vacation(s) en attente de validation ne sont pas payées (lignes affichées) », <span class="pastille">2</span> une vacation <strong>Refusée</strong> et <span class="pastille">3</span> une vacation <strong>À valider</strong> (agent fictif, données saisies pour la capture).</figcaption>
+</figure>
+<p>Les <strong>Statistiques des gardes</strong> annoncent, au-dessus des indicateurs, combien de vacations de la plage choisie sont à valider et précisent qu’elles ne figurent pas dans le décompte ; les <strong>Statistiques des permanences</strong> le disent en note. Une garde non validée n’est donc jamais comptée comme travaillée.</p>
 
 <h2 id="paie">Calculer la paie et éditer les bulletins</h2>
 <div class="tache">
@@ -1146,6 +1193,19 @@
 <figure class="capture" data-capture="captures/74-paie-calcul" data-recadrage="0,120,1440,620" data-cibles='[{"bouton":"Lancer le calcul","de":"bas","long":60,"num":2},{"bouton":"Générer les bulletins","de":"bas","long":60,"num":3},{"bouton":"Éditer le journal de paie","de":"bas","long":60,"num":3}]'>
   <figcaption>L’écran <strong>Calcul de la paie</strong>.</figcaption>
 </figure>
+<h3 id="paie-vacations-attente">Les vacations « À valider » ne sont pas payées</h3>
+<p>Une garde ou une permanence posée depuis un poste rattaché reste <strong>« À valider »</strong> tant que la poste mère ne l’a pas appliquée. Tant qu’elle l’est, elle n’entre ni dans la prime ni dans l’honoraire du bulletin. Le logiciel ne la perd pas et ne la cache pas : il le <strong>dit</strong>, à trois endroits.</p>
+<ul>
+  <li><strong>À l’écran Calcul de la paie</strong> — une note orange par agent concerné : « <em>AGENT… : 1 vacation(s) en attente de validation ne sont pas payées.</em> ».</li>
+  <li><strong>À l’écran Validation Direction</strong> — la même phrase figure pour chaque bulletin à valider ; elle reprend ce que le bulletin disait <strong>au moment où il a été généré</strong>.</li>
+  <li><strong>Sur le bulletin imprimé</strong> — une ligne dit le nombre de vacations non payées et ajoute qu’elles <strong>seront payées au bulletin suivant</strong>, une fois validées par la poste mère.</li>
+</ul>
+<figure class="capture" data-capture="captures/209-paie-vacations-attente" data-recadrage="0,120,1440,620" data-cibles='[{"rect":[24,398,1392,36],"de":"haut","long":30,"num":1}]'>
+  <figcaption>L’écran <strong>Calcul de la paie</strong> : <span class="pastille">1</span> la note de l’agent dont une vacation attend sa validation (agent fictif, vacation saisie pour la capture).</figcaption>
+</figure>
+<div class="encadre attention"><span class="titre">Attention</span><p>Un bulletin déjà généré <strong>ne se recalcule pas</strong>. Si la mère valide la vacation après la génération, elle rejoint le <strong>bulletin suivant</strong> : c’est voulu, pour qu’un bulletin remis ne change jamais. Avant de générer, regardez donc s’il reste des notes orange : si la validation est proche, attendez-la. Les primes fixes de la note (par exemple l’incinération forfaitaire) ne dépendent d’aucune vacation : elles restent versées chaque mois.</p></div>
+<h3 id="paie-chevauchement">Un honoraire de régime qui s’ajoute à une prime</h3>
+<p>Un honoraire d’un régime <strong>individuel</strong> peut tomber sur la même vacation qu’une prime de la grille NS 132, avec un <strong>montant différent</strong> (par exemple 6 000 F mensuels contre l’incinération à 5 000 F). Ce n’est <strong>pas refusé</strong> : la Direction a pu vouloir ce complément, et les <strong>deux sont versés</strong>. En revanche le validateur en est <strong>averti</strong> : une note orange nomme les vacations, l’honoraire, la prime et les deux montants, et demande de « confirmer comme complément voulu ». Elle figure à l’écran de calcul et à l’écran de validation, et sur le bulletin. Seul le <strong>doublon exact</strong> (même prime, même montant, même vacation) reste refusé à la saisie (voir « Le planning entre les postes »).</p>
 <p>Les bulletins se consultent et s’impriment dans <strong>Bulletins de paie</strong>. Les cotisations se suivent dans <strong>Cotisations CNSS / ITS / VPS</strong> et la redevance dans <strong>Redevance ORTB</strong>.</p>
 <div class="encadre info"><span class="titre">Information</span><p>Les primes de garde et de permanence sont calculées à partir du planning validé et de la grille en vigueur à la date de la garde. Changer la grille ne modifie pas une paie déjà calculée.</p></div>
 </div>
@@ -1749,19 +1809,63 @@
 
 <h2 id="sms">La passerelle SMS et le journal des envois</h2>
 <div class="tache">
-<p class="but">Vous vérifiez que les SMS (rappels de rendez-vous) partent, et vous testez l’envoi.</p>
+<p class="but">Vous vérifiez que les SMS (rappels de rendez-vous, vœux d’anniversaire) partent, vous réglez les envois automatiques et vous testez l’envoi.</p>
 <p class="prerequis">le geste réservé « Régler la passerelle SMS » pour modifier et tester ; sur le poste mère.</p>
 <p class="chemin">Poste mère ➔ Passerelle SMS / Journal des envois SMS</p>
 <ol class="etapes">
-  <li>Ouvrez <strong>Passerelle SMS</strong> : la carte <strong>Réglage</strong> montre la passerelle et le plafond quotidien lu au relais ; la carte <strong>Mots interdits dans un SMS</strong> liste ce qui ne peut jamais partir.</li>
+  <li>Ouvrez <strong>Passerelle SMS</strong> : la carte <strong>Réglage</strong> montre la passerelle et le plafond quotidien lu au relais ; la carte <strong>Envois automatiques</strong> dit si le rappel de rendez-vous et les vœux d’anniversaire sont ouverts, à quelle heure ils partent et ce que le dernier tour a déposé ; la carte <strong>Mots interdits dans un SMS</strong> liste ce qui ne peut jamais partir.</li>
   <li>Cliquez sur <strong>Tester l’envoi</strong> pour envoyer un SMS d’essai.</li>
   <li>Ouvrez <strong>Journal des envois SMS</strong> : chaque envoi avec <strong>Déposé le</strong>, <strong>Numéro (masqué)</strong>, <strong>Modèle</strong>, <strong>Caractères</strong>, <strong>Statut</strong>, <strong>Tentatives</strong> et <strong>Refus</strong>. Cliquez sur <strong>Relever les statuts</strong> pour les mettre à jour, ou sur <strong>Composer un SMS</strong> pour un message à partir d’un modèle.</li>
 </ol>
-<figure class="capture" data-capture="captures/140-sms-passerelle" data-recadrage="0,100,1440,1280" data-cibles='[{"cle":"sms:fournisseurs","de":"droite","long":60,"num":1},{"bouton":"Tester l’envoi","de":"droite","long":60,"num":2}]' style="width:84%">
-  <figcaption>La <strong>Passerelle SMS</strong> : <span class="pastille">1</span> la carte <strong>Fournisseur de SMS</strong>, avec le fournisseur « En service au relais » ; <span class="pastille">2</span> <strong>Tester l’envoi</strong>. Relais simulé pour la capture.</figcaption>
+<figure class="capture" data-capture="captures/140-sms-passerelle" data-recadrage="0,100,1440,1500" data-cibles='[{"cle":"sms:fournisseurs","de":"droite","long":60,"num":1},{"bouton":"Tester l’envoi","de":"droite","long":60,"num":2},{"cle":"sms:automatiques","de":"droite","long":60,"num":3}]' style="width:84%">
+  <figcaption>La <strong>Passerelle SMS</strong> : <span class="pastille">1</span> la carte <strong>Fournisseur de SMS</strong>, avec le fournisseur « En service au relais » ; <span class="pastille">2</span> <strong>Tester l’envoi</strong> ; <span class="pastille">3</span> la carte <strong>Envois automatiques</strong>. Relais simulé pour la capture.</figcaption>
 </figure>
 <figure class="capture" data-capture="captures/141-sms-journal" data-recadrage="0,120,1440,780">
   <figcaption>Le <strong>Journal des envois SMS</strong>. Ici, le service de la mère ne répond pas : l’écran affiche « non disponible » au lieu d’un chiffre.</figcaption>
+</figure>
+<h3 id="sms-automatiques">Les envois automatiques : rappel la veille et vœux d’anniversaire</h3>
+<p>Deux SMS partent <strong>tout seuls</strong>, une fois par jour, sans que personne ne les compose :</p>
+<ul>
+  <li><strong>Le rappel de rendez-vous</strong> — la <strong>veille</strong> d’un rendez-vous : le jour, l’heure et le nom de la clinique ;</li>
+  <li><strong>Les vœux d’anniversaire</strong> — le jour de l’anniversaire du patient (le 29 février est fêté le 28 les années non bissextiles).</li>
+</ul>
+<p>Ils sont <strong>fermés par défaut</strong>. Pour les ouvrir ou les régler, ouvrez <strong>Système</strong> ➔ <strong>Paramètres système</strong>, onglet <strong>Paramètres</strong>, famille <strong>SMS automatiques</strong>, puis cliquez sur <strong>Régler à partir d’une date</strong> sur la carte voulue. Le geste est réservé (« Régler la passerelle SMS »).</p>
+<table class="simple">
+  <tr><th style="width:44%">Réglage</th><th>Ce qu’il fait</th></tr>
+  <tr><td><strong>Rappel automatique de rendez-vous par SMS</strong></td><td>Ouvre (Oui) ou ferme (Non, valeur par défaut) le rappel.</td></tr>
+  <tr><td><strong>Vœux d’anniversaire automatiques par SMS</strong></td><td>Ouvre ou ferme les vœux (Non par défaut).</td></tr>
+  <tr><td><strong>Envois automatiques de SMS : heure d’exécution</strong></td><td>L’heure du tour quotidien, de 0 à 23 (9 par défaut). Si la mère était éteinte, le tour est rattrapé dès qu’elle redémarre ce jour-là.</td></tr>
+  <tr><td><strong>Rappel de rendez-vous par SMS : délai (heures)</strong></td><td>De 1 à 168 heures (24 par défaut) : 24 = la veille, 48 = l’avant-veille.</td></tr>
+</table>
+<figure class="capture" data-capture="captures/213-sms-parametres-automatiques" data-recadrage="0,100,1440,1400" style="width:80%">
+  <figcaption>La famille <strong>SMS automatiques</strong> des Paramètres système : le rappel et les vœux sont à <strong>Non</strong> (fermés), l’heure est 9, le délai 24 heures. Ce sont des valeurs d’attente, à confirmer par la Direction.</figcaption>
+</figure>
+<p><strong>Un SMS n’est déposé que si toutes ces conditions sont réunies</strong> : le réglage de l’occasion est ouvert ; la passerelle est ouverte ; le relais est configuré et joignable, et son plafond du jour n’est pas atteint ; le patient a <strong>accepté</strong> les SMS ; son dossier porte un téléphone ; un modèle neutre est actif. Il n’y a <strong>qu’un SMS par patient et par occasion</strong> : un tour rejoué ne renvoie rien.</p>
+<p>Chaque écart est <strong>compté</strong> au dernier tour, jamais nommé : l’écran lit par exemple « Dernier tour : 3 SMS déposé(s) sur 5 concerné(s) ; écartés : 2 consentement non renseigné ». Les motifs possibles sont <em>consentement non renseigné</em>, <em>consentement refusé</em>, <em>sans téléphone</em>, <em>aucun modèle neutre actif</em> et <em>plafond du relais atteint</em>. Si la passerelle est fermée ou le relais injoignable, <strong>rien n’est marqué fait</strong> : le tour reprend dès que la situation revient.</p>
+<div class="encadre attention"><span class="titre">Attention</span><p>Tant que le consentement d’un patient n’est pas renseigné à son dossier, <strong>aucun envoi automatique ne lui part</strong> : les dossiers ouverts avant la liste <strong>Consentement aux SMS</strong> sont tous « non renseignés ». Une personne enregistrée sans dossier (rendez-vous d’un visiteur) n’a pas de consentement : elle ne reçoit pas de rappel.</p></div>
+<h3 id="sms-consentement-refus">Composer un SMS pour un patient : les refus nommés</h3>
+<p>Dans <strong>Journal des envois SMS</strong>, <strong>Composer un SMS</strong> prend le patient dans le répertoire : <strong>le numéro vient de son dossier</strong>, on ne le saisit plus (seul le message d’essai prend un numéro à la main). Si le dossier ne permet pas d’écrire au patient, une note rouge nomme la cause et le bouton <strong>Déposer au relais</strong> reste inactif. La mère refait le même contrôle en relisant le dossier : un poste ne peut pas la contourner.</p>
+<table class="simple">
+  <tr><th style="width:30%">Code</th><th>Ce qu’il dit et ce qu’il faut faire</th></tr>
+  <tr><td><strong>SMS_CONSENTEMENT_ABSENT</strong></td><td>Le consentement du patient aux SMS n’est pas renseigné : il n’est jamais présumé. Demandez au patient et renseignez <strong>Consentement aux SMS</strong> à son dossier (accueil).</td></tr>
+  <tr><td><strong>SMS_CONSENTEMENT_REFUSE</strong></td><td>Le patient a refusé de recevoir des SMS. Respectez ce refus : joignez-le autrement, ou redemandez-lui et corrigez son dossier.</td></tr>
+  <tr><td><strong>SMS_PATIENT_INCONNU</strong></td><td>Aucun dossier patient ne correspond : choisissez un patient du répertoire.</td></tr>
+</table>
+<h3 id="sms-modeles">Les modèles de message : neutres, sans donnée de santé</h3>
+<p>Les modèles s’écrivent dans <strong>Rappels &amp; messages</strong> (domaine <strong>Système</strong>, onglet <strong>Modèles de message</strong>). Un SMS ne dit jamais pourquoi le patient vient : le jour, l’heure et la clinique, c’est tout. La colonne <strong>Par SMS</strong> dit, pour chaque modèle, s’il est <strong>Proposé</strong> ou <strong>Non proposé</strong> au canal SMS ; un modèle non proposé n’est offert ni à la composition ni aux envois automatiques, quel que soit son état « Actif ».</p>
+<ul>
+  <li>Seules les occasions <strong>rendez-vous</strong>, <strong>anniversaire</strong> et <strong>vœux</strong> (fête, nouvel an) sont proposables.</li>
+  <li><strong>Résultat disponible</strong> et <strong>Rappel de règlement</strong> ne le sont pas : le premier révèle un examen (et contient le mot interdit « résultat »), le second laisse entendre un acte ou une dette.</li>
+  <li>Tout texte qui contient un <strong>mot interdit</strong> est refusé, en nommant le mot. La liste compte maintenant « santé » ; elle est <strong>proposée, à valider par un médecin</strong>.</li>
+  <li>Quatre modèles <strong>neutres</strong> (rendez-vous, vœux de fête, vœux de nouvel an, anniversaire), marqués « (SMS) », sont livrés. Les modèles plus anciens qui disent « santé » sont sautés, jamais envoyés ni réécrits en silence.</li>
+</ul>
+<figure class="capture" data-capture="captures/214-rappels-modeles-sms" data-recadrage="0,600,1440,640" data-cibles='[{"rect":[996,696,70,22],"de":"haut","long":40,"num":1}]'>
+  <figcaption>L’écran <strong>Rappels &amp; messages</strong> : <span class="pastille">1</span> la colonne <strong>Par SMS</strong>. Les quatre modèles « (SMS) » sont <strong>Proposé</strong> ; <strong>Rappel de règlement</strong> et <strong>Résultat disponible</strong> sont <strong>Non proposé</strong>.</figcaption>
+</figure>
+<h3 id="sms-expire">Un SMS en attente trop longtemps est abandonné</h3>
+<p>Quand le plafond du jour du relais est atteint, un SMS reste en file. Un rappel « rendez-vous demain » qui partirait le lendemain serait faux : le relais <strong>abandonne</strong> donc tout SMS resté en attente au-delà de sa <strong>durée de validité</strong> (24 heures par défaut, réglée par le fichier de réglages du relais, au moins 1 heure). Le SMS passe au statut <strong>Expiré avant l’envoi</strong> ; son numéro et son texte sont effacés. Le <strong>Journal des envois SMS</strong> le montre, et l’indicateur <strong>Échecs, refus ou expirés</strong> le compte.</p>
+<figure class="capture" data-capture="captures/215-sms-journal-expire" data-recadrage="0,120,1440,780">
+  <figcaption>Le <strong>Journal des envois SMS</strong> : un SMS envoyé, un SMS refusé par le plafond, un SMS <strong>expiré avant l’envoi</strong>. Les numéros sont masqués (relais simulé pour la capture).</figcaption>
 </figure>
 <p><strong>Le fournisseur de SMS (Vonage ou Twilio).</strong> La clinique retient <strong>Vonage</strong> et <strong>Twilio</strong>. Le choix se règle <strong>au relais</strong>, dans son fichier de réglages (variable <span class="touche">RELAIS_SMS_PILOTE</span>) : <strong>jamais depuis le poste</strong>, et les identifiants du fournisseur n’y sont ni saisis ni visibles. Ce que vous voyez à l’écran <strong>Passerelle SMS</strong> :</p>
 <ul>
@@ -1978,12 +2082,15 @@
   <tr><td><strong>AIB</strong></td><td>Acompte sur impôt assis sur les bénéfices : retenue opérée sur certaines ventes, selon un barème daté dont le comptable choisit la ligne.</td></tr>
   <tr><td><strong>Archiver</strong></td><td>Retirer une fiche des listes sans la supprimer. Une fiche archivée se restaure. Le logiciel ne supprime jamais une donnée.</td></tr>
   <tr><td><strong>Avoir</strong></td><td>Facture qui annule tout ou partie d’une facture émise.</td></tr>
+  <tr><td><strong>Consentement aux SMS</strong></td><td>Réponse du patient à la question « acceptez-vous de recevoir des SMS ? », notée à son dossier : <em>accepte</em>, <em>refuse</em> ou <em>non renseigné</em>. Sans accord, aucun SMS ne part ; « non renseigné » n’est jamais lu comme un accord.</td></tr>
   <tr><td><strong>Code de reprise</strong></td><td>Code à usage unique, généré sur la mère à l’écran <strong>Reprise d’un poste</strong> et saisi sur le poste neuf dans <strong>Rejoindre une clinique</strong>. Il s’affiche une seule fois et n’est jamais écrit au journal.</td></tr>
   <tr><td><strong>Code dossier</strong></td><td>Identifiant unique du patient, au format CBG/[n° d’ordre]/[année] ; l’année est celle de la création du dossier. Il ne se modifie jamais.</td></tr>
   <tr><td><strong>CPN, CPoN</strong></td><td>Consultation prénatale ; consultation post-natale.</td></tr>
   <tr><td><strong>CUMP</strong></td><td>Coût unitaire moyen pondéré : méthode de valorisation du stock.</td></tr>
   <tr><td><strong>DAF</strong></td><td>Directrice administrative et financière.</td></tr>
   <tr><td><strong>Domaine</strong></td><td>Onglet du ruban (Accueil, Soins, Logistique…), qui regroupe plusieurs modules.</td></tr>
+  <tr><td><strong>Envois automatiques (SMS)</strong></td><td>Rappel de rendez-vous la veille et vœux d’anniversaire déposés chaque jour par la mère, à l’heure réglée, pour les seuls patients qui ont accepté les SMS. Fermés par défaut ; réglés aux Paramètres, famille « SMS automatiques ».</td></tr>
+  <tr><td><strong>Exemple de démonstration</strong></td><td>Mention portée par tout numéro MECeF fabriqué du jeu de démonstration (« exemple de démonstration — numéro non fiscal ») et, en gras, par les pièces imprimées (« EXEMPLE DE DÉMONSTRATION »). Un numéro réel ne la porte jamais.</td></tr>
   <tr><td><strong>Exercice</strong></td><td>Année comptable. Le sélecteur de la barre supérieure choisit celui que les écrans affichent ; par défaut, celui du jour.</td></tr>
   <tr><td><strong>Fournisseur de SMS</strong></td><td>Société qui envoie réellement les SMS (Vonage ou Twilio). Il se choisit au relais, jamais depuis le poste ; l’écran <strong>Passerelle SMS</strong> le montre et dit ce que le relais attend encore.</td></tr>
   <tr><td><strong>Fiche d’aide</strong></td><td>Texte (procédure « comment faire » ou définition « c’est quoi ») que l’Assistant cite pour répondre. Elle naît <em>proposée</em> ; elle n’est citée qu’une fois <em>validée</em> par une autre personne que son auteur. Une fiche qui engage un professionnel exige aussi son nom et la date de sa validation.</td></tr>
@@ -2010,7 +2117,7 @@
   <tr><td><strong>Révoqué (poste)</strong></td><td>Poste que la mère ne reconnaît plus pour synchroniser. Il reste au registre, jamais effacé, et peut encore être repris.</td></tr>
   <tr><td><strong>Ruban</strong></td><td>Menu horizontal en haut de l’écran.</td></tr>
   <tr><td><strong>Tiers payeur</strong></td><td>Entreprise qui prend en charge un patient et qui reçoit sa propre facture (distincte de celle du patient).</td></tr>
-  <tr><td><strong>Vacation</strong></td><td>Période de travail posée au planning (garde, permanence, repos…). « À valider » tant que la mère ne l’a pas appliquée.</td></tr>
+  <tr><td><strong>Vacation</strong></td><td>Période de travail posée au planning (garde, permanence, repos…). « À valider » tant que la mère ne l’a pas appliquée ; « Validée » ou « Refusée » ensuite. Une vacation « À valider » ou « Refusée » n’est pas payée.</td></tr>
   <tr><td><strong>Schéma des données</strong></td><td>Numéro de version de la forme des données du poste et de la mère. Un logiciel refuse d’ouvrir des données d’un schéma plus récent que lui ; une mise à jour peut les convertir, après avoir rangé leur forme d’origine.</td></tr>
   <tr><td><strong>sghx (fichier .sghx)</strong></td><td>Export complet portable de la base : un seul fichier, manifeste lisible sans clé, contenu chiffré par la clé de la clinique. Il ne contient ni cette clé ni les mots de passe.</td></tr>
   <tr><td><strong>Synchronisation</strong></td><td>Échange automatique des données entre les postes et la mère.</td></tr>
@@ -2033,12 +2140,16 @@
   <tr><td>Le laboratoire ne peut pas saisir un résultat.</td><td>L’échantillon n’a pas encore été reçu. Le bouton verrouillé indique à quel poste se trouve la demande.</td></tr>
   <tr><td>La pharmacie ne peut pas délivrer toute l’ordonnance.</td><td>Le stock de la pharmacie ne couvre pas toutes les lignes. Délivrez les lignes couvertes ; demandez un transfert depuis le magasin pour les autres.</td></tr>
   <tr><td>Un export est refusé.</td><td>Votre rôle n’a pas le droit d’exporter, ou le nombre de lignes dépasse la limite réglée. Le message indique la cause et le geste à faire.</td></tr>
+  <tr><td>Un numéro MECeF est suivi de « exemple de démonstration — numéro non fiscal », ou la pièce imprimée porte « EXEMPLE DE DÉMONSTRATION ».</td><td>C’est un numéro fabriqué du jeu de démonstration : il ne vient d’aucun boîtier et n’a aucune valeur fiscale. Ne remettez pas cette pièce comme justificatif. Une pièce non certifiée n’affiche aucun numéro.</td></tr>
   <tr><td>Une facture MECeF reste « en attente ».</td><td>C’est normal dans cette version : l’adaptateur du boîtier ELTRADE CC300 n’est pas encore branché. Aucune action n’est demandée à la caisse.</td></tr>
   <tr><td>Je me suis trompé dans une facture déjà réglée.</td><td>Ne retouchez pas le règlement. Demandez à un profil habilité d’émettre une <strong>facture d’avoir</strong>.</td></tr>
   <tr><td>Le plan de travail annuel n’a pas de bouton <strong>Adopter le plan</strong>, ou refuse l’adoption.</td><td>Le plan n’est pas encore <strong>soumis</strong>, ou vous n’avez pas le geste d’adoption, ou c’est vous qui l’avez soumis : celui qui soumet n’adopte pas. Faites adopter par un autre détenteur du geste.</td></tr>
   <tr><td>Une action ne peut pas être ajoutée au plan ou à son exercice suivant.</td><td>Un plan adopté ne se réécrit pas. Cliquez sur <strong>Réviser le plan</strong> ; pour la reconduction, retirez la soumission du plan suivant ou révisez-le d’abord.</td></tr>
   <tr><td>Un salaire, une catégorie ou un numéro CNSS d’agent est marqué « provisoire » ou « à renseigner ».</td><td>C’est une valeur d’attente. Saisissez la valeur remise (<strong>Modifier</strong> la fiche) ou, avec le droit, cliquez sur <strong>Confirmer</strong> sur la fiche, avec un motif.</td></tr>
   <tr><td>Ma vacation est « À valider » et ne compte pas.</td><td>Elle a été posée depuis un poste rattaché et attend que la mère l’applique. Rien à refaire ; si l’attente se prolonge, prévenez l’administrateur.</td></tr>
+  <tr><td>Le calcul de paie ou le bulletin dit « N vacation(s) en attente de validation ne sont pas payées ».</td><td>Ces vacations ont été posées depuis un poste rattaché et la mère ne les a pas encore validées. Elles ne sont ni perdues ni payées ce mois-ci : elles rejoignent le <strong>bulletin suivant</strong> une fois validées. Si la validation est proche, attendez-la avant de générer les bulletins ; un bulletin généré ne se recalcule pas.</td></tr>
+  <tr><td>Une vacation du planning affiche « Refusée ».</td><td>La mère l’a écartée (double affectation, repos obligatoire…) : elle n’est pas payée et son auteur en lit le motif. Reposez la vacation correctement si elle est due.</td></tr>
+  <tr><td>La paie signale qu’un honoraire « s’ajoute à la prime » d’une même vacation.</td><td>Ce n’est pas un refus : les deux montants sont versés. Le validateur confirme que le complément est voulu, ou fait corriger le régime individuel.</td></tr>
   <tr><td>Un honoraire de régime est refusé pour « double paiement ».</td><td>Il répète une prime de la grille NS 132 déjà versée pour la même vacation. Retirez l’honoraire ou la prime, selon la décision de la Direction.</td></tr>
   <tr><td>Un dossier porte un code « PROV-… ».</td><td>Le poste hors ligne n’avait plus de numéro réservé. La mère le remplace par le vrai code après la synchronisation : ne l’écrivez pas sur le papier avant.</td></tr>
   <tr><td>Le bouton <strong>Confirmer</strong> d’un taux ou d’un barème d’AIB est absent.</td><td>Votre rôle n’a pas le geste « Confirmer un taux fiscal et arrêter un barème de l’AIB ». Demandez au Comptable ou à la DAF.</td></tr>
@@ -2070,6 +2181,9 @@
   <tr><td>Contactez l’éditeur affiche « Non renseigné », et mon message n’est pas parti.</td><td>La clinique n’a pas saisi les coordonnées de l’éditeur. Votre message est <strong>enregistré dans le logiciel</strong> avec sa référence, mais aucun courriel n’est envoyé. Demandez à l’administrateur de saisir l’adresse de l’éditeur et de configurer la messagerie.</td></tr>
   <tr><td>Le panneau du relais refuse mon mot de passe de superadministrateur.</td><td>Il doit compter <strong>12 caractères au moins</strong> (le relais est exposé sur Internet). Un mot de passe de 8 caractères, suffisant pour un compte de poste, n’y est pas accepté.</td></tr>
   <tr><td>L’Assistant refuse : « Je ne donne ni diagnostic ni avis thérapeutique », ou « Vous n’avez pas le droit de lire cette information ».</td><td>C’est voulu : pas d’aide au traitement, même pour un médecin ; et l’Assistant ne montre que ce que votre rôle lit (RG-13). Ouvrez le dossier si vous en avez le droit.</td></tr>
+  <tr><td>Je ne peux pas composer un SMS : « SMS_CONSENTEMENT_ABSENT » ou « SMS_CONSENTEMENT_REFUSE ».</td><td>Le patient n’a pas répondu (« non renseigné »), ou a refusé. Demandez-lui et renseignez <strong>Consentement aux SMS</strong> à son dossier (<strong>Modifier le dossier</strong>) ; s’il refuse, joignez-le autrement.</td></tr>
+  <tr><td>Les rappels de rendez-vous ou les vœux automatiques ne partent pas.</td><td>Ils sont <strong>fermés par défaut</strong> : ouvrez-les aux Paramètres, famille « SMS automatiques ». Lisez ensuite la carte <strong>Envois automatiques</strong> de la <strong>Passerelle SMS</strong> : elle compte ce que le dernier tour a écarté (consentement non renseigné ou refusé, sans téléphone, plafond atteint…).</td></tr>
+  <tr><td>Un SMS du journal est « Expiré avant l’envoi ».</td><td>Il est resté en attente (plafond du jour atteint) plus longtemps que sa durée de validité : le relais l’a abandonné pour ne pas envoyer un message périmé, et a effacé le numéro et le texte. Recomposez-le si besoin.</td></tr>
   <tr><td>La passerelle SMS affiche « Le relais attend encore… » (paramètres manquants).</td><td>Le fournisseur choisi au relais (Vonage ou Twilio) n’est pas complètement réglé : aucun SMS ne part, la file reste intacte. Prévenez l’administrateur, qui complète le fichier de réglages du relais.</td></tr>
   <tr><td>J’ai perdu mon téléphone appairé.</td><td>Prévenez immédiatement l’administrateur pour qu’il suspende le téléphone.</td></tr>
 </table>
