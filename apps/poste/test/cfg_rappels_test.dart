@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sigh_domaine/sigh_domaine.dart' show IdentiteClinique;
+import 'package:sigh_domaine/sigh_domaine.dart' show IdentiteClinique, cfaModelesProposes, smsModeleProposable, smsModelesProposes;
 import 'package:sigh_poste/donnees/magasin.dart';
 import 'package:sigh_poste/kit/kit.dart';
 
@@ -45,11 +45,18 @@ void main() {
     }
   });
 
-  casM14('amorçage : sans modèle au magasin, les six modèles proposés naissent (à valider par la Direction)', (t) async {
+  casM14('amorçage : sans modèle au magasin, les six modèles proposés naissent (à valider par la Direction), plus les quatre modèles NEUTRES du canal SMS (E5200)', (t) async {
     final m = Magasin.depuisDossier([for (final n in Magasin.collectionsDuJeu) if (n != 'modelesMessage') n], 'test/fixtures/jeu_sobre');
     await ouvrirM14(t, m, 'cfg-rappels');
-    expect(m.collection('modelesMessage').actives.length, 6);
-    expect(m.collection('modelesMessage').actives.every((x) => x['source'] == 'Modèle proposé — à valider par la Direction'), isTrue);
+    final tous = m.collection('modelesMessage').actives;
+    expect(tous.length, cfaModelesProposes.length + smsModelesProposes.length);
+    expect(tous.where((x) => x['canal'] != 'sms').every((x) => x['source'] == 'Modèle proposé — à valider par la Direction'), isTrue);
+    expect(tous.where((x) => x['canal'] == 'sms').length, smsModelesProposes.length);
+    // seuls les modèles proposables au SMS sont offerts à la composition : jamais « Résultat disponible » ni « Rappel de règlement »
+    final proposables = [for (final x in tous) if (smsModeleProposable(occasion: x['occasion'], texte: '${x['texte']}')) '${x['libelle']}'];
+    expect(proposables, isNot(contains('Résultat disponible')));
+    expect(proposables, isNot(contains('Rappel de règlement')));
+    expect(proposables, containsAll([for (final x in smsModelesProposes) x.$2]));
   });
 
   casM14('onglet Variables : cinq jetons, un jeton inconnu reste visible', (t) async {
@@ -113,8 +120,10 @@ void main() {
     await toucherM14(t, find.widgetWithText(BoutonSigh, 'Préparer les anniversaires du jour'));
     expect(find.text('Aucun patient ne fête son anniversaire aujourd’hui.'), findsOneWidget);
     await t.pump(const Duration(seconds: 10));
-    final mod = m.collection('modelesMessage').actives.firstWhere((x) => x['occasion'] == 'anniversaire');
-    m.collection('modelesMessage').mettreAJour(mod['id'], {'actif': false});
+    // (deux modèles d'anniversaire depuis E5200 : celui de la maquette et le modèle neutre du canal SMS)
+    for (final mod in m.collection('modelesMessage').actives.where((x) => x['occasion'] == 'anniversaire').toList()) {
+      m.collection('modelesMessage').mettreAJour(mod['id'], {'actif': false});
+    }
     await toucherM14(t, find.widgetWithText(BoutonSigh, 'Préparer les anniversaires du jour'));
     expect(find.text('Aucun modèle d’anniversaire actif.'), findsOneWidget);
     expect(m.collection('rappels').toutes, isEmpty);

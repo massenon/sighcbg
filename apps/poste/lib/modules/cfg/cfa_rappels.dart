@@ -41,6 +41,15 @@ class _EcranRappelsState extends State<EcranRappels> {
           modeles.inserer({'statut': 'actif', 'occasion': m.$1, 'libelle': m.$2, 'texte': m.$3, 'actif': true, 'source': 'Modèle proposé — à valider par la Direction'}, prefixe: 'MSG');
         }
       }
+      // E5200 : les modèles de la maquette ne sont pas tous proposables au SMS (« Résultat disponible », « Rappel de règlement », deux vœux qui disent « santé »). Les modèles NEUTRES
+      // du canal SMS (jour, heure, clinique) naissent à côté, une seule fois : les envois automatiques et la composition à la passerelle les utilisent.
+      if (!modeles.toutes.any((m) => m['canal'] == 'sms')) {
+        for (final m in smsModelesProposes) {
+          modeles.inserer(
+              {'statut': 'actif', 'occasion': m.$1, 'libelle': m.$2, 'texte': m.$3, 'actif': true, 'canal': 'sms', 'source': 'Modèle SMS proposé — à valider par la Direction'},
+              prefixe: 'MSG');
+        }
+      }
     }
     return ListenableBuilder(
         listenable: Listenable.merge([modeles, rappels]),
@@ -110,6 +119,15 @@ class _OngletModeles extends StatelessWidget {
             texte: (r) => cfaVrai(r['actif']) ? 'Oui' : 'Non',
             rendu: (_, r) => cfaVrai(r['actif']) ? const BadgeSigh('Oui', ton: TonSigh.succes) : const BadgeSigh('Non')),
         ColonneTableau(
+            cle: 'sms',
+            libelle: 'Par SMS',
+            sansCoupure: true,
+            texte: (r) => smsMotifModeleNonProposable(occasion: r['occasion'], texte: '${r['texte'] ?? ''}') == null ? 'Proposé' : 'Non proposé',
+            rendu: (_, r) {
+              final motif = smsMotifModeleNonProposable(occasion: r['occasion'], texte: '${r['texte'] ?? ''}');
+              return motif == null ? const BadgeSigh('Proposé', ton: TonSigh.succes) : Tooltip(message: motif, child: const BadgeSigh('Non proposé', ton: TonSigh.attention));
+            }),
+        ColonneTableau(
             cle: 'aValider',
             libelle: 'Validation',
             texte: (r) => cfaVrai(r['aValider']) || cfaVrai(r['valideLe']) ? ValidationPoste(c).texteBadge('modeles_messages', r['id']) : 'sans objet',
@@ -136,6 +154,7 @@ class _OngletModeles extends StatelessWidget {
           ('Occasion', cfaLibelleOccasion(r['occasion'])),
           ('Actif', cfaVrai(r['actif']) ? 'Oui' : 'Non'),
           ('Origine', cfaOuTiret(r['source'])),
+          ('Canal SMS', smsMotifModeleNonProposable(occasion: r['occasion'], texte: '${r['texte'] ?? ''}') ?? 'Proposé : le jour, l’heure et la clinique, aucune donnée de santé.'),
         ]),
         const SizedBox(height: 16),
         cfaSection('Texte du modèle', Text('${r['texte'] ?? ''}', style: const TextStyle(fontSize: 14, height: 20 / 14, color: JetonsShell.slate600))),

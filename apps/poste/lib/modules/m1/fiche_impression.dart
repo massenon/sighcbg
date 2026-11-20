@@ -88,6 +88,7 @@ List<BlocPiece> blocsDossierComplet(ContexteEcran c, Fiche p) {
     ('Téléphone', a.texteSi('coordonnees', t(p['telephone']))),
     ('Quartier', a.texteSi('coordonnees', t(p['quartier']))),
     ('Adresse', a.texteSi('coordonnees', t(p['adresse']))),
+    ('Consentement aux SMS', a.texteSi('coordonnees', smsLibelleConsentement(p))),
     ('Personne à prévenir', a.texteSi('personne_a_prevenir', t(p['personneAPrevenir']))),
     ('Groupe sanguin', a.texteSi('groupe_serologies', t(p['groupeSanguin']))),
     ('Dossier créé le', dateFrM1(p['dateCreation'])),

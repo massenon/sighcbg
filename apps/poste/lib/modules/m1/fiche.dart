@@ -158,6 +158,7 @@ class _FichePatientState extends State<FichePatient> {
               ('Téléphone', a.lire(p, 'telephone')),
               ('Quartier', a.lire(p, 'quartier')),
               ('Adresse', a.lire(p, 'adresse')),
+              ('Consentement aux SMS', a.masquerSi('coordonnees', smsLibelleConsentement(p))),
               ('Personne à prévenir', a.lire(p, 'personneAPrevenir')),
               ('Groupe sanguin', a.lire(p, 'groupeSanguin')),
               ('Dossier créé le', dateFrM1(p['dateCreation'])),

@@ -186,6 +186,35 @@ void main() {
       expect(m.collection('audit').toutes, isNotEmpty, reason: 'RG-12 : la création est journalisée');
     });
 
+    cas('le consentement aux SMS (E5201) : trois états — non renseigné par défaut, jamais présumé ; coché, il est daté et signé', (t) async {
+      final m = petit({'patients': [p('1', 'CBG/1/26')], 'audit': []});
+      await ouvrir(t, m, 'm1-patient-nouveau');
+      expect(find.text('Consentement aux SMS'), findsWidgets);
+      await saisir(t, 'nom', 'Sans', );
+      await saisir(t, 'prenom', 'Reponse');
+      await choisir(t, 'naissanceConnue', 'Inconnue — indiquer l’âge déclaré');
+      await saisir(t, 'age', '30');
+      await saisir(t, 'telephone', '97000002');
+      await toucher(t, find.text('Ouvrir le dossier').last);
+      final sans = m.collection('patients').toutes.firstWhere((x) => x['nom'] == 'Sans');
+      expect(sans.containsKey('consentementSms'), isFalse, reason: 'jamais présumé consentant');
+      expect(sans.containsKey('consentementSmsLe'), isFalse);
+      // un second dossier, avec la réponse du patient
+      await ouvrir(t, m, 'm1-patient-nouveau');
+      await saisir(t, 'nom', 'Avec');
+      await saisir(t, 'prenom', 'Reponse');
+      await choisir(t, 'naissanceConnue', 'Inconnue — indiquer l’âge déclaré');
+      await saisir(t, 'age', '31');
+      await saisir(t, 'telephone', '97000003');
+      await choisir(t, 'consentementSms', 'Accepte de recevoir des SMS');
+      await toucher(t, find.text('Ouvrir le dossier').last);
+      final avec = m.collection('patients').toutes.firstWhere((x) => x['nom'] == 'Avec');
+      expect(avec['consentementSms'], isTrue);
+      expect('${avec['consentementSmsPar']}', isNotEmpty);
+      expect(DateTime.tryParse('${avec['consentementSmsLe']}'), isNotNull);
+      expect(m.collection('audit').toutes, isNotEmpty, reason: 'RG-12 : le consentement consigné à la création est journalisé avec le dossier');
+    });
+
     cas('un champ obligatoire vide : rien n\'est écrit', (t) async {
       final m = petit({'patients': [p('1', 'CBG/1/26')]});
       await ouvrir(t, m, 'm1-patient-nouveau');
