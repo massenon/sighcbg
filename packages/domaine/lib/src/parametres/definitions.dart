@@ -1753,17 +1753,6 @@ final List<DefinitionParametre> definitionsParametres = [
     appliquePar: 'adm_regles.dart',
   ),
   DefinitionParametre(
-    cle: 'listes.cfg.specialitesClinique',
-    famille: 'listes_cfg',
-    type: TypeParametre.texte,
-    defaut: 'Médecine du travail; Santé publique; Gynécologie; Chirurgie; Urologie; Rhumatologie; Ophtalmologie; Orthophonie; Endocrinologie; Pédiatrie; Neurologie; Cardiologie; Kinésithérapie; Imagerie (Radiologie-Échographie)',
-    libelle: 'Spécialités affichées de la clinique',
-    aide: 'La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l\'ordre est celui de l\'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d\'attente. Liste d\'attente reprise du code (specialitesClinique), à valider par la Direction.',
-    source: _attente,
-    branche: true,
-    appliquePar: 'acc_gabarit.dart',
-  ),
-  DefinitionParametre(
     cle: 'listes.rap.destinataires',
     famille: 'listes_rap',
     type: TypeParametre.texte,
