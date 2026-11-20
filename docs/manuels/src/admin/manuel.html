@@ -65,23 +65,24 @@
   <p>Chaque rôle d’administration lit la liste de ses écrans dans le ruban. Un écran absent du ruban est fermé au rôle : il ne s’atteint pas non plus par son adresse.</p>
 </div>
 
-<h2 id="nouveautes">Ce qui change dans l’édition du 20 novembre 2026</h2>
-<p>La livraison v32 applique une décision de la Direction : <b>plus aucune valeur de clinique écrite dans le code</b>. Ce qui vivait en dur est devenu un réglage daté, une liste de référence, un barème ou un référentiel du jeu. Le manuel passe de 146 à <b><span data-compte="parametres"></span> paramètres</b> déclarés (annexe C) ; les <span data-compte="gestes"></span> gestes réservés ne changent pas.</p>
+<h2 id="nouveautes">Ce qui change dans la livraison v33 (édition du 20 novembre 2026)</h2>
+<p>La livraison v33 ajoute les <b>SMS automatiques</b> (avec leur consentement), deux garde-fous de la <b>paie</b>, le marquage des <b>numéros MECeF de démonstration</b>, et refait la <b>mise en page du panneau du relais</b>. Le manuel compte désormais <b><span data-compte="parametres"></span> paramètres</b> déclarés (annexe C : 251 à la livraison v32, quatre réglages SMS ajoutés, un réglage supprimé) et <b><span data-compte="gestes"></span> gestes réservés</b> (inchangés).</p>
 <table class="tableau">
-  <thead><tr><th style="width:34%">Famille de réglages nouveaux</th><th>Où la lire dans ce manuel</th></tr></thead>
+  <thead><tr><th style="width:46%">Ce qui est nouveau</th><th>Où le lire dans ce manuel</th></tr></thead>
   <tbody>
-    <tr><td><b>Console de la mère</b> (16 réglages <code>mere.*</code> : validité du code d’appairage, fenêtre de réinitialisation, délais de sauvegarde, copies de fichiers, dix seuils de supervision)</td><td>6.15 ; 3.1, 11.2 et 12.2 pour l’effet à l’écran</td></tr>
-    <tr><td><b>Bornes de saisie du téléphone</b> (37 réglages de la famille <code>mobile</code>, la seule que le téléphone reçoit)</td><td>6.16 ; 4.2</td></tr>
-    <tr><td><b>Seuils isolés</b> : balance âgée des assureurs, terme maximal d’un certificat de grossesse, délai d’aberration de l’imagerie, validité de l’autorisation de mise à jour, plan de numérisation, taille d’un dépôt de liasse</td><td>6.17 ; 11.7</td></tr>
-    <tr><td><b>Libellés et listes</b> : dix-huit énumérations <code>libelles.*</code>, 79 listes <code>listes.*</code> (53 à l’édition précédente), barème des garanties du régime employeur au référentiel <code>garanties</code></td><td>6.11 et 6.18</td></tr>
-    <tr><td><b>Dépôts depuis un poste rattaché</b> : validation d’une fiche d’aide et import de la liasse fiscale</td><td>5.13, 9.10 et 10.2</td></tr>
-    <tr><td><b>Banc des droits</b> : fichier de données <code>droits-banc.json</code>, plus aucun rôle écrit dans la mère Dart</td><td>5.8 et A.1</td></tr>
-    <tr><td><b>Cliquets « valeurs en dur »</b> : familles A, B, C, D, E, F, G et H, état réel et commande de chacune</td><td>13.5</td></tr>
+    <tr><td><b>SMS automatiques</b> : rappel de rendez-vous et vœux d’anniversaire, quatre réglages datés <code>sms.*</code> (fermés par défaut), geste <code>reglage_sms</code> ; consentement du patient au SMS ; modèles neutres et mot interdit « santé » ; durée de validité d’un SMS en attente (<code>RELAIS_SMS_VALIDITE_HEURES</code>, 24 h, statut « expiré ») ; section « SMS du relais » du panneau</td><td>14.5 (en entier) ; 14.3 ; A.3</td></tr>
+    <tr><td><b>Paie</b> : états des vacations sous des constantes uniques, avertissement « N vacation(s) en attente de validation ne sont pas payées », chevauchement entre un honoraire de régime et une prime NS 132 signalé (<code>CHEVAUCHEMENT_PRIME</code>)</td><td>6.9 ; 15</td></tr>
+    <tr><td><b>Numéros MECeF de démonstration</b> : les 262 numéros fabriqués du jeu livré sont toujours suivis de « exemple de démonstration — numéro non fiscal » et la pièce imprimée porte « EXEMPLE DE DÉMONSTRATION »</td><td>9.2 ; 12.1</td></tr>
+    <tr><td><b>Écrans d’accès</b> : les pastilles de spécialités ne figurent plus sur la connexion ni sur la session verrouillée ; le réglage <code>listes.cfg.specialitesClinique</code>, qui ne servait qu’à cet affichage, est supprimé (79 listes à la v32, 78 aujourd’hui)</td><td>6.11</td></tr>
+    <tr><td><b>Relais web refait</b> : barre latérale verticale, jetons de la charte Baguidi (<code>jetons.css</code> engendré), polices embarquées, identité lue de <code>config/identite.php</code>, tiroir sous 1 024 px, harnais de rendu et gardes anti-couleur en dur</td><td>14.3 ; 14.8 (variables, procédure, limites) ; A.1</td></tr>
+    <tr><td><b>Libellés au féminin et au masculin</b> : « Nouvelle admission », « Toutes les factures », « Nouvel accouchement »… les gabarits de registre accordent désormais le genre de l’entité</td><td>Aucune procédure ; les libellés cités ici suivent l’écran</td></tr>
+    <tr><td><b>Mot de passe superadmin du relais</b> : le formulaire du panneau annonçait 8 caractères, le contrôle en exige 12 ; le libellé lit maintenant le réglage <code>relais.mdp_superadmin_min</code></td><td>14.3</td></tr>
   </tbody>
 </table>
 <div class="encadre info" data-titre="Les valeurs livrées sont des valeurs d’attente">
-  <p>Chaque réglage nouveau porte la valeur que le code employait avant : <b>rien ne change à l’écran sans décision</b>. Elles sont marquées « à confirmer par la Direction de Baguidi » (ou, pour les bornes de saisie du téléphone, « par les professionnels de la clinique »). Un réglage hors bornes ou illisible n’est jamais pris : la valeur d’attente s’applique, jamais zéro.</p>
+  <p>Les réglages SMS portent des valeurs <b>d’attente</b> : heure du tour d’envoi 9 h, délai de rappel 24 h, validité d’un SMS 24 h. Elles sont à confirmer par la Direction de Baguidi, et <b>les deux occasions d’envoi sont fermées par défaut</b> : rien ne part sans une décision. Les modèles de message, la liste des mots interdits et les valeurs d’attente sont <b>proposés, à valider par la Direction</b> (et la liste des mots par un médecin). Un réglage hors bornes ou illisible n’est jamais pris : la valeur d’attente s’applique, jamais zéro.</p>
 </div>
+<p>Les familles de réglages et de contrôles apparues à la livraison v32 (console de la mère <code>mere.*</code>, bornes de saisie du téléphone, libellés, listes, cliquets « valeurs en dur » A à H) restent décrites en 6.15 à 6.18 et 13.5.</p>
 
 <h2 id="legende">Légende</h2>
 <p>Le manuel suit des conventions constantes.</p>
@@ -837,8 +838,19 @@ build_windows.bat</pre>
 <ul>
   <li>Le <b>bulletin</b> imprime la mention des valeurs d’attente qu’il a utilisées.</li>
   <li>À la validation d’un lot de paie, la confirmation <b>nomme les agents</b> et leurs valeurs d’attente, et le journal retient « Paie validée sur valeurs d’attente ». Rien ne bloque : tout le jeu de démonstration est à salaire d’attente. Le signalement ne se fait jamais en silence.</li>
-  <li>Un honoraire de régime individuel qui égale une <b>prime NS 132</b> déjà versée pour la même vacation est <b>refusé</b> (<code>DOUBLE_PAIEMENT_PRIME</code>) : jamais de double paiement. Un montant différent est un complément voulu.</li>
+  <li>Un honoraire de régime individuel qui égale une <b>prime NS 132</b> déjà versée pour la même vacation est <b>refusé</b> (<code>DOUBLE_PAIEMENT_PRIME</code>) : jamais de double paiement. Un montant différent est un complément voulu, mais il est <b>signalé</b> au validateur (voir ci-dessous).</li>
 </ul>
+<h3>Vacations en attente et chevauchement d’honoraire</h3>
+<ul>
+  <li><b>Une vacation a trois états</b>, lus partout sous le même libellé : <b>Validée</b>, <b>À valider</b>, <b>Refusée</b>. Les états sont des constantes uniques du domaine ; une vacation sans état est lue validée (jeu d’origine : rien ne se perd).</li>
+  <li><b>La paie ne retient que les vacations validées par la mère.</b> Une vacation posée sur un fileul reste « à valider » tant que la mère ne l’a pas appliquée (10.4) : ni comptée, ni perdue.</li>
+  <li><b>L’avertissement.</b> Quand un agent a des vacations du mois en attente, l’écran de calcul de la paie (une note par agent), l’écran de validation et le <b>bulletin imprimé</b> disent « <i>N vacation(s) en attente de validation ne sont pas payées</i> ». Le bulletin en garde l’instantané à sa génération : il n’est jamais réécrit. Une vacation validée ensuite est payée au <b>calcul suivant</b>, sans autre geste ; un bulletin déjà généré ne se recalcule pas. Le registre du planning dit la même chose, et les statistiques des gardes et des permanences excluent ces vacations de leur décompte en le disant.</li>
+  <li><b>Le chevauchement.</b> Un honoraire de régime individuel d’un <b>montant différent</b> de la prime NS 132 de la même vacation (par exemple 6 000 F mensuels pour une garde d’incinération dont la prime est de 5 000 F) n’est pas refusé : les <b>deux sont versés</b>. Le validateur lit, à l’écran de calcul et à l’écran de validation, une note qui nomme la prime, la vacation, les deux montants et le nombre de vacations, et qui demande de <b>confirmer qu’il s’agit d’un complément voulu</b> (code <code>CHEVAUCHEMENT_PRIME</code>, jamais un refus). Le bulletin en porte le champ <code>chevauchementsPrimes</code>.</li>
+  <li>Le contrôle de pose d’une version de régime ne change pas : il refuse la répétition exacte. L’avertissement arrive <b>au bulletin</b>, là où l’argent sort.</li>
+</ul>
+<div class="encadre info" data-titre="Ce que cette vérification ne couvre pas">
+  <p>Les primes fixes de la note (incinération forfaitaire…) ne sont pas liées à une vacation : elles restent versées chaque mois. Un honoraire mensuel compte une seule vacation dans l’avertissement de chevauchement. Aucune capture n’illustre ces notes : elles ont été éprouvées par les tests des écrans de calcul et de validation, non relues sur un poste de la clinique.</p>
+</div>
 <div class="encadre attention" data-titre="Attention : avant la première paie réelle">
   <p>Remplacer tous les salaires d’attente par les salaires réels, puis régler le lot. Une paie validée sur valeurs d’attente est signalée au journal, mais elle reste valide.</p>
 </div>
@@ -869,7 +881,7 @@ build_windows.bat</pre>
 </ul>
 
 <h2 id="param-listes">6.11 Les listes de référence</h2>
-<p>Soixante-dix-neuf listes de libellés (services de la clinique, motifs, natures, catégories…) sont des <b>réglages « texte »</b> datés, famille <b>Listes de référence</b> (une famille par module M1 à M13, MECeF, rapports, configuration et socle). Elles étaient 53 à l’édition précédente : 26 listes posées en ligne dans un formulaire ou lues par un écran ont rejoint le registre. Les valeurs sont séparées par un point-virgule ; quelques-unes portent un format propre (6.18).</p>
+<p>Soixante-dix-huit listes de libellés (services de la clinique, motifs, natures, catégories…) sont des <b>réglages « texte »</b> datés, famille <b>Listes de référence</b> (une famille par module M1 à M13, MECeF, rapports, configuration et socle). Elles étaient 53 à la livraison v31 : 26 listes posées en ligne dans un formulaire ou lues par un écran ont rejoint le registre à la v32. À la v33, une liste disparaît : les pastilles de spécialités des écrans d’accès sont retirées, et <code>listes.cfg.specialitesClinique</code>, qui ne servait qu’à elles, avec. Les spécialités restent à l’écran « Spécialités » et dans les formulaires. Les valeurs sont séparées par un point-virgule ; quelques-unes portent un format propre (6.18).</p>
 <figure class="capture" data-capture="admin-40-param-liste" data-recadrage="0,125,1800,420" data-cibles='[{"c":"Carte","rect":[56,140,420,30],"de":"droite","long":160}]'>
 <figcaption><span class="tag reel">CAPTURE RÉELLE</span>La liste <b>Services de la clinique</b> (<code>listes.socle.services</code>) : une seule liste pour la RH, le planning, les comptes et la paie.</figcaption>
 </figure>
@@ -1201,6 +1213,9 @@ build_windows.bat</pre>
   <li><span class="num-rouge">2</span><b>e-MECeF</b> : manque le dossier d’interface DGI. Aucun protocole n’est supposé.</li>
   <li><span class="num-rouge">3</span><b>Enregistrer le mode</b> : geste <code>reglage_mecef</code>.</li>
 </ul>
+<div class="encadre info" data-titre="Les numéros MECeF du jeu de démonstration ne sont pas fiscaux">
+  <p>Le jeu livré porte 262 factures dont le numéro « MECEF… » a été fabriqué pour la démonstration. Partout où un tel numéro s’affiche (registre des factures, tiroir, écrans MECeF, sous-titre des pièces), il est <b>suivi de « exemple de démonstration — numéro non fiscal »</b>, et la pièce de caisse et la pièce normalisée imprimées portent, en gras, « <b>EXEMPLE DE DÉMONSTRATION</b> ». Un numéro réel se lit nu ; une pièce sans certification réelle n’affiche aucun numéro. Le poste n’en fabrique aucun en exploitation (le point suivant). Une facture à un assureur (<code>m9-facture-tiers</code>) montre le numéro de l’adaptateur configuré tel quel : aucune n’en porte dans le jeu livré.</p>
+</div>
 <div class="encadre attention" data-titre="Attention : aucune facture n’est encore certifiée">
   <p>L’écran affiche « Adaptateur ELTRADE CC300 à fournir par l’éditeur du boîtier ». Une vente est encaissée, puis reste <b>en attente de certification</b> avec le refus <code>MECEF_NON_CONFIGURE</code>. Le poste ne fabrique aucun numéro fiscal et n’envoie aucune requête. Le mode e-MECeF reste « non configuré : dossier d’interface DGI requis ».</p>
 </div>
@@ -1769,6 +1784,7 @@ build_windows.bat</pre>
     <li>Ouverture de la bascule confirmée et journalisée.</li>
     <li>Motif obligatoire et confirmation qui dit que rien n’est supprimé.</li>
     <li>Les compteurs de numérotation ne reculent pas : un code archivé n’est jamais réattribué (RG-01).</li>
+    <li>Les factures de démonstration, et leurs numéros MECeF marqués « exemple de démonstration » (9.2), sont archivées avec le jeu : aucune facture réelle ne porte un numéro fabriqué.</li>
   </ul>
 </div>
 
@@ -1871,14 +1887,14 @@ node tools/baguidi/demo-liasse.mjs --verifier</pre>
     <tr><td><b>A</b></td><td>Années et dates fixes écrites dans le code</td><td><b>0</b> site toléré</td><td>Liste fermée et motivée : <code>tools/baguidi/annees-tolerees.json</code>.</td></tr>
     <tr><td><b>B</b></td><td>Taux, pourcentages, montants</td><td><b>0</b></td><td>Rien : le plan de numérisation est <b>calculé</b> (6.17).</td></tr>
     <tr><td><b>C</b></td><td>Seuils et durées</td><td><b>0</b> (32 avant le lot du 18/11)</td><td>Bornes du téléphone, règles de la mère, balance âgée des assureurs, terme d’un certificat, délai d’imagerie : tous réglages (6.15 à 6.17). Un site est classé <b>structurel</b> et écarté à la main avec son motif : le septième jour de la semaine ISO (dimanche), fait de calendrier et non valeur de clinique.</td></tr>
-    <tr><td><b>D</b></td><td>Listes de choix métier</td><td><b>16</b> sites en code, dans 14 fichiers</td><td><b>Gardés avec leur motif écrit</b>, un par un : voir la liste ci-dessous. Aucun n’est masqué.</td></tr>
+    <tr><td><b>D</b></td><td>Listes de choix métier</td><td><b>17</b> sites en code, dans 15 fichiers (16 dans 14 à la v32)</td><td><b>Gardés avec leur motif écrit</b>, un par un : voir la liste ci-dessous. Aucun n’est masqué.</td></tr>
     <tr><td><b>E</b></td><td>Préfixes et formats de numérotation</td><td><b>0</b></td><td>Toute série passe par le référentiel de numérotation.</td></tr>
     <tr><td><b>F</b></td><td>Noms de rôles qui décident d’un droit</td><td><b>270</b> littéraux tolérés, dans 41 fichiers</td><td><b>192</b> sont les rôles d’<b>origine</b> des gestes réservés, non déplacés (5.8). Les <b>78 autres</b> sont des tolérances motivées une à une : axe « fonction » du personnel (et non un rôle), identifiants d’étape du circuit RH stockés sur les pièces, noms de champ ou de section, profil mobile « réception », compte administrateur d’installation. Le total ne fait que descendre : 85 sites ont été retirés lors du lot de la table des droits du banc (80) et du descripteur des tâches d’aval (5).</td></tr>
     <tr><td><b>G</b></td><td>Libellés d’organisation, contacts</td><td><b>0</b> (12 avant le lot « coordonnées »)</td><td>Deux faux positifs vérifiés à la main : la formule de l’arrêté de facture (le gabarit est littéral, la formule est lue de l’identité) et les adresses d’API de deux fournisseurs de SMS (déjà surchargeables par le <code>.env</code>, 14.5).</td></tr>
     <tr><td><b>H</b></td><td>Règles de calcul figées (barèmes, tranches, grilles)</td><td><b>0</b></td><td>Le barème du régime employeur est au référentiel <code>garanties</code> et les tranches d’âge sont des réglages datés (6.18).</td></tr>
   </tbody>
 </table>
-<h3>Famille D : les seize sites gardés en code</h3>
+<h3>Famille D : les dix-sept sites gardés en code</h3>
 <p>Ces sites ont <b>le même point commun</b> : la valeur <b>enregistrée</b> est le libellé, ou le protocole lui-même la lit, de sorte que la rendre réglable sans codes ni migration changerait la décision d’une pièce déjà signée. Le motif complet est écrit dans <code>tools/baguidi/valeurs-en-dur.plafonds.json</code>.</p>
 <table class="tableau">
   <thead><tr><th style="width:30%">Site (fichier)</th><th>Ce qui reste en code, et la raison</th></tr></thead>
@@ -1886,6 +1902,7 @@ node tools/baguidi/demo-liasse.mjs --verifier</pre>
     <tr><td><code>cfb_numerotation.dart</code> (1)</td><td>Les trois séquences de pièces <b>fiscales</b> (factures, proformas, avoirs) dont le format est protégé : l’écran les lit pour refuser la modification d’un format déjà employé.</td></tr>
     <tr><td><code>cft_tarifs.dart</code>, <code>cfa_regles.dart</code>, <code>jeux_import_tarifs.dart</code>, <code>m8/commun.dart</code> (4 sites)</td><td>Des <b>portées d’écran</b> dites par leurs <b>codes</b> : familles de l’écran des tarifs, de l’imagerie et du laboratoire, huit codes du modèle d’import, les quatre modes que le patient règle au guichet. Les libellés viennent des réglages <code>libelles.*</code>.</td></tr>
     <tr><td><code>cfa_regles.dart</code> (1 de plus)</td><td>Les six <b>textes d’amorçage</b> des modèles de message : une semence proposée une fois, administrée ensuite.</td></tr>
+    <tr><td><code>sms.dart</code> du domaine (1, nouveau à la v33)</td><td>Les quatre <b>modèles neutres</b> du canal SMS (<code>smsModelesProposes</code>) : une semence proposée une fois, <b>à valider par la Direction</b>, puis administrée à « Rappels &amp; messages » ; elle existe parce que deux vœux de la maquette disent « santé » et que le SMS les refuse.</td></tr>
     <tr><td><code>mat_suivis.dart</code> (1)</td><td>L’évolution maternelle (Favorable, Référée, Décédée) : la valeur enregistrée est le libellé et le ton du badge se décide dessus.</td></tr>
     <tr><td><code>remboursement.dart</code> (1)</td><td>La nature d’une opération de remboursement (Facture avoir, Remboursement, Annulation) : la règle compare la valeur enregistrée.</td></tr>
     <tr><td><code>cpb_gestion.dart</code> (1)</td><td>Les états d’une immobilisation : « Cédé » sort le bien du bilan à sa date de sortie.</td></tr>
@@ -1904,7 +1921,7 @@ node tools/baguidi/demo-liasse.mjs --verifier</pre>
 <pre>node tools/baguidi/inventaire-en-dur.mjs --cliquet --famille=A,B,C,D,E,G,H    <span class="c"># toutes les familles du balayage</span>
 cd packages/domaine &amp;&amp; dart test test/roles_en_dur_global_test.dart       <span class="c"># famille F : rôles</span>
 cd packages/domaine &amp;&amp; dart test test/valeurs_en_dur_cliquet_test.dart    <span class="c"># rejoue en test les familles B, D, G et H</span></pre>
-<p>Chaque famille se lance seule (<code>--famille=A</code>, <code>--famille=B,H</code>, <code>--famille=C</code>…). Un résultat conforme dit par exemple : « familles A, B, C, D, E, G, H conformes à leurs plafonds (A = 0, B = 0, C = 0, D = 16, E = 0, G = 0, H = 0) ». L’option <code>--injecter=&lt;chemin fictif&gt;:&lt;fichier&gt;</code> ajoute un source au balayage pour <b>éprouver que le cliquet mord</b>.</p>
+<p>Chaque famille se lance seule (<code>--famille=A</code>, <code>--famille=B,H</code>, <code>--famille=C</code>…). Un résultat conforme dit par exemple : « familles A, B, C, D, E, G, H conformes à leurs plafonds (A = 0, B = 0, C = 0, D = 17, E = 0, G = 0, H = 0) ». L’option <code>--injecter=&lt;chemin fictif&gt;:&lt;fichier&gt;</code> ajoute un source au balayage pour <b>éprouver que le cliquet mord</b>.</p>
 <div class="encadre attention" data-titre="Ce qui n’est pas dit « zéro »">
   <p>Les familles D et F gardent des sites <b>en code</b>, avec leur motif : ce ne sont pas des défauts masqués, mais ils ne sont pas non plus réglables. Les rôles d’origine des gestes réservés n’ont <b>pas été déplacés</b> dans un fichier de données (5.8), et les tolérances de la famille F ne sont pas convertibles sans changer un comportement. Le balayage est <b>heuristique</b> : il écarte à la main des faux positifs (phénotypes de l’électrophorèse de l’hémoglobine, clés techniques d’une réponse de la mère), chacun avec sa raison.</p>
 </div>
@@ -1917,8 +1934,8 @@ cd packages/domaine &amp;&amp; dart test test/valeurs_en_dur_cliquet_test.dart  
 <!-- ============================================================ 14. RELAIS -->
 <h1 id="relais"><span class="no">14.</span> Relais web : déploiement cPanel</h1>
 <p class="chapo">Le relais est opaque : il stocke des enveloppes chiffrées et des indicateurs sans nom de patient. Il ne porte aucune règle de gestion.</p>
-<div class="encadre info" data-titre="Schémas, pas de captures">
-  <p>Le relais Laravel n’a pas pu être exécuté pour ce manuel. Ce chapitre utilise des schémas, et non de fausses captures. Toute la procédure est <span class="non-verifie">Non vérifiée sur l’hébergement réel</span>.</p>
+<div class="encadre info" data-titre="Schémas, et captures sur données factices">
+  <p>Le relais Laravel n’a pas pu être exécuté pour ce manuel. Ce chapitre utilise des schémas, et non de fausses captures ; les seules images du panneau (14.5 et 14.8) sont rendues à partir de ses vraies vues avec des <b>données factices</b>, et le disent. Toute la procédure est <span class="non-verifie">Non vérifiée sur l’hébergement réel</span>.</p>
 </div>
 
 <h2 id="relais-prerequis">14.1 Prérequis de l’hébergement</h2>
@@ -1990,7 +2007,7 @@ php /chemin/vers/apps/web/artisan queue:work --stop-when-empty</pre></li>
 </div>
 
 <h2 id="relais-panneau">14.3 Le panneau superadmin</h2>
-<p>Le panneau est réservé aux comptes superadmin créés par <code>relais:superadmin</code>. Le <b>changement de mot de passe</b> du panneau exige lui aussi 12 caractères au moins : le minimum se lit dans le réglage <code>relais.mdp_superadmin_min</code> (variable <code>RELAIS_MDP_SUPERADMIN_MIN</code>, 12 par défaut, absente du modèle <code>.env</code>), commun à la commande et au panneau. Il ne montre jamais un dossier. Son menu porte quinze entrées :</p>
+<p>Le panneau est réservé aux comptes superadmin créés par <code>relais:superadmin</code>. Le <b>changement de mot de passe</b> du panneau exige lui aussi 12 caractères au moins : le minimum se lit dans le réglage <code>relais.mdp_superadmin_min</code> (variable <code>RELAIS_MDP_SUPERADMIN_MIN</code>, 12 par défaut, absente du modèle <code>.env</code>), commun à la commande et au panneau. Il ne montre jamais un dossier. Son menu est la <b>barre latérale</b> de gauche (14.8), rangée en quatre groupes — Supervision, Appareils et données, Sécurité, Exploitation — et porte quinze entrées :</p>
 <table class="tableau">
   <thead><tr><th style="width:36%">Entrée du menu</th><th>Usage</th></tr></thead>
   <tbody>
@@ -2000,7 +2017,7 @@ php /chemin/vers/apps/web/artisan queue:work --stop-when-empty</pre></li>
     <tr><td><b>Boîtes aux lettres</b>, <b>Synchronisation</b></td><td>Pour chaque appareil : volumes par sens, rangs et tailles des enveloppes ; état de la synchronisation.</td></tr>
     <tr><td><b>Indicateurs reçus</b>, <b>Alertes et notifications</b></td><td>Les instantanés reçus et les alertes (instantané trop ancien, refus).</td></tr>
     <tr><td><b>Journal d’audit du relais</b></td><td>Les échanges, journalisés par leur code, jamais par leur contenu.</td></tr>
-    <tr><td><b>Comptes superadmin</b>, <b>Paramètres du relais</b>, <b>Hébergement</b></td><td>Les comptes du panneau, les réglages, et la santé de l’hébergement : PHP, base, cron, disque, certificat.</td></tr>
+    <tr><td><b>Comptes superadmin</b>, <b>Paramètres du relais</b>, <b>Hébergement</b></td><td>Les comptes du panneau (et, sur cette page, la carte <b>SMS du relais</b>, 14.5), les réglages, et la santé de l’hébergement : PHP, base, cron, disque, certificat.</td></tr>
     <tr><td><b>Sauvegarde du relais</b>, <b>Consultation des copies</b></td><td>L’export du relais ; la consultation des copies chiffrées, déchiffrées dans le navigateur avec la clé, qui ne quitte pas le navigateur.</td></tr>
     <tr><td><b>Preuve d’opacité</b></td><td>Ce que le relais détient et ne détient pas, mesuré sur les enveloppes réellement stockées.</td></tr>
   </tbody>
@@ -2047,7 +2064,7 @@ php /chemin/vers/apps/web/artisan queue:work --stop-when-empty</pre></li>
 </ol>
 
 <h2 id="relais-sms">14.5 SMS par le relais</h2>
-<p>La décision d’architecture ADR-0009 fixe la règle : la <b>mère compose</b> le SMS, le <b>relais l’envoie</b> par une tâche planifiée, puis l’efface. Le fournisseur de SMS n’est connu que du relais.</p>
+<p>La décision d’architecture ADR-0009 (statut <b>accepté</b>) fixe la règle : la <b>mère compose</b> le SMS, le <b>relais l’envoie</b> par une tâche planifiée, puis l’efface. Le fournisseur de SMS n’est connu que du relais. Depuis la v33, la mère compose aussi <b>seule</b>, chaque jour, les rappels et les vœux (sous consentement, plus bas).</p>
 <figure>
 <svg class="schema" viewBox="0 0 900 300" xmlns="http://www.w3.org/2000/svg" font-family="Inter, Arial, sans-serif">
   <defs><marker id="fs" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#D32F2F"/></marker></defs>
@@ -2126,12 +2143,13 @@ php /chemin/vers/apps/web/artisan queue:work --stop-when-empty</pre></li>
     <tr><td><code>RELAIS_SMS_PILOTE</code></td><td><code>journal</code>, <code>http</code>, <code>twilio</code> ou <code>vonage</code></td><td>journal</td></tr>
     <tr><td><code>RELAIS_SMS_PLAFOND_JOUR</code></td><td>SMS envoyés au plus par jour (jour civil de Porto-Novo). Un dépôt qui dépasserait (envoyés du jour + en attente) est refusé <code>429 plafond_atteint</code> ; l’envoi s’arrête aussi au plafond.</td><td>100</td></tr>
     <tr><td><code>RELAIS_SMS_TENTATIVES_MAX</code></td><td>Tentatives avant échec : cinq au plus (une valeur plus grande est ramenée à 5). Délais : 1 min, 5 min, 15 min, 1 h. Au dernier échec, le numéro et le texte sont effacés.</td><td>5</td></tr>
+    <tr><td><code>RELAIS_SMS_VALIDITE_HEURES</code></td><td>Durée de validité d’un SMS en attente, depuis son dépôt : au-delà, il est abandonné (statut <code>expire</code>, numéro et texte effacés). Au moins 1.</td><td>24</td></tr>
     <tr><td><code>RELAIS_SMS_CONSERVATION_JOURS</code></td><td>Purge des lignes terminées (déjà sans numéro ni texte). Une ligne en attente n’est jamais purgée.</td><td>30</td></tr>
     <tr><td><code>RELAIS_SMS_LOT</code></td><td>SMS envoyés au plus par passage du cron</td><td>20</td></tr>
     <tr><td><code>RELAIS_SMS_LONGUEUR_MAX</code>, <code>RELAIS_SMS_OCTETS_MAX</code></td><td>Longueur du texte (320 au plus), taille du dépôt</td><td>320, 4096</td></tr>
   </tbody>
 </table>
-<p>Le numéro et le texte sont <b>effacés dès que le fournisseur accepte</b>. La table <code>sms_sortants</code> n’est pas incluse dans l’export de sauvegarde du relais : une file transitoire n’a rien à restaurer.</p>
+<p>Le numéro et le texte sont <b>effacés dès que le fournisseur accepte</b> (ou dès que le SMS expire). La table <code>sms_sortants</code> n’est pas incluse dans l’export de sauvegarde du relais : une file transitoire n’a rien à restaurer.</p>
 <h3>La passerelle sur le poste mère</h3>
 <ol class="etapes">
   <li>Ouvrir <span class="ch">Poste mère ➔ Liaison avec le relais ➔ Passerelle SMS</span>.</li>
@@ -2140,16 +2158,17 @@ php /chemin/vers/apps/web/artisan queue:work --stop-when-empty</pre></li>
   <li>Cliquer sur <b>Tester l’envoi</b> (repère 4) : composer un SMS d’essai vers un numéro de service.</li>
   <li>Relire la liste des mots interdits (repère 5).</li>
 </ol>
-<figure class="capture" data-capture="admin-21-sms-passerelle" data-recadrage="0,400,1800,1120" data-cibles='[{"c":"Paramètres manquants","rect":[30,596,420,43],"de":"haut","long":50},{"c":"Fournisseur","rect":[56,741,640,50],"de":"droite","long":120},{"c":"Interrupteur","de":"droite","long":120},{"c":"Tester l’envoi","de":"droite"},{"c":"Mots interdits","rect":[56,1446,1000,43],"de":"haut","long":60}]'>
-<figcaption><span class="tag reel">CAPTURE RÉELLE</span>Passerelle SMS (source simulée) : fournisseur Vonage lu au relais, trois paramètres manquants nommés, plafond lu au relais, mots interdits.</figcaption>
+<figure class="capture" data-capture="admin-21-sms-passerelle" data-recadrage="0,400,1800,1450" data-cibles='[{"c":"Paramètres manquants","rect":[30,596,420,43],"de":"haut","long":50},{"c":"Fournisseur","rect":[56,741,640,50],"de":"droite","long":120},{"c":"Interrupteur","de":"droite","long":120},{"c":"Tester l’envoi","de":"droite"},{"c":"Mots interdits","rect":[56,1691,1000,43],"de":"haut","long":60}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>Passerelle SMS (source simulée) : fournisseur Vonage lu au relais, trois paramètres manquants nommés, plafond lu au relais, carte « Envois automatiques » (les deux occasions fermées), mots interdits (liste étendue à « santé »).</figcaption>
 </figure>
 <ul class="legende-fleches">
   <li><span class="num-rouge">1</span><b>Paramètres manquants</b> : les noms des variables encore vides au relais. Tant qu’ils manquent, aucun SMS n’est envoyé et la file reste intacte.</li>
   <li><span class="num-rouge">2</span><b>Fournisseur de SMS</b> : les quatre pilotes reconnus, avec les variables que chacun attend. Le poste ne règle pas le fournisseur et ne voit aucun identifiant.</li>
   <li><span class="num-rouge">3</span><b>Passerelle SMS</b> : ouverte ou fermée ; réglage en base de la mère.</li>
   <li><span class="num-rouge">4</span><b>Tester l’envoi</b> : le texte exact qui partira est montré avant le dépôt.</li>
-  <li><span class="num-rouge">5</span><b>Mots interdits dans un SMS</b> : liste proposée, <b>à valider par un médecin</b>. Un texte qui en contient un est refusé (<code>SMS_CONTENU_MEDICAL</code>).</li>
+  <li><span class="num-rouge">5</span><b>Mots interdits dans un SMS</b> : liste proposée, <b>à valider par un médecin</b>. Un texte qui en contient un est refusé (<code>SMS_CONTENU_MEDICAL</code>). Le mot « santé » en fait partie depuis la v33.</li>
 </ul>
+<p>Sous la carte du réglage, la carte <b>Envois automatiques</b> (sans repère sur la capture) rappelle les deux occasions, <b>OUVERT</b> ou <b>FERMÉ</b>, l’heure du tour et le délai de rappel, puis le <b>dernier tour</b> en compteurs seulement : jour, patients concernés, SMS déposés, et ce qui a été écarté (« consentement non renseigné », « consentement refusé », « sans téléphone », « aucun modèle neutre actif », « plafond du relais atteint »). Elle ne montre jamais un nom, un numéro ni un texte. Si le service de la mère ne les annonce pas, elle le dit.</p>
 <div class="encadre param">
   <p>Le geste réservé <code>reglage_sms</code> (« Régler la passerelle SMS et tester l’envoi ») s’ajoute au droit d’écrire l’écran. Origine <b>proposée</b> : l’administrateur et la DAF, à valider par la Direction. Sans lui, les commandes sont absentes.</p>
 </div>
@@ -2162,11 +2181,53 @@ php /chemin/vers/apps/web/artisan queue:work --stop-when-empty</pre></li>
 <figure class="capture" data-capture="admin-22-sms-journal" data-recadrage="0,120,1800,880" data-cibles='[{"c":"Composer un SMS","de":"bas"},{"c":"Relever les statuts","de":"bas"}]'>
 <figcaption><span class="tag reel">CAPTURE RÉELLE</span>Journal des envois SMS (source simulée) : numéro masqué, modèle, statut, tentatives. Aucun texte n’est gardé.</figcaption>
 </figure>
-<div class="encadre info" data-titre="Ce qui n’est pas encore fait">
+<h3>Consentement du patient</h3>
+<p>Aucun SMS, automatique ou composé à la main, ne part vers un patient dont le dossier ne dit pas qu’il l’accepte. Le dossier porte <b>trois états</b> : <b>accepte</b>, <b>refuse</b>, <b>non renseigné</b>. Le champ <b>Consentement aux SMS</b> se règle à la création, à la fiche et à la modification du patient (écran <b>Répertoire des patients</b>) ; il est <b>laissé vide</b> tant que le patient n’a pas été interrogé.</p>
+<ul>
+  <li><b>« Non renseigné » n’est jamais présumé consentant.</b> Les dossiers existants sont « non renseignés » : tant que l’accueil ne l’a pas posé, <b>aucun envoi automatique ne part</b>. Une liste à trois états a été préférée à une case : une case non cochée aurait transformé « non renseigné » en refus à la première modification d’un dossier existant.</li>
+  <li>Le changement est <b>daté, signé et journalisé</b> (RG-12). Une modification de la fiche qui n’en parle pas laisse le consentement intact. Il suit la catégorie « coordonnées » : qui voit les coordonnées voit le consentement, à la fiche comme à l’état imprimé.</li>
+  <li>La composition manuelle (<b>Composer un SMS</b>) part désormais d’un <b>patient du répertoire</b> : le numéro vient du dossier, jamais d’une saisie libre, car le consentement ne vaut que pour le numéro que le patient a donné. Les patients sans consentement sont signalés « (pas de consentement) » dans la liste, et un refus nommé s’affiche : <code>SMS_CONSENTEMENT_ABSENT</code> ou <code>SMS_CONSENTEMENT_REFUSE</code> ; un dossier introuvable donne <code>SMS_PATIENT_INCONNU</code>. La mère relit le dossier à l’envoi (numéro différent : <code>SMS_NUMERO_DIFFERENT</code>). Seul le SMS d’<b>essai</b> garde un numéro saisi à la main.</li>
+  <li>Une personne non enregistrée (rendez-vous sans dossier) n’a pas de consentement : <b>aucun rappel ne lui est envoyé</b>. Le jeu d’import des patients n’a pas la colonne : le consentement n’est pas importé.</li>
+</ul>
+<h3>Les envois automatiques : les quatre réglages</h3>
+<p>La mère dépose chaque jour, <b>une fois</b>, les rappels de rendez-vous et les vœux d’anniversaire. Ce sont quatre réglages datés de la famille <b>SMS automatiques</b> (<span class="ch">Système ➔ Configuration Clinique ➔ Paramètres système ➔ Paramètres</span>), réglés sous le geste réservé <code>reglage_sms</code> (« Régler la passerelle SMS et tester l’envoi », 14.5). Aucune matrice de droits n’a été modifiée : l’administrateur et la DAF l’ont déjà d’origine, à valider par la Direction.</p>
+<table class="tableau">
+  <thead><tr><th style="width:30%">Réglage</th><th>Rôle</th><th style="width:16%">Attente</th></tr></thead>
+  <tbody>
+    <tr><td><code>sms.rappelRdvActif</code></td><td>Ouvre le rappel : un SMS par patient ayant un rendez-vous le jour visé.</td><td>fermé</td></tr>
+    <tr><td><code>sms.voeuxAnniversaireActif</code></td><td>Ouvre les vœux : un SMS par patient dont c’est l’anniversaire (le 29 février est fêté le 28 hors année bissextile).</td><td>fermé</td></tr>
+    <tr><td><code>sms.heureExecution</code></td><td>Heure locale de la mère à partir de laquelle le tour a lieu, de 0 à 23. Si la mère était éteinte à l’heure dite, le tour est rattrapé au démarrage.</td><td>9</td></tr>
+    <tr><td><code>sms.delaiRappelHeures</code></td><td>Le rappel vise les rendez-vous du jour qui tombe ce nombre d’heures après le tour (de 1 à 168) : 24 = la veille, 48 = l’avant-veille.</td><td>24</td></tr>
+  </tbody>
+</table>
+<ol class="etapes">
+  <li>Vérifier au relais le pilote, les paramètres manquants et le plafond (tableau « SMS du relais » ci-dessous, ou carte de la passerelle).</li>
+  <li>Ouvrir la passerelle et faire un <b>Tester l’envoi</b> (le pilote <code>journal</code> suffit pour l’essai).</li>
+  <li>Aux Paramètres, famille « SMS automatiques », ouvrir l’occasion voulue par <b>Régler à partir d’une date</b> (motif obligatoire). Rien d’autre ne s’ouvre.</li>
+  <li>Le lendemain, lire le <b>dernier tour</b> sur la carte « Envois automatiques » : SMS déposés et motifs d’écart.</li>
+</ol>
+<ul>
+  <li><b>Un envoi par patient et par occasion.</b> Chaque envoi laisse une trace (<code>sms:auto:traces</code>) ; l’identifiant est tiré de la clé du jour, du patient et de l’occasion : un tour rejoué redépose le même identifiant et le relais rend la même ligne, jamais deux SMS.</li>
+  <li><b>Un tour ne se marque pas fait s’il n’a pas pu avoir lieu.</b> Passerelle fermée, relais non configuré ou injoignable : rien n’est marqué, le tour reprend. Conditions d’un envoi : réglage de l’occasion ouvert, passerelle ouverte, relais joignable, plafond du relais non atteint, consentement « accepte », téléphone au dossier, modèle neutre actif. Chaque écart est nommé dans le bilan, en <b>compteurs seulement</b>.</li>
+  <li><b>Le message est un modèle neutre</b> : le jour, l’heure et la clinique, <b>sans nom</b>, sans mot interdit. Quatre modèles neutres du canal SMS sont amorcés à côté de ceux de la maquette (écran <b>Rappels &amp; messages</b>, colonne « Par SMS » : <b>Proposé</b> ou <b>Non proposé</b>, avec le motif). « Résultat disponible » (il révèle qu’un examen a eu lieu), « Rappel de règlement » (il laisse entendre une dette) et les vœux qui disent « santé » restent à la liste mais ne sont <b>jamais proposés ni envoyés</b> par SMS.</li>
+</ul>
+<div class="encadre attention" data-titre="À valider par la Direction avant d’ouvrir un envoi">
+  <p>Les <b>modèles neutres</b>, la <b>liste des mots interdits</b> (à valider aussi par un médecin) et les valeurs d’attente (9 h, 24 h) sont des propositions. Tant que le consentement n’est pas renseigné sur les dossiers, <b>aucun envoi automatique ne part</b> : c’est voulu. Aucun envoi réel par Vonage ou Twilio n’a été fait.</p>
+</div>
+<h3>Durée de validité d’un SMS en attente</h3>
+<p>Un SMS retenu par le plafond du jour ou par une panne partait autrefois le lendemain, même périmé (« rendez-vous demain » reçu deux jours plus tard), son numéro et son texte dormant dans la file. La variable <code>RELAIS_SMS_VALIDITE_HEURES</code> du <code>.env</code> du relais (<b>24</b> par défaut, <b>1 au moins</b>) fixe la durée au-delà de laquelle il est <b>abandonné</b> :</p>
+<ul>
+  <li>la tâche planifiée abandonne les périmés <b>en premier</b>, avant tout autre traitement du passage ;</li>
+  <li>statut <code>expire</code> (« Expiré avant l’envoi : périmé, abandonné »), colonne <code>expire_le</code> (migration <code>add_expire_le_to_sms_sortants_table</code> : lancer <code>php artisan migrate --force</code> à la mise à jour), <b>numéro et texte effacés</b>, journal technique <code>sms_expire</code> (identifiant et âge seulement) ;</li>
+  <li>la mère suit le statut ; le journal des envois SMS le montre, et l’indicateur devient « Échecs, refus ou expirés » ; la ligne est purgée avec les lignes terminées (<code>RELAIS_SMS_CONSERVATION_JOURS</code>).</li>
+</ul>
+<h3>La section « SMS du relais » du panneau superadmin</h3>
+<p>Sur la page <b>Comptes superadmin</b> du panneau (14.3), une carte <b>SMS du relais</b> donne l’état de la file au relais, sans jamais montrer un numéro, un texte ni la valeur d’une variable : le <b>pilote en service</b> (« n’envoie rien » pour l’essai), les <b>noms</b> des paramètres manquants, le plafond du jour et les envoyés du jour, la file (dont ce qui attend depuis plus d’une heure), les échecs, les expirés et les envoyés.</p>
+<figure><img src="images/brut/relais-sms.png" alt="Carte « SMS du relais » : pilote journal (n’envoie rien), deux paramètres manquants nommés, plafond 12 sur 200, file de 3, un SMS expiré." style="max-width:100%;height:auto;border:1px solid #cbd5e1"><figcaption><span class="tag reel">CAPTURE SUR DONNÉES FACTICES</span>La carte « SMS du relais », rendue par le harnais de 14.8 : les chiffres sont factices, la mise en page est celle du relais.</figcaption></figure>
+<div class="encadre info" data-titre="Ce que la v33 ne fait toujours pas">
   <ul>
-    <li>Les envois <b>automatiques</b> (rappel la veille du rendez-vous, anniversaire) ne sont pas branchés : seuls la composition et le dépôt manuels existent.</li>
-    <li>Le dossier patient ne porte pas encore de case « accepte les SMS ». Elle est à ajouter avant tout envoi automatique.</li>
-    <li>Le modèle « Résultat disponible » est refusé : il révèle qu’un examen a eu lieu.</li>
+    <li><b>Non vérifié</b> : le relais Laravel n’a pas été exécuté ici (pas de dépendances Composer complètes). <code>SmsRelaisTest</code> et <code>PanneauSmsTest</code> sont écrits, non exécutés ; le scénario <code>SMS1</code> du banc a été rejoué contre le <b>relais de référence</b> (25 vérifications sur 25 selon l’écart E5204), pas contre Laravel.</li>
+    <li>Aucun envoi réel Vonage ou Twilio ; les valeurs d’attente (9 h, 24 h, validité 24 h) restent à confirmer.</li>
   </ul>
 </div>
 
@@ -2250,6 +2311,64 @@ php /chemin/vers/apps/web/artisan queue:work --stop-when-empty</pre></li>
 </div>
 
 <!-- ============================================================ 15. DÉPANNAGE -->
+<h2 id="relais-rendu">14.8 Mise en page du panneau : barre latérale et quatre formats</h2>
+<p>Le panneau du relais range sa navigation dans une <b>barre latérale verticale</b> à gauche : le logo et le nom de la clinique, la devise en écriture manuscrite, les pages groupées (Supervision, Appareils et données, Sécurité, Exploitation), la page courante marquée en rouge, puis, en pied, le compte connecté, le bouton « Se déconnecter » et la version. Un filet rouge puis bleu sépare la barre du contenu, comme sur le poste. Le nom et la devise se lisent dans <code>config/identite.php</code> (surcharge : <code>RELAIS_CLINIQUE_NOM</code> et <code>RELAIS_CLINIQUE_DEVISE</code> du <code>.env</code>) ; les couleurs, rayons, espacements et polices viennent de la charte (<code>public/css/jetons.css</code>), et les polices sont embarquées dans <code>public/fonts</code> : le relais ne charge rien hors de lui-même.</p>
+<p>Sous 1 024 pixels de large, la barre devient un <b>tiroir</b> : bouton « menu » en haut à gauche, fond assombri, fermeture par la croix, par un clic à côté ou par la touche Échap, qui rend le focus au bouton. Les tableaux défilent à l’intérieur de leur carte (jamais dans la page), les formulaires passent sur une colonne sous 640 pixels et les boutons et champs font 44 pixels de haut au toucher.</p>
+<div class="encadre attention" data-titre="Attention : captures sur données factices">
+  <p>Les images ci-dessous ne montrent <b>pas</b> le relais réel. Elles sont rendues par <code>apps/web/tests/rendu/rendre.php</code>, qui compile les vrais fichiers Blade avec des <b>données factices</b> (aucun nom, aucun chiffre de la clinique), puis photographiées par <code>capturer.cjs</code>. Les composants Livewire (état, actualisation automatique, Alpine) n’y tournent pas : seule la mise en page est exercée.</p>
+</div>
+<figure><img src="images/brut/relais-desktop-1440.png" alt="Ordinateur 1440 × 900 : barre latérale fixe, page « Synchronisation »." style="max-width:100%;height:auto;border:1px solid #cbd5e1"><figcaption>Ordinateur 1440 × 900 : barre latérale fixe, page « Synchronisation ».</figcaption></figure>
+<figure><img src="images/brut/relais-laptop-1280.png" alt="Portable 1280 × 720." style="max-width:100%;height:auto;border:1px solid #cbd5e1"><figcaption>Portable 1280 × 720.</figcaption></figure>
+<figure><img src="images/brut/relais-laptop-1024.png" alt="Portable 1024 × 768 : la barre reste fixe à partir de 1 024 pixels." style="max-width:100%;height:auto;border:1px solid #cbd5e1"><figcaption>Portable 1024 × 768 : la barre reste fixe à partir de 1 024 pixels.</figcaption></figure>
+<figure><img src="images/brut/relais-tablette-768.png" alt="Tablette 768 × 1024 : barre repliée en tiroir, bouton menu et fil d’Ariane." style="max-width:100%;height:auto;border:1px solid #cbd5e1"><figcaption>Tablette 768 × 1024 : barre repliée en tiroir, bouton menu et fil d’Ariane.</figcaption></figure>
+<figure><img src="images/brut/relais-tiroir-tablette.png" alt="Tablette : tiroir ouvert, page courante en rouge, fond assombri." style="max-width:100%;height:auto;border:1px solid #cbd5e1"><figcaption>Tablette : tiroir ouvert, page courante en rouge, fond assombri.</figcaption></figure>
+<figure><img src="images/brut/relais-mobile-390.png" alt="Mobile 390 × 844 : une colonne, tableaux défilants dans leur carte." style="max-width:100%;height:auto;border:1px solid #cbd5e1"><figcaption>Mobile 390 × 844 : une colonne, tableaux défilants dans leur carte.</figcaption></figure>
+<figure><img src="images/brut/relais-tiroir-mobile.png" alt="Mobile : tiroir ouvert, pied avec compte et déconnexion." style="max-width:100%;height:auto;border:1px solid #cbd5e1"><figcaption>Mobile : tiroir ouvert, pied avec compte et déconnexion.</figcaption></figure>
+<figure><img src="images/brut/relais-parametres-mobile.png" alt="Mobile : page « Paramètres du relais », formulaires en une colonne (capture tronquée à 2 600 pixels)." style="max-width:100%;height:auto;border:1px solid #cbd5e1"><figcaption>Mobile : page « Paramètres du relais », formulaires en une colonne (capture tronquée à 2 600 pixels).</figcaption></figure>
+<figure><img src="images/brut/relais-connexion-mobile.png" alt="Mobile : page de connexion." style="max-width:100%;height:auto;border:1px solid #cbd5e1"><figcaption>Mobile : page de connexion.</figcaption></figure>
+<figure><img src="images/brut/relais-satisfaction-mobile.png" alt="Mobile : questionnaire public de satisfaction, sans barre latérale ni lien vers le panneau." style="max-width:100%;height:auto;border:1px solid #cbd5e1"><figcaption>Mobile : questionnaire public de satisfaction, sans barre latérale ni lien vers le panneau.</figcaption></figure>
+<p>Mesures faites par script sur ces rendus, aux cinq largeurs (1 440, 1 280, 1 024, 768 et 390 pixels) et sur les dix-huit pages : aucun débordement horizontal de la page, aucun texte sous 14 pixels, toutes les cibles tactiles à 44 pixels de haut au moins sous 1 024 pixels, tiroir ouvert et fermé comme prévu (bouton, Échap, clic extérieur, focus rendu). Contrastes des couples de couleurs des jetons : tous au moins à 4,5 pour 1 pour le texte (le plus bas : texte blanc sur le rouge d’action, 4,98) et 3 pour 1 pour les contours et le focus.</p>
+<h3>Les variables d’environnement de l’identité</h3>
+<p>Le panneau affiche le nom et la devise de la clinique et la version du relais : ils se lisent dans <code>apps/web/config/identite.php</code>, jamais dans une vue. Les valeurs de départ sont celles de l’identité de Baguidi ; une autre installation les surcharge dans le <code>.env</code> du relais (lignes présentes, <b>commentées</b>, dans <code>production.env.exemple</code> et <code>.env.example</code> : ne les renseigner que pour les changer).</p>
+<table class="tableau">
+  <thead><tr><th style="width:32%">Variable du .env</th><th>Rôle</th><th style="width:28%">Défaut</th></tr></thead>
+  <tbody>
+    <tr><td><code>RELAIS_CLINIQUE_NOM</code></td><td>Nom court en tête de la barre latérale, sur la connexion et sur le questionnaire public.</td><td><code>CLINIQUE BAGUIDI</code></td></tr>
+    <tr><td><code>RELAIS_CLINIQUE_DEVISE</code></td><td>Devise composée en écriture manuscrite (vide : rien ne s’affiche).</td><td>la devise de la clinique</td></tr>
+    <tr><td><code>RELAIS_VERSION</code></td><td>Version affichée au pied de la barre (« SIGH-CBG · relais 1.0 »), à changer à chaque livraison du relais.</td><td><code>1.0</code></td></tr>
+  </tbody>
+</table>
+<h3>Les jetons de la charte : régénérer <code>jetons.css</code></h3>
+<p>Toutes les couleurs, rayons, espacements, ombres et polices du panneau viennent d’<b>un seul fichier engendré</b>, <code>apps/web/public/css/jetons.css</code>. Il ne s’édite pas à la main : <code>panneau.css</code> et <code>satisfaction.css</code> n’emploient que des <code>var(--…)</code>, et aucune couleur n’est écrite en dur dans une vue. Sources : <code>docs/design/design-tokens.json</code> (palettes, ombres, polices de la charte) et <code>apps/poste/lib/core/jetons_shell.dart</code> (neutres et voile, communs avec le poste).</p>
+<pre>node tools/baguidi/engendrer-jetons-relais.mjs              <span class="c"># réécrit apps/web/public/css/jetons.css</span>
+node tools/baguidi/engendrer-jetons-relais.mjs --verifier   <span class="c"># échoue si le fichier diffère de ce que les sources donneraient</span>
+node --test apps/web/tests/js/panneau-jetons.test.mjs       <span class="c"># gardes du design du relais (ci-dessous)</span></pre>
+<ol class="etapes">
+  <li>Modifier la charte à sa source (<code>design-tokens.json</code>, ou le poste pour les neutres), jamais le CSS du relais.</li>
+  <li>Relancer la commande d’engendrement, puis relire la différence du fichier.</li>
+  <li>Lancer le test : il échoue si une couleur en dur, une adresse externe ou une variable non définie apparaît, si <code>jetons.css</code> n’est plus à jour, ou si un couple de couleurs passe sous le contraste AA (4,5 pour 1 le texte, 3 pour 1 les contours et le focus).</li>
+  <li>Refaire les captures de contrôle (ci-dessous) et téléverser <code>public/css</code> sur l’hébergement.</li>
+</ol>
+<p>Le test <code>panneau-jetons.test.mjs</code> (Node, sans dépendance) a un jumeau PHP, <code>apps/web/tests/Unit/PanneauSansEnDurTest.php</code>, qui fait la même garde anti-couleur en dur sous PHPUnit.</p>
+<h3>Refaire le rendu de contrôle</h3>
+<p>Le harnais ne démarre ni Laravel ni Livewire : <code>tests/rendu/rendre.php</code> compile les vrais fichiers Blade avec les seules briques <code>illuminate/view</code>, <code>illuminate/events</code> et <code>illuminate/filesystem</code>, installées <b>hors du dépôt</b>, puis <code>capturer.cjs</code> photographie et mesure les pages avec Chromium (module Node <code>playwright</code>).</p>
+<pre>mkdir /tmp/rendu-vendor &amp;&amp; cd /tmp/rendu-vendor
+composer require illuminate/view illuminate/events illuminate/filesystem   <span class="c"># hors du dépôt, jamais commité</span>
+cd apps/web
+RENDU_VENDOR=/tmp/rendu-vendor/vendor php tests/rendu/rendre.php /tmp/rendu        <span class="c"># 18 pages HTML</span>
+node tests/rendu/capturer.cjs /tmp/rendu /tmp/rendu-png                            <span class="c"># captures et mesures, code 1 si une mesure échoue</span></pre>
+<p>Sortie attendue : « 18 pages écrites », puis « 92 mesures, 0 échec(s) ». Pour cette édition, le rendu a été relancé : <b>18 pages, 92 mesures, 0 échec</b>, et les captures du chapitre ont été relues contre un rendu neuf. Le harnais a aussi servi à trouver un défaut, corrigé : une note posée dans une balise <code>span</code> chevauchait les noms des paramètres manquants de la carte « SMS du relais » (elle est désormais un bloc).</p>
+<div class="encadre attention" data-titre="Ce qui n’est pas vérifié">
+  <ul>
+    <li><b>Le rendu réel du panneau Livewire</b> : composants Livewire (état, actualisation automatique), Alpine (les blocs <code>x-show</code> sont masqués par le harnais, sans plus) et les routes ne tournent pas dans ces captures. Aucune installation Laravel complète n’a été possible ici (pas de <code>vendor/</code> du relais), donc la suite <code>php artisan test</code> n’a pas été rejouée, <code>PanneauSansEnDurTest</code> non plus ; son jumeau Node, lui, s’exécute. Le harnais a été exécuté avec la version d’<code>illuminate/view</code> que Composer a installée au moment de l’essai, qui n’est pas forcément celle de Laravel 12 du relais.</li>
+    <li><b>Un cPanel réel</b> : le déploiement, les polices servies par l’hébergeur et le cache navigateur de <code>jetons.css</code> n’ont pas été éprouvés sur l’hébergement.</li>
+    <li><b>D’autres navigateurs</b> : seul Chromium a été utilisé (aucun Firefox, Safari ni navigateur mobile réel) ; aucun lecteur d’écran.</li>
+    <li><b>Sans JavaScript</b>, le tiroir ne s’ouvre pas sous 1 024 pixels (le panneau exige déjà JavaScript pour Livewire). Les tableaux <b>défilent</b> dans leur carte au lieu de passer en cartes sous 640 pixels : choix assumé.</li>
+  </ul>
+</div>
+
+
+
 <h1 id="depannage"><span class="no">15.</span> Dépannage</h1>
 <p class="chapo">Chaque refus du logiciel se nomme. Lire le message : il dit la cause et le geste attendu.</p>
 <table class="tableau">
@@ -2271,6 +2390,10 @@ php /chemin/vers/apps/web/artisan queue:work --stop-when-empty</pre></li>
     <tr><td><b>Version de taux refusée</b></td><td><code>PAIE_DEJA_GENEREE</code> : des bulletins sont déjà générés après la date d’effet.</td><td>Choisir une date d’effet postérieure au mois nommé dans le message (9.8).</td></tr>
     <tr><td><b>Série de numérotation refusée</b></td><td><code>NUMEROTATION_RETROACTIVE</code> ou <code>VERSION_EXISTANTE</code>.</td><td>Date d’effet au plus tôt aujourd’hui, une seule version par date (8.2).</td></tr>
     <tr><td><b>Facture à une entreprise refusée</b></td><td><code>AIB_SITUATION_A_CHOISIR</code>, <code>AIB_SANS_BAREME</code> ou <code>FILLE_DEJA_FACTUREE</code>.</td><td>Choisir la situation d’AIB, arrêter le barème (9.7), ou retirer la facture patient déjà réclamée (9.9).</td></tr>
+    <tr><td><b>SMS automatiques qui ne partent pas</b></td><td>Carte « Envois automatiques » : « Aucun tour n’a encore eu lieu » ou dernier tour avec des écarts ; <code>SMS_CONSENTEMENT_ABSENT</code>, <code>SMS_CONSENTEMENT_REFUSE</code> ou <code>SMS_PATIENT_INCONNU</code> à la composition.</td><td>Vérifier que l’occasion est ouverte aux Paramètres (famille « SMS automatiques », fermée par défaut), la passerelle ouverte, le relais joignable, puis le consentement du patient à son dossier (trois états, « non renseigné » ne suffit pas) et son téléphone (14.5).</td></tr>
+    <tr><td><b>SMS « expiré »</b></td><td>Statut « Expiré avant l’envoi » au journal des envois ; compteur « Expirés » du panneau du relais.</td><td>Le SMS est resté plus longtemps que <code>RELAIS_SMS_VALIDITE_HEURES</code> (plafond du jour atteint, panne). Il est abandonné, numéro et texte effacés : relever le plafond ou rétablir le fournisseur, puis recomposer si le message a encore un sens.</td></tr>
+    <tr><td><b>Paie : « N vacation(s) en attente de validation ne sont pas payées »</b></td><td>Note à l’écran de calcul, à l’écran de validation et sur le bulletin.</td><td>Faire valider les vacations par la mère (10.4) ; elles sont payées au calcul suivant, le bulletin déjà généré ne change pas (6.9).</td></tr>
+    <tr><td><b>Paie : chevauchement d’honoraire</b></td><td>Note « … s’ajoute à la prime … de la note NS 132 … les deux sont versés » (<code>CHEVAUCHEMENT_PRIME</code>).</td><td>Pas un refus. Confirmer que l’honoraire est un complément voulu, ou le retirer du régime individuel avant de valider (6.9).</td></tr>
     <tr><td><b>Honoraire refusé</b></td><td><code>DOUBLE_PAIEMENT_PRIME</code> : l’honoraire de régime égale une prime NS 132 déjà versée.</td><td>Retirer l’honoraire du régime individuel ou le remplacer par un complément d’un autre montant (6.9).</td></tr>
     <tr><td><b>Planning refusé sur un fileul</b></td><td><code>validation_reservee</code> ou <code>champ_reserve</code>.</td><td>Poser la vacation « à valider » ; la mère la valide (10.4).</td></tr>
     <tr><td><b>Mère qui ne démarre pas</b></td><td><code>SECRET_ADMIN_FAIBLE</code> : écran « ne peut pas démarrer en mode mère », ou activation refusée (« Le poste reste fileul »).</td><td>Le programme a été construit sans <code>SIGH_ADMIN</code> solide. Reconstruire l’installateur avec un secret de 16 caractères au moins (1.2), le réinstaller (11.7), recommencer.</td></tr>
@@ -2279,45 +2402,29 @@ php /chemin/vers/apps/web/artisan queue:work --stop-when-empty</pre></li>
     <tr><td><b>Poste qui ne s’ouvre pas, méta illisible</b></td><td><code>META_ILLISIBLE</code> au démarrage.</td><td>Ne rien supprimer ; restaurer le fichier de méta ou repartir de l’export (11.7).</td></tr>
     <tr><td><b>Reprise d’un poste refusée</b></td><td><code>deja_repris</code>, <code>appareil_inconnu</code>, <code>code_expire</code>, <code>code_utilise</code>, <code>acces_refuse</code>…</td><td>Lire le motif et le geste que l’écran donne (3.4) : reprendre le poste qui a remplacé l’ancien, ou générer un nouveau code.</td></tr>
     <tr><td><b>Import de la liasse refusé</b></td><td>Un code (<code>CLE_INCONNUE</code>, <code>TYPE_INVALIDE</code>, <code>TOTAL_*_INCOHERENT</code>, <code>GESTE_RESERVE</code>, <code>REGLE_SUR_LA_MERE</code>…) et le chemin de la valeur fautive.</td><td>Corriger le document à l’endroit cité ; sur un fileul, importer sur la mère ; sans le geste, le demander à la Direction (9.10).</td></tr>
+    <tr><td><b>Relais : barre latérale absente ou page sans style</b></td><td>Page nue, sans couleurs ni polices ; ou, sous 1 024 pixels, bouton « menu » qui ne répond pas.</td><td>Vérifier que <code>public/css/jetons.css</code>, <code>panneau.css</code>, <code>public/fonts</code> et <code>public/js/panneau.js</code> ont été téléversés ; sans JavaScript le tiroir ne s’ouvre pas (14.8). <span class="non-verifie">Non vérifié sur un cPanel réel</span>.</td></tr>
     <tr><td><b>Fiche d’aide non validable</b></td><td><code>AUTEUR_NE_VALIDE_PAS</code>, <code>PROFESSIONNEL_REQUIS</code>, <code>PROFESSIONNEL_ABSENT</code>, ou « Valider » absent.</td><td>Faire valider par une autre personne ; pour le bloc, le geste et le nom du professionnel ; sur un fileul, valider sur la mère (5.13).</td></tr>
     <tr><td><b>Code patient en « /26 » en 2027</b></td><td>Poste ou téléphone resté à l’ancienne version.</td><td>Mettre à jour la mère, puis le poste, puis synchroniser (12.4).</td></tr>
   </tbody>
 </table>
 
 <!-- ============================================================ ANNEXES -->
-<h2 id="relais-rendu">14.8 Mise en page du panneau : barre latérale et quatre formats</h2>
-<p>Le panneau du relais range sa navigation dans une <b>barre latérale verticale</b> à gauche : le logo et le nom de la clinique, la devise en écriture manuscrite, les pages groupées (Supervision, Appareils et données, Sécurité, Exploitation), la page courante marquée en rouge, puis, en pied, le compte connecté, le bouton « Se déconnecter » et la version. Un filet rouge puis bleu sépare la barre du contenu, comme sur le poste. Le nom et la devise se lisent dans <code>config/identite.php</code> (surcharge : <code>RELAIS_CLINIQUE_NOM</code> et <code>RELAIS_CLINIQUE_DEVISE</code> du <code>.env</code>) ; les couleurs, rayons, espacements et polices viennent de la charte (<code>public/css/jetons.css</code>), et les polices sont embarquées dans <code>public/fonts</code> : le relais ne charge rien hors de lui-même.</p>
-<p>Sous 1 024 pixels de large, la barre devient un <b>tiroir</b> : bouton « menu » en haut à gauche, fond assombri, fermeture par la croix, par un clic à côté ou par la touche Échap, qui rend le focus au bouton. Les tableaux défilent à l’intérieur de leur carte (jamais dans la page), les formulaires passent sur une colonne sous 640 pixels et les boutons et champs font 44 pixels de haut au toucher.</p>
-<div class="encadre attention" data-titre="Attention : captures sur données factices">
-  <p>Les images ci-dessous ne montrent <b>pas</b> le relais réel. Elles sont rendues par <code>apps/web/tests/rendu/rendre.php</code>, qui compile les vrais fichiers Blade avec des <b>données factices</b> (aucun nom, aucun chiffre de la clinique), puis photographiées par <code>capturer.cjs</code>. Les composants Livewire (état, actualisation automatique, Alpine) n’y tournent pas : seule la mise en page est exercée.</p>
-</div>
-<figure><img src="images/brut/relais-desktop-1440.png" alt="Ordinateur 1440 × 900 : barre latérale fixe, page « Synchronisation »." style="max-width:100%;height:auto;border:1px solid #cbd5e1"><figcaption>Ordinateur 1440 × 900 : barre latérale fixe, page « Synchronisation ».</figcaption></figure>
-<figure><img src="images/brut/relais-laptop-1280.png" alt="Portable 1280 × 720." style="max-width:100%;height:auto;border:1px solid #cbd5e1"><figcaption>Portable 1280 × 720.</figcaption></figure>
-<figure><img src="images/brut/relais-laptop-1024.png" alt="Portable 1024 × 768 : la barre reste fixe à partir de 1 024 pixels." style="max-width:100%;height:auto;border:1px solid #cbd5e1"><figcaption>Portable 1024 × 768 : la barre reste fixe à partir de 1 024 pixels.</figcaption></figure>
-<figure><img src="images/brut/relais-tablette-768.png" alt="Tablette 768 × 1024 : barre repliée en tiroir, bouton menu et fil d’Ariane." style="max-width:100%;height:auto;border:1px solid #cbd5e1"><figcaption>Tablette 768 × 1024 : barre repliée en tiroir, bouton menu et fil d’Ariane.</figcaption></figure>
-<figure><img src="images/brut/relais-tiroir-tablette.png" alt="Tablette : tiroir ouvert, page courante en rouge, fond assombri." style="max-width:100%;height:auto;border:1px solid #cbd5e1"><figcaption>Tablette : tiroir ouvert, page courante en rouge, fond assombri.</figcaption></figure>
-<figure><img src="images/brut/relais-mobile-390.png" alt="Mobile 390 × 844 : une colonne, tableaux défilants dans leur carte." style="max-width:100%;height:auto;border:1px solid #cbd5e1"><figcaption>Mobile 390 × 844 : une colonne, tableaux défilants dans leur carte.</figcaption></figure>
-<figure><img src="images/brut/relais-tiroir-mobile.png" alt="Mobile : tiroir ouvert, pied avec compte et déconnexion." style="max-width:100%;height:auto;border:1px solid #cbd5e1"><figcaption>Mobile : tiroir ouvert, pied avec compte et déconnexion.</figcaption></figure>
-<figure><img src="images/brut/relais-parametres-mobile.png" alt="Mobile : page « Paramètres du relais », formulaires en une colonne (capture tronquée à 2 600 pixels)." style="max-width:100%;height:auto;border:1px solid #cbd5e1"><figcaption>Mobile : page « Paramètres du relais », formulaires en une colonne (capture tronquée à 2 600 pixels).</figcaption></figure>
-<figure><img src="images/brut/relais-connexion-mobile.png" alt="Mobile : page de connexion." style="max-width:100%;height:auto;border:1px solid #cbd5e1"><figcaption>Mobile : page de connexion.</figcaption></figure>
-<figure><img src="images/brut/relais-satisfaction-mobile.png" alt="Mobile : questionnaire public de satisfaction, sans barre latérale ni lien vers le panneau." style="max-width:100%;height:auto;border:1px solid #cbd5e1"><figcaption>Mobile : questionnaire public de satisfaction, sans barre latérale ni lien vers le panneau.</figcaption></figure>
-<p>Mesures faites par script sur ces rendus, aux cinq largeurs (1 440, 1 280, 1 024, 768 et 390 pixels) et sur les dix-huit pages : aucun débordement horizontal de la page, aucun texte sous 14 pixels, toutes les cibles tactiles à 44 pixels de haut au moins sous 1 024 pixels, tiroir ouvert et fermé comme prévu (bouton, Échap, clic extérieur, focus rendu). Contrastes des couples de couleurs des jetons : tous au moins à 4,5 pour 1 pour le texte (le plus bas : texte blanc sur le rouge d’action, 4,98) et 3 pour 1 pour les contours et le focus.</p>
-<p class="non-verifie">Non vérifié : rendu réel du panneau Livewire (aucune dépendance Laravel n’a pu être installée ici), comportement des composants Alpine, hébergement cPanel réel, lecteurs d’écran, navigateurs autres que Chromium.</p>
-
 <h1 id="annexe-a"><span class="no">A.</span> Commandes de production</h1>
-<p class="chapo">Chaque commande a été relue dans le code du dépôt (scripts, fichiers de configuration, outils) : aucune n’est inventée. Elles se lancent depuis la racine du dépôt, sauf mention contraire. <b>« Non vérifié »</b> marque ce qui n’a pas été exécuté : l’installateur Windows, l’APK signé, l’hébergement réel, les SMS réels, le boîtier CC300 et la suite PHPUnit du relais (dépendances Composer non installables sur le poste de rédaction).</p>
-<p>Ont, en revanche, été <b>exécutées</b> pour cette édition : les cliquets de 13.5, les tests du domaine consacrés aux valeurs en dur, <code>dart test</code> de <code>packages/sync_dart</code> (166 tests), <code>node --test</code> de <code>packages/rbac</code> (22 tests), <code>npm run banc:sync</code> (67 scénarios, 702 vérifications), l’extraction des références et la capture des écrans de ce manuel.</p>
+<p class="chapo">Chaque commande a été relue dans le code du dépôt (scripts, fichiers de configuration, outils) : aucune n’est inventée. Elles se lancent depuis la racine du dépôt, sauf mention contraire. <b>« Non vérifié »</b> marque ce qui n’a pas été exécuté : l’installateur Windows, l’APK signé, l’hébergement réel (cPanel), les SMS réels, le boîtier CC300, le rendu réel du panneau Livewire et la suite PHPUnit du relais (<code>php artisan test</code>, dépendances Composer du relais non installées sur le poste de rédaction).</p>
+<p>Ont, en revanche, été <b>exécutées</b> pour cette édition (livraison v33) : les cliquets de 13.5 (A = 0, B = 0, C = 0, D = 17, E = 0, G = 0, H = 0), les tests du domaine (<code>dart test</code> de <code>packages/domaine</code> en entier : 5 151 tests), <code>dart test</code> de <code>packages/sync_dart</code> (182 tests), <code>node --test</code> de <code>packages/rbac</code> (22 tests), <code>npm run banc:sync</code> (67 scénarios, 706 vérifications, dont <code>SMS1</code>, joué contre le relais de référence et non contre Laravel), le <b>contrôle d’identité</b> (0 trace), <code>node --test apps/web/tests/js/panneau-jetons.test.mjs</code> (31 tests) et <code>engendrer-jetons-relais.mjs --verifier</code> (« jetons.css à jour »), le harnais de rendu du relais (18 pages, 92 mesures, 0 échec), cinq tests d’écran du poste (SMS de la mère, numéros MECeF de démonstration, vacations en attente, accords, rappels et messages), l’extraction des références et la capture des écrans de ce manuel. <code>flutter test</code> du poste en entier n’a <b>pas</b> été rejoué pour cette édition.</p>
 
 <h2 id="annexe-a-cloner">A.1 Cloner et vérifier</h2>
 <pre>git clone https://github.com/massenon/sighcbg.git
 cd sighcbg
-git checkout livraison/baguidi-v32      <span class="c"># la branche de livraison de cette édition</span></pre>
+git checkout livraison/baguidi-v33      <span class="c"># la branche de livraison de cette édition</span></pre>
 <pre>cd packages/domaine &amp;&amp; dart pub get &amp;&amp; dart test &amp;&amp; cd ../..
 cd packages/sync_dart &amp;&amp; dart pub get &amp;&amp; dart test &amp;&amp; cd ../..
 cd packages/rbac &amp;&amp; node --test &amp;&amp; cd ../..
 node tools/baguidi/controle-identite.mjs                          <span class="c"># 0 trace d’une autre clinique</span>
 node tools/baguidi/inventaire-en-dur.mjs --cliquet --famille=A,B,C,D,E,G,H   <span class="c"># cliquets « valeurs en dur » (13.5)</span>
-cd packages/domaine &amp;&amp; dart test test/roles_en_dur_global_test.dart &amp;&amp; cd ../..   <span class="c"># cliquet F : rôles</span></pre>
+cd packages/domaine &amp;&amp; dart test test/roles_en_dur_global_test.dart &amp;&amp; cd ../..   <span class="c"># cliquet F : rôles</span>
+node --test apps/web/tests/js/panneau-jetons.test.mjs             <span class="c"># gardes du design du relais : couleurs en dur, adresses externes, contrastes, jetons.css à jour (14.8)</span>
+node tools/baguidi/engendrer-jetons-relais.mjs --verifier         <span class="c"># échoue si apps/web/public/css/jetons.css n’est pas ce que la charte engendre</span></pre>
 <div class="encadre info" data-titre="Les suites complètes sont longues">
   <p><code>cd apps/poste &amp;&amp; flutter test</code> dure une vingtaine de minutes, seule sur la machine ; <code>cd apps/mobile &amp;&amp; flutter test</code> et <code>cd apps/web &amp;&amp; php artisan test</code> (SQLite en mémoire) sont plus courtes. <code>npm run banc:sync</code> lance le banc de synchronisation de référence (mère, fileuls et mobiles Node) ; <code>npm run banc:dart</code> y met la mère, les fileuls et les mobiles Dart, et <code>npm run banc:cible</code> y ajoute le relais Laravel. Le banc lit ses droits dans <code>packages/sync/banc/droits-banc.json</code> (5.8).</p>
 </div>
@@ -2373,8 +2480,10 @@ php artisan relais:superadmin &lt;courriel-à-renseigner&gt; --mot-de-passe='un-
     <tr><td><code>RELAIS_SECRET_MERE</code></td><td><em>vide</em></td><td>Texte long et aléatoire. <b>Le même</b> texte se saisit à « Activer la mère ».</td></tr>
     <tr><td><code>MAIL_USERNAME</code>, <code>MAIL_FROM_ADDRESS</code>, <code>MAIL_REPLY_TO_ADDRESS</code></td><td><code>contact@cliniquebaguidi.com</code></td><td>Adresse arrêtée par la Direction le 17/11/2026 (8.4). Créer la boîte dans cPanel.</td></tr>
     <tr><td><code>MAIL_PASSWORD</code></td><td><em>vide</em></td><td><b>À renseigner</b> : le mot de passe de la boîte créée dans cPanel.</td></tr>
+    <tr><td><code>RELAIS_SMS_VALIDITE_HEURES</code></td><td><code>24</code></td><td>Un SMS en attente depuis plus longtemps est abandonné (« expiré », numéro et texte effacés). Au moins 1 (14.5).</td></tr>
     <tr><td><code>RELAIS_SMS_PILOTE</code></td><td><code>journal</code></td><td>Reste « journal » (aucun envoi) tant que le fournisseur n’est pas choisi : passer à <code>vonage</code> ou <code>twilio</code> (14.5).</td></tr>
     <tr><td><code>RELAIS_SMS_VONAGE_CLE</code>, <code>RELAIS_SMS_VONAGE_SECRET</code> <em>ou</em> <code>RELAIS_SMS_TWILIO_SID</code>, <code>RELAIS_SMS_TWILIO_TOKEN</code>, et <code>RELAIS_SMS_EXPEDITEUR</code> (ou <code>RELAIS_SMS_TWILIO_SERVICE</code>)</td><td><em>vide</em></td><td><b>À renseigner</b> sur le serveur, selon le fournisseur retenu : jamais dans le dépôt.</td></tr>
+    <tr><td><code>RELAIS_CLINIQUE_NOM</code>, <code>RELAIS_CLINIQUE_DEVISE</code>, <code>RELAIS_VERSION</code></td><td><em>absentes</em> (commentées dans <code>production.env.exemple</code>)</td><td>Facultatives : le panneau affiche l’identité de Baguidi par défaut. À renseigner seulement pour la changer, et <code>RELAIS_VERSION</code> à chaque livraison du relais (14.8).</td></tr>
     <tr><td><code>APP_DEBUG</code></td><td><code>false</code></td><td>Ne jamais passer à <code>true</code> en production.</td></tr>
   </tbody>
 </table>
@@ -2421,7 +2530,10 @@ flutter build apk --release \
 <h2 id="annexe-a-quota">A.4 Quota et contrôles de production</h2>
 <pre>node tools/baguidi/mesurer-quota-relais.mjs --magasin &lt;chemin&gt; --fichiers &lt;chemin&gt; --quota-gio &lt;n&gt;
 node tools/baguidi/demo-liasse.mjs --verifier
-node tools/baguidi/controle-identite.mjs</pre>
+node tools/baguidi/controle-identite.mjs
+node --test apps/web/tests/js/panneau-jetons.test.mjs
+node tools/baguidi/engendrer-jetons-relais.mjs --verifier</pre>
+<p>Le rendu de contrôle du panneau (harnais <code>tests/rendu</code>) se lance depuis <code>apps/web</code> ; sa procédure est en 14.8. <span class="non-verifie">Non vérifié</span> : <code>php artisan test</code>, donc <code>PanneauSansEnDurTest</code>, <code>SmsRelaisTest</code> et <code>PanneauSmsTest</code>, écrits mais non exécutés.</p>
 
 <h2 id="annexe-a-manuel">A.5 Régénérer ce manuel</h2>
 <pre>cd apps/poste &amp;&amp; SIGH_CAPTURES=../../docs/manuels/src/admin/images/brut flutter test test/capture_admin_test.dart &amp;&amp; cd ../..
@@ -2448,12 +2560,14 @@ node docs/manuels/src/admin/generer.mjs docs/manuels/src/admin docs/manuels/Manu
     <tr><td><b>Borne de saisie</b></td><td>Valeur au-delà de laquelle le téléphone refuse une saisie comme improbable. Réglable dans une <b>enveloppe</b> (plancher, plafond) que la clinique ne franchit pas (6.16).</td></tr>
     <tr><td><b>Cliquet</b></td><td>Contrôle automatique qui échoue si une valeur écrite en dur apparaît, ou si un plafond n’est pas abaissé quand un site disparaît (13.5).</td></tr>
     <tr><td><b>Clé de clinique</b></td><td>Secret qui chiffre tout ce qui quitte la mère : relais, sauvegardes, mobiles. Jamais envoyée au relais.</td></tr>
+    <tr><td><b>Consentement SMS</b></td><td>Réponse du patient à « accepte-t-il les SMS ? », portée à son dossier en trois états (accepte, refuse, non renseigné) ; aucun SMS ne part sans « accepte » (14.5).</td></tr>
     <tr><td><b>Dépôt</b></td><td>Geste fait sur un fileul et transmis à la mère, qui le rejoue sous le rôle de son auteur.</td></tr>
     <tr><td><b>Famille R</b></td><td>Collections de configuration : la mère seule écrit, les fileuls reçoivent.</td></tr>
     <tr><td><b>Fileul</b></td><td>Poste de travail rattaché à la mère, avec sa base locale chiffrée et sa file d’envoi.</td></tr>
     <tr><td><b>Geste transverse</b></td><td>Geste réservé qui ne dépend d’aucun module (module « * ») : il remplace une ancienne liste de rôles écrite dans le code.</td></tr>
     <tr><td><b>Geste réservé</b></td><td>Droit accordé par rôle sur un geste qui engage un professionnel nommé.</td></tr>
     <tr><td><b>MECeF</b></td><td>Mécanisme électronique de certification des factures, par boîtier physique ou e-MECeF.</td></tr>
+    <tr><td><b>Jetons (charte)</b></td><td>Variables CSS de la charte Baguidi (couleurs, rayons, espacements, polices), engendrées dans <code>apps/web/public/css/jetons.css</code> à partir de la charte du dépôt : la seule source des couleurs du panneau du relais (14.8).</td></tr>
     <tr><td><b>Mère</b></td><td>Poste serveur de la clinique : service de synchronisation, base de référence, console d’administration.</td></tr>
     <tr><td><b>Relais</b></td><td>Site web opaque qui transporte les enveloppes chiffrées et garde la copie hors site.</td></tr>
     <tr><td><b>Reprise d’identité</b></td><td>Remplacement d’un poste fileul : un code émis par la mère remet au poste neuf les plages de numéros et les baux de l’ancien, qui est révoqué (3.4).</td></tr>

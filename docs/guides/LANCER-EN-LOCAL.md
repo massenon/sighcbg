@@ -7,7 +7,7 @@ Prérequis : Git, Flutter (avec Windows Desktop et Visual Studio 2022 C++ sous W
 ```bash
 git clone https://github.com/massenon/sighcbg.git
 cd sighcbg
-git checkout livraison/baguidi-v32
+git checkout livraison/baguidi-v33
 ```
 
 ## 2. Vérifier avant de lancer
@@ -19,9 +19,11 @@ cd packages/rbac && node --test && cd ../..
 node tools/baguidi/controle-identite.mjs
 node tools/baguidi/inventaire-en-dur.mjs --cliquet --famille=A,B,C,D,E,G,H
 cd packages/domaine && dart test test/roles_en_dur_global_test.dart && cd ../..
+node --test apps/web/tests/js/panneau-jetons.test.mjs
+node tools/baguidi/engendrer-jetons-relais.mjs --verifier
 ```
 
-Les deux dernières lignes sont les cliquets « valeurs en dur » (familles A à H) : elles échouent si une valeur de clinique réapparaît dans le code.
+Les deux lignes des cliquets (`inventaire-en-dur`, `roles_en_dur_global_test`) échouent si une valeur de clinique réapparaît dans le code (familles A à H). Les deux dernières gardent le design du relais : pas de couleur en dur ni d'adresse externe dans le panneau, `apps/web/public/css/jetons.css` à jour avec la charte (il s'engendre : `node tools/baguidi/engendrer-jetons-relais.mjs`, ne jamais l'éditer à la main), contrastes AA.
 
 ## 3. Lancer le poste (fileul)
 

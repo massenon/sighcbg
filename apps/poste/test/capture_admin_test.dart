@@ -244,7 +244,12 @@ class _FauxMere extends b.Faux {
         'envoyes_aujourdhui': 3,
         'en_attente': 1,
         'pilote': 'vonage',
+        'validite_heures': 24,
         'parametres_manquants': ['RELAIS_SMS_VONAGE_CLE', 'RELAIS_SMS_VONAGE_SECRET', 'RELAIS_SMS_EXPEDITEUR']
+      },
+      // Les envois automatiques tels que la mère les annonce à l'installation : les deux occasions FERMÉES (valeurs d'attente), aucun tour encore fait.
+      automatiques: const {
+        'reglages': {'rappel_rdv_actif': false, 'voeux_anniversaire_actif': false, 'heure': 9, 'delai_rappel_heures': 24},
       },
       statutMotsInterdits: smsStatutMotsInterdits,
       journal: [
