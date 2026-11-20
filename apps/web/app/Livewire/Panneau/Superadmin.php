@@ -4,12 +4,13 @@ namespace App\Livewire\Panneau;
 
 use App\Models\User;
 use App\Relais\Format;
+use App\Relais\Sms\FileSms;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-/** Comptes superadmin (création par commande uniquement), sessions ouvertes, changement de son propre mot de passe. */
+/** Comptes superadmin (création par commande uniquement), sessions ouvertes, changement de son propre mot de passe, état des SMS du relais (compteurs seulement). */
 #[Layout('layouts.panneau')]
 class Superadmin extends Component
 {
@@ -82,6 +83,8 @@ class Superadmin extends Component
         return view('livewire.panneau.superadmin', [
             'comptes' => $comptes,
             'sessions' => DB::table('sessions')->whereNotNull('user_id')->orderByDesc('last_activity')->get(),
+            // Les SMS du relais (ADR-0009) : compteurs et noms de paramètres, jamais un numéro ni un texte.
+            'sms' => FileSms::resume(),
         ]);
     }
 }

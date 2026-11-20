@@ -31,6 +31,12 @@ class FileSms
         return max(1, min(5, (int) config('relais.sms.tentatives_max', 5)));
     }
 
+    /** Durée de validité (ms) d'un SMS en attente : au moins une heure, jamais illimitée. */
+    public static function validiteMs(): int
+    {
+        return max(1, (int) config('relais.sms.validite_heures')) * 3600000;
+    }
+
     public static function longueurMax(): int
     {
         return max(1, min(320, (int) config('relais.sms.longueur_max', 320)));
@@ -120,7 +126,7 @@ class FileSms
         return [
             'id' => $l->uid, 'statut' => $l->statut, 'tentatives' => (int) $l->tentatives, 'longueur' => (int) $l->longueur,
             'depose_le' => (int) $l->depose_le, 'envoye_le' => $l->envoye_le === null ? null : (int) $l->envoye_le,
-            'echec_le' => $l->echec_le === null ? null : (int) $l->echec_le, 'erreur' => $l->derniere_erreur,
+            'echec_le' => $l->echec_le === null ? null : (int) $l->echec_le, 'expire_le' => ($l->expire_le ?? null) === null ? null : (int) $l->expire_le, 'erreur' => $l->derniere_erreur,
         ];
     }
 
@@ -141,10 +147,45 @@ class FileSms
             'envoyes_aujourdhui' => self::envoyesAujourdhui($maintenant),
             'en_attente' => self::enAttente(),
             'tentatives_max' => self::tentativesMax(),
+            'validite_heures' => (int) (self::validiteMs() / 3600000),
             'longueur_max' => self::longueurMax(),
             'pilote' => $pilote->nom(),
             // Les NOMS des variables du .env encore vides pour ce pilote (jamais leurs valeurs) : l'écran de la mère les affiche.
             'parametres_manquants' => $pilote instanceof PiloteConfigurable ? $pilote->parametresManquants() : [],
+        ];
+    }
+
+    /**
+     * LE RÉSUMÉ POUR LE PANNEAU SUPERADMIN (E5205) : le pilote en service, les NOMS des paramètres manquants, le plafond et les envoyés du jour, les compteurs de la file et des échecs.
+     * Des nombres et des noms de variables seulement : jamais un numéro, jamais un texte, jamais une valeur du `.env`.
+     *
+     * @return array<string, mixed>
+     */
+    public static function resume(?int $maintenant = null): array
+    {
+        $m = $maintenant ?? Format::maintenant();
+        $pilote = Envoyeur::pilote();
+        $compte = fn (string $statut) => DB::table('sms_sortants')->where('statut', $statut)->count();
+        $enAttente = $compte('en_attente');
+        $envoyes = self::envoyesAujourdhui($m);
+        $manquants = $pilote instanceof PiloteConfigurable ? $pilote->parametresManquants() : [];
+
+        return [
+            'pilote' => $pilote->nom(),
+            // Le pilote d'essai n'envoie rien : le panneau le dit, au lieu de laisser croire que les SMS partent.
+            'envoie' => ! $pilote instanceof PiloteJournal,
+            'parametres_manquants' => $manquants,
+            'plafond_jour' => self::plafondJour(),
+            'envoyes_aujourdhui' => $envoyes,
+            'plafond_atteint' => $envoyes >= self::plafondJour(),
+            'validite_heures' => (int) (self::validiteMs() / 3600000),
+            'tentatives_max' => self::tentativesMax(),
+            'file' => $enAttente,
+            'file_en_retard' => DB::table('sms_sortants')->where('statut', 'en_attente')->where('depose_le', '<', $m - 3600000)->count(),
+            'echecs' => $compte('echec'),
+            'expires' => $compte('expire'),
+            'envoyes' => $compte('envoye'),
+            'conservation_jours' => max(1, (int) config('relais.sms.conservation_jours', 30)),
         ];
     }
 

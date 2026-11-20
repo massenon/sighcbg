@@ -18,16 +18,16 @@ const TENTATIVES_MAX = 5;
 /* Début du jour civil d'Africa/Porto-Novo (UTC+1, sans heure d'été). */
 const debutDuJour = (m) => { const decale = m + 3600000; return decale - (decale % 86400000) - 3600000; };
 
-module.exports = function installer({ db, Err, mereOk, secretMere, plafondJour = 100, maintenant = () => Date.now() }) {
+module.exports = function installer({ db, Err, mereOk, secretMere, plafondJour = 100, validiteHeures = 24, maintenant = () => Date.now() }) {
   db.exec(`CREATE TABLE IF NOT EXISTS sms_sortants (rid INTEGER PRIMARY KEY AUTOINCREMENT, uid TEXT UNIQUE, numero TEXT, texte TEXT, longueur INTEGER, statut TEXT, tentatives INTEGER DEFAULT 0,
-      depose_le INTEGER, prochain_essai_le INTEGER, envoye_le INTEGER, echec_le INTEGER, efface_le INTEGER, derniere_erreur TEXT);
+      depose_le INTEGER, prochain_essai_le INTEGER, envoye_le INTEGER, echec_le INTEGER, expire_le INTEGER, efface_le INTEGER, derniere_erreur TEXT);
     CREATE TABLE IF NOT EXISTS sms_audit (rid INTEGER PRIMARY KEY AUTOINCREMENT, quand INTEGER, action TEXT, detail TEXT);`);
   const journal = (action, detail) => db.prepare('INSERT INTO sms_audit(quand,action,detail) VALUES(?,?,?)').run(maintenant(), action, detail);
   const refus = (s, code, motif) => { journal('sms_refuse', code); return new Err(s, code, motif); };
   const envoyesAujourdhui = (m) => db.prepare('SELECT COUNT(*) AS n FROM sms_sortants WHERE envoye_le >= ?').get(debutDuJour(m)).n;
   const enAttente = () => db.prepare("SELECT COUNT(*) AS n FROM sms_sortants WHERE statut='en_attente'").get().n;
   const longueur = (t) => [...t].length;
-  const statut = (l) => ({ id: l.uid, statut: l.statut, tentatives: l.tentatives, longueur: l.longueur, depose_le: l.depose_le, envoye_le: l.envoye_le ?? null, echec_le: l.echec_le ?? null, erreur: l.derniere_erreur ?? null });
+  const statut = (l) => ({ id: l.uid, statut: l.statut, tentatives: l.tentatives, longueur: l.longueur, depose_le: l.depose_le, envoye_le: l.envoye_le ?? null, echec_le: l.echec_le ?? null, expire_le: l.expire_le ?? null, erreur: l.derniere_erreur ?? null });
 
   /* L'autorisation précède la validation : secret, taille, signature, PUIS le JSON. */
   function corpsSigne(req, brut) {
@@ -51,10 +51,21 @@ module.exports = function installer({ db, Err, mereOk, secretMere, plafondJour =
     return d;
   }
 
+  /* Les SMS en attente PÉRIMÉS (déposés depuis plus que la durée de validité) sont ABANDONNÉS : statut « expire », numéro et texte effacés, une ligne au journal (identifiant et âge). */
+  function expirer(m) {
+    const limite = m - Math.max(1, validiteHeures) * 3600000; let n = 0;
+    for (const l of db.prepare("SELECT rid, uid, depose_le FROM sms_sortants WHERE statut='en_attente' AND depose_le < ?").all(limite)) {
+      db.prepare("UPDATE sms_sortants SET statut='expire', expire_le=?, efface_le=?, numero=NULL, texte=NULL, derniere_erreur='expire' WHERE rid=?").run(m, m, l.rid);
+      journal('sms_expire', l.uid + ' abandon apres ' + Math.floor((m - l.depose_le) / 3600000) + ' h'); n++;
+    }
+    return n;
+  }
+
   /* Un tour d'envoi (le cron) : pilote « journal » (accepte) ou « echec » (refuse tout, code essai_echec). */
   function tourner(pilote, m) {
-    const bilan = { envoyes: 0, echecs: 0, abandons: 0, purges: 0, plafond_atteint: false };
-    bilan.purges = Number(db.prepare("DELETE FROM sms_sortants WHERE statut IN ('envoye','echec') AND efface_le < ?").run(m - 30 * 86400000).changes);
+    const bilan = { envoyes: 0, echecs: 0, abandons: 0, expires: 0, purges: 0, plafond_atteint: false };
+    bilan.expires = expirer(m);
+    bilan.purges = Number(db.prepare("DELETE FROM sms_sortants WHERE statut IN ('envoye','echec','expire') AND efface_le < ?").run(m - 30 * 86400000).changes);
     const restant = plafondJour - envoyesAujourdhui(m);
     if (restant <= 0) { bilan.plafond_atteint = enAttente() > 0; return bilan; }
     const lignes = db.prepare("SELECT * FROM sms_sortants WHERE statut='en_attente' AND prochain_essai_le <= ? ORDER BY depose_le, rid LIMIT ?").all(m, Math.min(20, restant));
@@ -95,7 +106,7 @@ module.exports = function installer({ db, Err, mereOk, secretMere, plafondJour =
     },
     'GET /mere/sms/etat': (req) => {
       if (!mereOk(req)) throw new Err(403, 'mere_requise');
-      return { plafond_jour: plafondJour, envoyes_aujourdhui: envoyesAujourdhui(maintenant()), en_attente: enAttente(), tentatives_max: TENTATIVES_MAX, longueur_max: LONGUEUR_MAX, pilote: 'journal' };
+      return { plafond_jour: plafondJour, envoyes_aujourdhui: envoyesAujourdhui(maintenant()), en_attente: enAttente(), tentatives_max: TENTATIVES_MAX, validite_heures: Math.max(1, validiteHeures), longueur_max: LONGUEUR_MAX, pilote: 'journal' };
     },
   };
   const banc = {
