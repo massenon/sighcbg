@@ -37,10 +37,7 @@ String iconeDeMode(String code) => _iconesModesPaiement[code] ?? 'banknote';
 /// Tous les modes, dans l'ordre du réglage `libelles.m8.modesPaiement` (le libellé change, le code et donc la décision non).
 List<(String, String, String)> get modesPaiement => [for (final (c, l) in enumModesPaiement.paires) (c, l, _iconesModesPaiement[c] ?? 'banknote')];
 
-/// Les modes que le PATIENT règle au guichet : ce sont des CODES (la prise en charge de l'assurance n'est pas un règlement du patient), jamais « les quatre premiers » d'une liste dont
-/// l'ordre se règle.
-const _codesModesPatient = ['especes', 'tpe', 'mtn', 'moov'];
-List<(String, String, String)> get modesPaiementPatient => [for (final (c, l) in enumModesPaiement.paresDe(_codesModesPatient)) (c, l, _iconesModesPaiement[c] ?? 'banknote')];
+/// Les modes que le PATIENT règle au guichet sont les TYPES DE VERSEMENT en service (paramètres de la caisse, `typesVersementEnService`) : plus de liste de codes écrite ici (Direction, 20/11/2026).
 
 String modeLabel(Object? id) => enumModesPaiement.libelle(id);
 

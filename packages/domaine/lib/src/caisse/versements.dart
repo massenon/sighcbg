@@ -542,3 +542,44 @@ ResultatContrepassation contrepasserReglement(
 String? gardeVersement(String operation, Map<String, Object?> fiche) => operation == 'inserer'
     ? null
     : 'VERSEMENT_NON_MODIFIABLE : un versement est une ligne de journal, elle ne se modifie ni ne s’archive. Pour corriger une erreur, annuler le règlement : une contre-passation est écrite avec son motif (geste réservé).';
+
+/// LE RÈGLEMENT SAISI À L'ÉMISSION (écran « Nouvelle facture » : « Montant réglé » et son mode) devient, lui aussi, UN versement du type choisi, avec SON écriture sur le compte de ce
+/// type. Les états lisent ainsi les versements pour TOUTES les pièces nouvelles. `null` : rien n'est réglé à l'émission, ou aucun type en service ne désigne [type] (l'ancienne voie :
+/// la pièce se lit alors par son mode unique). Plusieurs versements à l'émission ne sont pas offerts : émettre, puis encaisser (caisse, paiements) — l'écran le dit.
+({Map<String, Object?> versement, List<Map<String, Object?>> ecritures})? versementALEmission(
+  Map<String, Object?> facture, {
+  required String type,
+  required String aujourdhui,
+  required String maintenant,
+  String utilisateur = '',
+  Iterable<Map<String, Object?>> typesFiches = const [],
+  List<Map<String, Object?>> versementsExistants = const [],
+  List<Map<String, Object?>> ecritures = const [],
+}) {
+  final montant = _n(facture['montantPaye']);
+  if (montant <= 0) return null;
+  final t = {for (final x in typesVersementEnService(typesFiches)) x.code: x}[type];
+  if (t == null) return null;
+  final ref = '${_faux(facture['numero']) ? facture['id'] : facture['numero']}';
+  final fiche = <String, Object?>{
+    'numero': numeroSuivant('caisse.versements', date: aujourdhui, existants: versementsExistants),
+    'factureId': facture['id'],
+    'factureNumero': ref,
+    'patientId': facture['patientId'],
+    'patient': facture['patient'],
+    'patientCode': facture['patientCode'],
+    'sens': sensVersement,
+    'montant': montant,
+    'type': t.code,
+    'typeLibelle': t.libelle,
+    'compteTresorerie': t.compte,
+    'date': aujourdhui,
+    'dateHeure': maintenant,
+    'caissier': utilisateur,
+    'lot': '${facture['id']}@${maintenant.replaceAll(RegExp(r'[^0-9]'), '')}',
+    'rang': 1,
+    'statut': 'actif',
+  };
+  final e = ecritureEncaissementSur(facture, montant, aujourdhui, ecritures, compteTresorerie: t.compte, complementLibelle: t.libelle);
+  return (versement: fiche, ecritures: e);
+}

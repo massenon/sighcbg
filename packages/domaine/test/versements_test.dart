@@ -175,4 +175,15 @@ void main() {
       expect(contrepasserReglement({...f, 'statutMecef': 'valide', 'numeroMecef': 'M1'}, 'V0', vers, motif: 'x', aujourdhui: auj, maintenant: maint).refusCode, codeVersementFactureNormalisee);
     });
   });
+
+  test('règlement saisi à l\'émission : UN versement du type choisi, écriture sur le compte de CE type ; rien réglé ou type inconnu : null (ancienne voie)', () {
+    final f = {...facture(), 'montantPaye': 3000, 'reliquat': 5000};
+    final v = versementALEmission(f, type: 'tpe', aujourdhui: auj, maintenant: maint, utilisateur: 'caissier1')!;
+    expect(v.versement['montant'], 3000);
+    expect(v.versement['compteTresorerie'], compteTresorerieAttente);
+    expect(som(v.ecritures, compteTresorerieAttente, 'debit'), 3000);
+    expect(som(v.ecritures, comptePrestations, 'credit'), 3000);
+    expect(versementALEmission(facture(), type: 'tpe', aujourdhui: auj, maintenant: maint), isNull, reason: 'rien réglé');
+    expect(versementALEmission(f, type: 'cheque_maison', aujourdhui: auj, maintenant: maint), isNull, reason: 'type inconnu : ancienne voie');
+  });
 }

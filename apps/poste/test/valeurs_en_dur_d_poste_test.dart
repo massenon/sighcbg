@@ -17,7 +17,7 @@ void main() {
   tearDown(ListesReference.debrancher);
 
   test('les modes de paiement : le libellé suit le réglage, la décision (quels modes règle le patient) ne bouge pas', () {
-    expect(modesPaiement.map((m) => m.$1), ['especes', 'tpe', 'mtn', 'moov', 'assurance']);
+    expect(modesPaiement.map((m) => m.$1), ['especes', 'tpe', 'mtn', 'moov', 'mobile_money', 'mixte', 'assurance']);
     expect(modeLabel('especes'), 'Espèces');
     brancher([version('libelles.m8.modesPaiement', 'assurance=Tiers payant; especes=Comptant')]);
     expect(modeLabel('especes'), 'Comptant');
@@ -25,9 +25,9 @@ void main() {
     expect(modeLabel('moov'), 'Moov Money');
     // L'ordre du réglage change l'ordre d'affichage…
     expect(modesPaiement.first.$1, 'assurance');
-    // …mais le patient ne règle jamais par « assurance », et l'ordre de ses modes est celui du code, pas celui de la liste :
-    expect(modesPaiementPatient.map((m) => m.$1), ['especes', 'tpe', 'mtn', 'moov']);
-    expect(modesPaiementPatient.first.$2, 'Comptant');
+    // …mais le patient ne règle jamais par « assurance » : les modes qu'il règle sont les TYPES DE VERSEMENT en service (paramètres de la caisse), plus une liste de codes écrite ici (20/11/2026).
+    expect(typesVersementEnService(const []).map((t) => t.code), ['especes', 'tpe', 'mtn', 'moov', 'mobile_money']);
+    expect(typesVersementEnService(const []).any((t) => t.code == 'assurance'), isFalse);
     expect(modeLabel('inconnu'), 'inconnu');
   });
 
