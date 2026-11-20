@@ -27,7 +27,7 @@ final aujourdhui = DateTime(2026, 10, 30);
 
 Magasin magasin() => Magasin.depuisDossier(Magasin.collectionsDuJeu);
 
-Future<void> ouvrir(WidgetTester t, Magasin m, {String role = 'admin'}) async {
+Future<void> ouvrir(WidgetTester t, Magasin m, {String role = 'admin', String ecran = 'm8-facturation'}) async {
   t.view.physicalSize = const Size(1600, 1400);
   t.view.devicePixelRatio = 1;
   addTearDown(t.view.resetPhysicalSize);
@@ -35,7 +35,7 @@ Future<void> ouvrir(WidgetTester t, Magasin m, {String role = 'admin'}) async {
       key: UniqueKey(),
       donnees: donnees,
       config: ConfigPoste(mode: ModePoste.fileul, role: role),
-      ecranInitial: 'm8-facturation',
+      ecranInitial: ecran,
       magasin: m,
       horloge: () => aujourdhui));
   for (var i = 0; i < 4; i++) {
@@ -88,6 +88,10 @@ void main() {
     expect(find.text('IFU de l’acheteur'), findsNothing);
     expect(find.text('Nom de l’acheteur'), findsNothing);
     expect(find.text('Situation de l’acheteur (AIB)'), findsNothing);
+    expect(find.text('Taux d’AIB'), findsNothing);
+    expect(find.text('Taux d’AIB (%)'), findsNothing);
+    expect(find.textContaining('AIB au '), findsNothing);
+    expect(find.textContaining('Le taux d’AIB vient du barème'), findsNothing);
     for (final k in ['acheteurIfu', 'acheteurNom', 'acheteurAib']) {
       expect(find.byKey(Key('kit:champ:$k')), findsNothing, reason: k);
     }
@@ -105,6 +109,20 @@ void main() {
     expect(find.byKey(const Key('mecef:facture-patient')), findsOneWidget);
     expect(find.text(mecefMentionFacturePatient), findsOneWidget);
   });
+
+  // E5250 : la facture d'un PATIENT ne porte ni acheteur ni AIB sur AUCUNE de ses portes d'encaissement (émission, caisse, paiements,
+  // registre des factures, reliquats) : l'acheteur et l'AIB n'ont de sens que pour une entreprise, un assureur ou un achat.
+  for (final ecran in ['m8-facturation', 'm8-caisse', 'm8-paiements', 'm8-factures', 'm8-reliquats']) {
+    cas('E5250 : la porte d\'encaissement « $ecran » ne porte aucun bloc « FACTURE NORMALISÉE » (IFU, nom de l\'acheteur, taux d\'AIB)', (t) async {
+      await ouvrir(t, magasin(), ecran: ecran);
+      await blocAbsent(t);
+      final encaisser = find.widgetWithText(BoutonSigh, 'Encaisser');
+      if (encaisser.evaluate().isNotEmpty) {
+        await toucher(t, encaisser.first);
+        await blocAbsent(t);
+      }
+    });
+  }
 
   cas('E3771 : plus aucun choix de situation d\'AIB à l\'émission ; le domaine garde les situations du barème pour une vente à un tiers payeur', (t) async {
     final m = magasin();
