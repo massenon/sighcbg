@@ -52,7 +52,7 @@
                         @else
                             <span class="puce alerte">{{ count($sms['parametres_manquants']) }} manquant(s)</span>
                             {{ implode(', ', $sms['parametres_manquants']) }}
-                            <br><span class="note">À renseigner dans le fichier de réglages du relais. Tant qu’ils manquent, la file n’est pas touchée.</span>
+                            <div class="note">À renseigner dans le fichier de réglages du relais. Tant qu’ils manquent, la file n’est pas touchée.</div>
                         @endif
                     </td>
                 </tr>
