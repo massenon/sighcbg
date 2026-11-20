@@ -1,0 +1,403 @@
+{
+ "nom": "211-patient-consentement-sms",
+ "ecran": "m1-patient-nouveau",
+ "role": "reception",
+ "taille": [
+  1440.0,
+  1500.0
+ ],
+ "echelle": 1.25,
+ "boutons": [],
+ "cles": {
+  "cap-manuel": [
+   0.0,
+   0.0,
+   1440.0,
+   1500.0
+  ],
+  "actualisation-0": [
+   0.0,
+   0.0,
+   1440.0,
+   1500.0
+  ],
+  "barre-superieure": [
+   0.0,
+   0.0,
+   1440.0,
+   56.0
+  ],
+  "barre-marque": [
+   12.0,
+   0.0,
+   270.0,
+   56.0
+  ],
+  "barre-logo": [
+   16.0,
+   10.0,
+   52.0,
+   36.0
+  ],
+  "logo-clinique": [
+   19.0,
+   12.0,
+   46.0,
+   32.0
+  ],
+  "barre-nom-clinique": [
+   78.0,
+   13.0,
+   131.3,
+   17.0
+  ],
+  "recherche-globale": [
+   294.0,
+   10.0,
+   324.1,
+   36.0
+  ],
+  "barre-actions": [
+   944.2,
+   10.0,
+   99.4,
+   36.0
+  ],
+  "barre-plein-ecran": [
+   1047.7,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "barre-cloche": [
+   1197.0,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "cloche-badge": [
+   1217.0,
+   12.0,
+   16.0,
+   14.0
+  ],
+  "barre-profil": [
+   1243.0,
+   0.0,
+   185.0,
+   56.0
+  ],
+  "nom-courant": [
+   1289.0,
+   14.5,
+   117.0,
+   14.0
+  ],
+  "role-courant": [
+   1289.0,
+   28.5,
+   100.8,
+   13.0
+  ],
+  "onglets-domaines": [
+   0.0,
+   56.0,
+   1392.0,
+   40.0
+  ],
+  "domaine-Accueil": [
+   8.0,
+   60.0,
+   105.4,
+   36.0
+  ],
+  "domaine-Soins": [
+   113.4,
+   60.0,
+   92.2,
+   36.0
+  ],
+  "domaine-Logistique": [
+   205.7,
+   60.0,
+   126.2,
+   36.0
+  ],
+  "domaine-RH": [
+   331.9,
+   60.0,
+   74.0,
+   36.0
+  ],
+  "domaine-Administration": [
+   405.9,
+   60.0,
+   154.7,
+   36.0
+  ],
+  "domaine-Pilotage": [
+   560.5,
+   60.0,
+   110.2,
+   36.0
+  ],
+  "raccourci-Patients": [
+   687.7,
+   60.0,
+   99.1,
+   36.0
+  ],
+  "raccourci-Consultations": [
+   788.8,
+   60.0,
+   137.3,
+   36.0
+  ],
+  "ruban-bascule": [
+   1392.0,
+   56.0,
+   48.0,
+   40.0
+  ],
+  "ruban-filet-coeur": [
+   0.0,
+   96.0,
+   1440.0,
+   2.0
+  ],
+  "ruban-filet-sante": [
+   0.0,
+   98.0,
+   1440.0,
+   2.0
+  ],
+  "m1-patient-nouveau|fileul": [
+   0.0,
+   100.0,
+   1440.0,
+   1371.0
+  ],
+  "fil-ariane": [
+   24.0,
+   116.0,
+   1392.0,
+   17.0
+  ],
+  "fil-lien:0": [
+   24.0,
+   116.0,
+   43.6,
+   17.0
+  ],
+  "fil-lien:1": [
+   91.6,
+   116.0,
+   157.1,
+   17.0
+  ],
+  "titre-page": [
+   24.0,
+   141.0,
+   263.1,
+   28.0
+  ],
+  "kit:note": [
+   24.0,
+   231.0,
+   1392.0,
+   34.0
+  ],
+  "kit:carte-entete": [
+   25.0,
+   282.0,
+   915.3,
+   49.0
+  ],
+  "kit:carte-titre": [
+   45.0,
+   296.0,
+   875.3,
+   20.0
+  ],
+  "kit:carte-corps": [
+   25.0,
+   331.0,
+   915.3,
+   1200.0
+  ],
+  "m1:code": [
+   58.0,
+   383.0,
+   849.3,
+   19.0
+  ],
+  "kit:formulaire": [
+   45.0,
+   448.0,
+   875.3,
+   1063.0
+  ],
+  "kit:section": [
+   45.0,
+   448.0,
+   875.3,
+   16.0
+  ],
+  "kit:champ:nom": [
+   45.0,
+   480.0,
+   429.7,
+   60.0
+  ],
+  "kit:champ:prenom": [
+   490.7,
+   480.0,
+   429.7,
+   60.0
+  ],
+  "kit:champ:sexe": [
+   45.0,
+   556.0,
+   429.7,
+   60.0
+  ],
+  "kit:champ:naissanceConnue": [
+   490.7,
+   556.0,
+   429.7,
+   60.0
+  ],
+  "kit:champ:dateNaissance": [
+   45.0,
+   632.0,
+   429.7,
+   60.0
+  ],
+  "kit:champ:telephone": [
+   45.0,
+   753.0,
+   429.7,
+   60.0
+  ],
+  "kit:champ:quartier": [
+   490.7,
+   753.0,
+   429.7,
+   60.0
+  ],
+  "kit:champ:adresse": [
+   45.0,
+   829.0,
+   875.3,
+   60.0
+  ],
+  "kit:champ:personneAPrevenir": [
+   45.0,
+   905.0,
+   875.3,
+   60.0
+  ],
+  "kit:champ:consentementSms": [
+   45.0,
+   981.0,
+   875.3,
+   96.0
+  ],
+  "kit:champ:allergies": [
+   45.0,
+   1138.0,
+   875.3,
+   80.0
+  ],
+  "kit:champ:traitementEnCours": [
+   45.0,
+   1234.0,
+   875.3,
+   60.0
+  ],
+  "kit:champ:assureur": [
+   45.0,
+   1355.0,
+   429.7,
+   60.0
+  ],
+  "kit:champ:numeroPolice": [
+   490.7,
+   1355.0,
+   429.7,
+   60.0
+  ],
+  "kit:champ:tauxPriseEnCharge": [
+   45.0,
+   1431.0,
+   429.7,
+   60.0
+  ],
+  "kit:champ:carteExpiration": [
+   490.7,
+   1431.0,
+   429.7,
+   80.0
+  ],
+  "pied-legal": [
+   0.0,
+   1471.0,
+   1440.0,
+   29.0
+  ],
+  "pied-legal:texte": [
+   24.0,
+   1478.0,
+   1392.0,
+   16.0
+  ]
+ },
+ "infobulles": [
+  {
+   "message": "Actions rapides",
+   "rect": [
+    944.2,
+    10.0,
+    99.4,
+    36.0
+   ]
+  },
+  {
+   "message": "Plein écran (F11)",
+   "rect": [
+    1047.7,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "1 alerte(s) en attente",
+   "rect": [
+    1197.0,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Profil utilisateur",
+   "rect": [
+    1243.0,
+    0.0,
+    185.0,
+    56.0
+   ]
+  },
+  {
+   "message": "Déplier le menu",
+   "rect": [
+    1396.0,
+    56.0,
+    40.0,
+    40.0
+   ]
+  }
+ ],
+ "onglets": []
+}

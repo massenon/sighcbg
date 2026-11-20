@@ -139,6 +139,24 @@ Geste toucherIcone(String libelle) => (t) async {
       await _pomper(t, 6);
     };
 
+/// La [n]-ième icône d'action (à partir de 0) portant ce libellé : la ligne voulue d'un tableau dont la première n'est pas la bonne.
+Geste toucherIconeN(String libelle, int n) => (t) async {
+      final f = find.byWidgetPredicate((w) => w is BoutonIcone && w.libelle == libelle);
+      if (f.evaluate().length <= n) return;
+      await t.ensureVisible(f.at(n));
+      await t.pump();
+      await t.tap(f.at(n), warnIfMissed: false);
+      await _pomper(t, 8);
+    };
+
+/// Fait défiler la page jusqu'au premier texte égal à [texte] (la carte d'un réglage loin dans la liste des paramètres).
+Geste defilerVers(String texte) => (t) async {
+      final f = find.text(texte);
+      if (f.evaluate().isEmpty) return;
+      await t.ensureVisible(f.first);
+      await _pomper(t, 6);
+    };
+
 /// Laisse tourner les calculs asynchrones (hachage du mot de passe à la création du premier compte).
 Geste attendre([int n = 8]) => (t) async {
       for (var i = 0; i < n; i++) {
@@ -393,6 +411,55 @@ void _relaisSms(String pilote, {List<String> manquants = const []}) {
   mrbSourceInjectee = Source(actif: true)..relais = {'plafond_jour': 100, 'envoyes_aujourdhui': 12, 'en_attente': 1, 'pilote': pilote, if (manquants.isNotEmpty) 'parametres_manquants': manquants};
 }
 
+/// Vacations FICTIVES de la semaine du 16/11/2026 pour le premier agent salarié (donnée anonymisée, devenu médecin) : une « à valider » (non payée), une « refusée » et une validée.
+void _vacationsMixtes(Magasin m) {
+  _medecinEnTete(m);
+  final col = m.collection('personnel');
+  final p = col.toutes.first;
+  col.mettreAJour(p['id'], {'salaireBase': 150000});
+  final plan = m.collection('planning');
+  for (final (jour, etat) in [('2026-11-02', 'a_valider'), ('2026-11-04', 'refuse'), ('2026-11-06', 'validee')]) {
+    plan.inserer({
+      'statut': 'actif',
+      'date': jour,
+      'employeId': p['id'],
+      'employe': '${p['nomComplet'] ?? '${p['nom']} ${p['prenom']}'}',
+      'fonction': p['fonction'],
+      'service': p['service'],
+      'type': 'garde',
+      'validationEtat': etat,
+    }, prefixe: 'PLN');
+  }
+}
+
+/// Un relais SIMULÉ dont la mère annonce ses envois automatiques (réglages en vigueur, dernier tour en compteurs seulement).
+void _relaisSmsAutomatiques(Magasin _) {
+  mrbIntervalle = const Duration(hours: 1);
+  mrbSourceInjectee = Source(actif: true)
+    ..relais = {'plafond_jour': 100, 'envoyes_aujourdhui': 12, 'en_attente': 1, 'pilote': 'twilio'}
+    ..automatiques = {
+      'reglages': {'rappel_rdv_actif': true, 'voeux_anniversaire_actif': false, 'heure': 9, 'delai_rappel_heures': 24},
+      'dernier_jour': '2026-11-16',
+      'dernier_bilan': {
+        'jour': '2026-11-16',
+        'candidats': 5,
+        'deposes': {'rappel_rdv': 2, 'anniversaire': 1},
+        'refus': {'SMS_CONSENTEMENT_ABSENT': 2},
+        'plafondAtteint': false
+      },
+    };
+}
+
+/// Un journal SIMULÉ où figure un SMS « expiré avant l'envoi » (numéros masqués, aucun texte).
+void _journalSmsExpire(Magasin _) {
+  mrbIntervalle = const Duration(hours: 1);
+  mrbSourceInjectee = Source(actif: true, journalSms: const [
+    {'id': 'sms-1', 'numero_masque': '+229 •••••••• 01', 'longueur': 88, 'modele': 'Rappel de rendez-vous', 'statut': 'envoye', 'tentatives': 1, 'depose_le': 1794822000000},
+    {'id': 'sms-2', 'numero_masque': '+229 •••••••• 02', 'longueur': 60, 'modele': 'Vœux d’anniversaire', 'statut': 'non_depose', 'erreur': 'plafond_atteint', 'tentatives': 0, 'depose_le': 1794822000000},
+    {'id': 'sms-3', 'numero_masque': '+229 •••••••• 03', 'longueur': 60, 'modele': 'Vœux d’anniversaire', 'statut': 'expire', 'tentatives': 0, 'depose_le': 1794822000000},
+  ]);
+}
+
 final _captures = <_Cap>[
   _Cap('01-connexion', 'index', session: () => SessionPoste(exigeConnexion: true, horloge: () => _le)),
   _Cap('02-verrou', 'auth-lock', session: () => SessionPoste(exigeConnexion: true, horloge: () => _le)),
@@ -541,9 +608,21 @@ final _captures = <_Cap>[
     await _rattache(m);
   }, gestes: [saisir('liasse:fichier', 'tool/donnees/liasse_2025_demo.json'), toucherCle('liasse:verifier'), attendre(2), toucherCle('liasse:importer'), attendre(2)]),
   // ---- SMS (poste mère).
-  _Cap('140-sms-passerelle', 'mere-sms-passerelle', mode: ModePoste.mere, preparer: (_) => _relaisSms('twilio'), taille: Size(1440, 1500)),
+  _Cap('140-sms-passerelle', 'mere-sms-passerelle', mode: ModePoste.mere, preparer: _relaisSmsAutomatiques, taille: Size(1440, 1750)),
   _Cap('142-sms-parametres-manquants', 'mere-sms-passerelle', mode: ModePoste.mere, preparer: (_) => _relaisSms('vonage', manquants: ['RELAIS_SMS_VONAGE_SECRET']), taille: Size(1440, 1500)),
   _Cap('141-sms-journal', 'mere-sms-journal', mode: ModePoste.mere),
+  // ---- v33 (20/11/2026) : numéros MECeF de démonstration, paie et planning (vacations en attente, refusées), SMS automatiques et consentement.
+  _Cap('207-mecef-demonstration', 'mecef-factures', taille: Size(1440, 1000)),
+  _Cap('216-mecef-piece-demonstration', 'mecef-factures', taille: Size(1440, 1300), gestes: [toucherIconeN('Imprimer la facture normalisée', 1)]),
+  _Cap('217-admission-nouvelle', 'm3-admissions', role: 'medecin', taille: Size(1440, 1100), gestes: [toucherBouton('Nouveau')]),
+  _Cap('218-accouchement-nouvel', 'm4-accouchements', role: 'medecin', taille: Size(1440, 1100), gestes: [toucherBouton('Nouveau')]),
+  _Cap('208-factures-demonstration', 'm8-factures', taille: Size(1440, 1000)),
+  _Cap('209-paie-vacations-attente', 'm11-calcul', role: 'comptable', preparer: _vacationsMixtes, taille: Size(1440, 1500)),
+  _Cap('210-planning-registre-refusee', 'm10-planning', preparer: _vacationsMixtes, taille: Size(1440, 3500)),
+  _Cap('211-patient-consentement-sms', 'm1-patient-nouveau', role: 'reception', taille: Size(1440, 1500)),
+  _Cap('213-sms-parametres-automatiques', 'cfg-systeme', role: 'admin', mode: ModePoste.mere, taille: Size(1440, 1500), gestes: [toucherTexte('Paramètres'), defilerVers('Rappel automatique de rendez-vous par SMS')]),
+  _Cap('214-rappels-modeles-sms', 'cfg-rappels', role: 'admin', taille: Size(1440, 1500)),
+  _Cap('215-sms-journal-expire', 'mere-sms-journal', mode: ModePoste.mere, preparer: _journalSmsExpire, taille: Size(1440, 1000)),
 ];
 
 List<double> _rect(Rect r) => [r.left, r.top, r.width, r.height].map((v) => (v * 10).roundToDouble() / 10).toList();
