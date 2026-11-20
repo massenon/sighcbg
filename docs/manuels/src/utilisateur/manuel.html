@@ -22,7 +22,7 @@
   </div>
   <div class="meta">
     <span>Version du poste : 0.1.0</span>
-    <span>Édition du 18 novembre 2026 — livraison v31</span>
+    <span>Édition du 20 novembre 2026 — livraison v32</span>
     <span>Document interne</span>
   </div>
 </section>
@@ -161,6 +161,7 @@
   <figcaption>L’écran <strong>Rejoindre une clinique</strong>. <span class="pastille">4</span> La note rappelle qu’un poste qui en remplace un autre se rattache avec un code de reprise.</figcaption>
 </figure>
 <div class="encadre attention"><span class="titre">Attention</span><p>Un refus est toujours nommé : « Ce code d’appairage a expiré », « Ce code d’appairage a déjà servi », « Code d’appairage inconnu », ou « La mère n’a pas répondu ». Demandez alors un nouveau code sur la mère, ou vérifiez le réseau et que la mère est démarrée. Pour un code de reprise, le refus peut aussi dire que le poste à remplacer est inconnu de la mère ou <strong>a déjà été repris</strong> (voir le tableau des refus de la reprise).</p></div>
+<div class="encadre info"><span class="titre">Information</span><p><strong>Combien de temps vaut un code ?</strong> Aucun écran n’écrit une durée : elle est un <strong>réglage de la clinique</strong> (famille « Console du poste mère », durée de validité d’un code d’appairage), que la mère relit à chaque émission. Les écrans <strong>Appareils et appairage</strong> et <strong>Clé de clinique</strong> de la mère, ainsi que la fenêtre <strong>Code de reprise</strong>, affichent la durée que la mère annonce avec le code (par exemple « À usage unique, valable 15 minutes. » avec la valeur d’attente). Si la mère n’en annonce aucune, l’écran écrit « La durée de validité n’est pas communiquée par la mère : le code expire quand elle le décide. » Changer le réglage ne touche pas un code déjà émis.</p></div>
 <p>Une fois la reprise faite, l’écran affiche en vert : « Reprise d’identité : ce poste remplace le poste … », avec le nombre de plages de numéros et de baux de stock que la mère vous a passés.</p>
 </div>
 
@@ -306,7 +307,7 @@
 </table>
 <p>La pastille précise aussi, selon le cas, depuis quand dure la situation, le nombre d’opérations <strong>en attente</strong> d’envoi et le nombre d’opérations <strong>à traiter</strong>.</p>
 <div class="encadre astuce"><span class="titre">Astuce</span><p>Hors ligne, <strong>continuez à travailler normalement</strong>. Vos saisies sont enregistrées sur le poste et partent d’elles-mêmes vers la mère dès que la liaison revient. Ne ressaisissez rien.</p></div>
-<p>Certaines décisions ne peuvent être prises que par la mère : une validation, une demande de prix, une demande d’importation. Sur un poste fileul, ces décisions sont <strong>déposées</strong> et restent <strong>en attente de la mère</strong>. Une seconde pastille de la barre supérieure compte ces décisions en attente et indique l’âge de la plus ancienne. Elle disparaît quand il n’y a plus rien en attente.</p>
+<p>Certaines décisions ne peuvent être prises que par la mère : une validation (dont celle d’une fiche d’aide), une demande de prix, une demande d’importation (dont celle de la liasse fiscale). Sur un poste fileul, ces décisions sont <strong>déposées</strong> et restent <strong>en attente de la mère</strong>. Une seconde pastille de la barre supérieure compte ces décisions en attente et indique l’âge de la plus ancienne. Elle disparaît quand il n’y a plus rien en attente.</p>
 <div class="encadre attention"><span class="titre">Attention</span><p>Une décision en attente n’est pas encore appliquée. Si la pastille passe au rouge, le délai d’alerte est dépassé : le validateur concerné et l’administrateur reçoivent une notification. Rien n’est bloqué sur votre poste.</p></div>
 <div class="encadre info"><span class="titre">Information</span><p>Un compteur <strong>à traiter</strong> signale une opération que la mère a refusée. La cause est nommée et le geste de correction est indiqué. Prévenez votre responsable ou l’administrateur.</p></div>
 
@@ -327,6 +328,35 @@
 <figure class="capture" data-capture="captures/173-numerotation" data-recadrage="0,1130,1440,700" data-cibles='[{"bouton":"Modifier","de":"gauche","long":50,"num":1}]'>
   <figcaption>La carte <strong>Numérotation des pièces</strong> : <span class="pastille">1</span> la modification d’une série (réservée).</figcaption>
 </figure>
+
+<h2 id="reglages-clinique">Ce que la clinique règle elle-même</h2>
+<p>Le logiciel n’écrit en dur ni durée, ni borne, ni liste de libellés : ce sont des <strong>réglages de la clinique</strong>. Une valeur d’attente est livrée avec le logiciel (elle reprend ce que faisait le logiciel avant), marquée « à valider », et la clinique la change quand elle le décide. Ce que vous voyez à l’écran suit donc le réglage en vigueur, et l’écran le dit quand il en dépend.</p>
+<table class="simple">
+  <tr><th style="width:30%">Ce qui se règle</th><th>Ce que vous constatez à l’écran</th></tr>
+  <tr><td><strong>Durée de validité d’un code d’appairage</strong> (poste, mobile, reprise)</td><td>La mère annonce la durée avec le code (voir « Rejoindre une clinique existante »). Aucun écran n’écrit « 15 minutes » de lui-même.</td></tr>
+  <tr><td><strong>Bornes de saisie du téléphone</strong> (température, tension, pouls, poids, terme, âge maximal déclaré à la réception…)</td><td>Sur le téléphone, une valeur improbable est refusée en nommant le champ et la borne <strong>en vigueur</strong>, par exemple « La température : valeur improbable (30 à 47). ». Ce sont des bornes de plausibilité (« au-delà, c’est une faute de frappe »), pas des seuils de décision. Le téléphone les reçoit de la clinique à la synchronisation.</td></tr>
+  <tr><td><strong>Tranches de la balance âgée des assureurs</strong></td><td>Les libellés des tranches (par exemple « Moins de 30 jours », « De 30 à 90 jours », « Au-delà de 90 jours ») se calculent des deux bornes réglées. Elles sont <strong>indépendantes</strong> de celles des créances des patients.</td></tr>
+  <tr><td><strong>Terme maximal d’un certificat de grossesse</strong></td><td>Le terme saisi doit être compris entre 1 et la borne (45 semaines d’aménorrhée d’après la valeur d’attente) ; au-delà, la saisie est refusée en nommant la borne en vigueur.</td></tr>
+  <tr><td><strong>Listes de libellés</strong> (modes de paiement, familles de tarif, catégories de produit, types de stock, catégories de dépense, postes de la file, secteurs d’activité…)</td><td>Les listes déroulantes proposent les libellés réglés. Seuls les <strong>libellés</strong> se règlent : le code que la logique lit ne change pas, donc renommer un mode de paiement ne modifie aucune décision. Les fiches déjà saisies gardent leur libellé d’origine.</td></tr>
+  <tr><td><strong>Tranches d’âge des statistiques</strong></td><td>Les statistiques d’examens du laboratoire et du pilotage ont chacune leurs tranches, réglées à part.</td></tr>
+  <tr><td><strong>Nature des prestations au personnel</strong></td><td>Les libellés et les couleurs des natures (consultation, analyse, hospitalisation) de l’écran Assurance du personnel viennent du réglage.</td></tr>
+  <tr><td><strong>Fonds de dossiers papier</strong></td><td>Voir « Suivre la numérisation des dossiers papier ».</td></tr>
+</table>
+<div class="tache">
+<p class="but">Vous réglez une valeur de la clinique (profils habilités), ou vous savez où elle se règle.</p>
+<p class="prerequis">le droit d’écrire l’écran <strong>Paramètres système</strong>, <strong>sur le poste mère</strong> ; certains réglages relèvent en plus d’un geste réservé, et la carte le dit.</p>
+<p class="chemin">Système ➔ Configuration Clinique ➔ Paramètres système ➔ onglet Paramètres</p>
+<ol class="etapes">
+  <li>Ouvrez l’onglet <strong>Paramètres</strong> : chaque réglage est une carte, rangée par famille, avec sa <strong>Valeur en vigueur aujourd’hui</strong>, son <strong>Origine</strong>, son <strong>Défaut</strong> et sa <strong>Prochaine version</strong>.</li>
+  <li>Cliquez sur <strong>Régler à partir d’une date</strong> sur la carte voulue.</li>
+  <li>Saisissez la <strong>Nouvelle valeur</strong>, la date dans <strong>Effective à partir du</strong> et, au besoin, le <strong>Motif</strong>. Pour une liste de libellés, la valeur s’écrit « code=Libellé » séparés par des points-virgules, par exemple <span class="touche">especes=Espèces; tpe=TPE (carte bancaire)</span>.</li>
+  <li>Cliquez sur <strong>Enregistrer</strong>. Une version datée s’ajoute : l’ancienne reste lisible dans <strong>Historique</strong>, jamais écrasée.</li>
+</ol>
+<figure class="capture" data-capture="captures/203-parametre-regler" data-recadrage="380,40,680,500" data-cibles='[{"bouton":"Enregistrer","de":"haut","long":40,"num":1}]'>
+  <figcaption>La modale <strong>Régler : Modes de paiement</strong> : <span class="pastille">1</span> <strong>Enregistrer</strong>, après la nouvelle valeur au format « code=Libellé » et la date d’effet.</figcaption>
+</figure>
+</div>
+<div class="encadre attention"><span class="titre">Attention</span><p>Une valeur hors des bornes admises, une liste vide ou illisible, ou une paire de bornes incohérente (la seconde plus petite que la première) n’est pas refusée à la saisie : à la lecture, le logiciel retombe sur la valeur d’attente. Relisez la carte après un réglage. Sur un poste fileul, les réglages se lisent : ils se posent sur la mère, sauf ceux qui relèvent d’un geste réservé, que le fileul dépose.</p></div>
 
 <!-- ============================================================== 3. TABLEAUX -->
 <h1 id="tableaux"><span class="num">4</span> Travailler avec les tableaux</h1>
@@ -515,7 +545,29 @@
   <figcaption>L’écran <strong>Certificats &amp; attestations</strong>.</figcaption>
 </figure>
 <div class="encadre info"><span class="titre">Information</span><p>Un certificat est une prestation tarifée : il passe par la caisse. Son état de règlement se lit sur la facture (réglé, à encaisser ou en attente). Les tarifs se consultent dans <strong>Accueil</strong> ➔ <strong>Certificats médicaux</strong>.</p></div>
+<div class="encadre info"><span class="titre">Information</span><p>Sur un <strong>certificat de grossesse</strong>, le <strong>terme</strong> est contrôlé à la saisie : il doit être compris entre 1 et un maximum <strong>réglé par la clinique</strong> (45 semaines d’aménorrhée d’après la valeur d’attente). Au-delà, le refus nomme le maximum en vigueur. La valeur d’attente est à faire valider par les sages-femmes.</p></div>
 </div>
+
+<h2 id="numerisation">Suivre la numérisation des dossiers papier</h2>
+<p>Le <strong>Plan de numérisation</strong> suit la reprise progressive des dossiers papier. Ses chiffres sont <strong>calculés depuis les dossiers du logiciel</strong> : un dossier est <em>numérisé</em> s’il porte au moins un fichier déposé ; il est <em>actif prioritaire</em> s’il a eu une consultation, une admission ou une analyse dans la fenêtre réglée (24 derniers mois d’après la valeur d’attente). Un seul chiffre est déclaré et non mesuré : le <strong>fonds de dossiers papier</strong>, car le papier ne se compte pas dans le logiciel.</p>
+<div class="tache">
+<p class="but">Vous lisez l’avancement de la numérisation, lot par lot.</p>
+<p class="prerequis">le droit de voir l’écran (Direction, DAF, médecins, accueil, administrateur).</p>
+<p class="chemin">Soins ➔ Patients &amp; Dossier médical ➔ Plan de numérisation</p>
+<ol class="etapes">
+  <li>Ouvrez <strong>Plan de numérisation</strong>. Les quatre indicateurs donnent <strong>Dossiers papier recensés</strong> (le fonds déclaré), <strong>Dossiers numérisés</strong>, <strong>Dossiers actifs prioritaires</strong> et <strong>Reste à traiter (prioritaires)</strong>.</li>
+  <li>La carte <strong>Avancement par lot de reprise</strong> donne, pour chaque lot, les dossiers numérisés sur le total et une barre de progression. Un patient compte dans le premier lot dont il remplit le critère.</li>
+  <li>Le bouton <strong>Éditer l’état d’avancement</strong> imprime la situation. Le graphique <strong>Cadence de numérisation</strong> compte les fichiers déposés par mois.</li>
+</ol>
+<figure class="capture" data-capture="captures/204-numerisation" data-recadrage="0,100,1440,740" data-cibles='[{"bouton":"Éditer l’état d’avancement","de":"bas","long":50,"num":1}]'>
+  <figcaption>Le <strong>Plan de numérisation</strong> sur le jeu de démonstration : <span class="pastille">1</span> <strong>Éditer l’état d’avancement</strong>. Le lot « Patients suivis (chroniques) » affiche <strong>non calculable</strong>. Les pourcentages sont minuscules parce que très peu de dossiers du jeu portent un fichier : c’est la vérité du jeu, pas un défaut.</figcaption>
+</figure>
+</div>
+<ul>
+  <li><strong>« Non calculable » n’est pas zéro.</strong> Aucun champ de la fiche patient ne marque une affection chronique : le lot « Patients suivis (chroniques) » dit <em>non calculable</em> et donne sa raison. Il en est de même d’un critère de lot inconnu.</li>
+  <li><strong>Le fonds se corrige dans les réglages</strong> (famille « Numérisation des dossiers papier », « Fonds de dossiers papier à reprendre »), après chaque recensement. Si le répertoire compte plus de dossiers que le fonds déclaré, le répertoire est retenu et l’écran le dit.</li>
+  <li>Les lots et la fenêtre des dossiers actifs sont aussi des réglages de la clinique.</li>
+</ul>
 
 <!-- ============================================================== 5. SOINS -->
 <h1 id="soins"><span class="num">6</span> Soins</h1>
@@ -528,7 +580,7 @@
 <p class="chemin">Soins ➔ Dossiers de consultation ➔ Nouveau dossier</p>
 <ol class="etapes">
   <li>Cliquez sur <strong>Nouveau dossier</strong> et choisissez le patient.</li>
-  <li>Remplissez l’anamnèse, les antécédents (médicaux, chirurgicaux, gynéco-obstétricaux) et l’état général. Les constantes de l’accueil sont reprises et affichées : vous ne les ressaisissez pas.</li>
+  <li>Remplissez l’anamnèse, les antécédents (médicaux, chirurgicaux, gynéco-obstétricaux) et l’état général. Les constantes de l’accueil sont reprises et affichées : vous ne les ressaisissez pas. Le choix du <strong>groupe sanguin</strong> commence par <strong>O+</strong> (ordre des groupes ABO/Rh du logiciel, suivi de « Inconnu »).</li>
   <li>Remplissez l’<strong>examen physique</strong>, appareil par appareil. Le bouton <strong>Normal par défaut</strong> remplit les champs restés vides.</li>
   <li>Enregistrez.</li>
 </ol>
@@ -917,6 +969,9 @@
   <li><strong>Facture mère assurance</strong> : une pièce unique par compagnie, qui regroupe les factures mensuelles de ses souscripteurs.</li>
   <li><strong>Créances</strong> et <strong>Relances</strong> : ce que chaque compagnie doit encore, par ancienneté.</li>
 </ul>
+<p><strong>La balance âgée des assureurs a ses propres tranches.</strong> Les créances sur les compagnies se rangent en trois tranches (jusqu’à la première borne, jusqu’à la seconde, au-delà) dont les <strong>deux bornes sont des réglages de la clinique</strong>, indépendants de ceux des patients (30 et 90 jours d’après la valeur d’attente). Les indicateurs, les colonnes, le filtre <strong>Ancienneté retenue</strong>, l’état imprimé et le filtre des <strong>Compagnies partenaires</strong> en reprennent les libellés calculés (par exemple « Moins de 15 jours » si la première borne est réglée à 15). L’Assistant classe de même chaque créance sur les tranches qui lui conviennent et dit les bornes employées.</p>
+<h3>Conventions et garanties</h3>
+<p>À l’écran <strong>Conventions &amp; garanties</strong> (Financier ➔ Assurances &amp; Créances), la grille de garanties d’un souscripteur se saisit ligne à ligne, ou à partir du bouton <strong>Saisir la grille depuis le barème de référence</strong>. Ce barème est un <strong>référentiel daté</strong> du logiciel (version, date du document, source) : il donne la structure d’un régime employeur, pas les taux de votre convention — ajustez avant d’enregistrer. <strong>Si le poste ne porte aucun barème, il est vide et le logiciel le dit</strong> (« Aucun barème de référence n’est installé sur ce poste : la grille se saisit ligne à ligne. ») : aucune grille n’est inventée.</p>
 <figure class="capture" data-capture="captures/62-factures-assureur" data-recadrage="0,120,1440,620" data-cibles='[{"bouton":"Éditer le relevé","de":"bas","long":60},{"bouton":"Éditer la facture mensuelle","de":"bas","long":60}]'>
   <figcaption>L’écran <strong>Factures mensuelles assureur</strong>.</figcaption>
 </figure>
@@ -1148,7 +1203,7 @@
 <p>La colonne <strong>déposée</strong> des états financiers cite la liasse remise à l’administration, et la baseline cite le classeur de l’exercice de référence. Ces deux documents s’importent à l’écran <strong>Import de la liasse fiscale</strong>, en <strong>versions datées</strong> : une version nouvelle s’<strong>ajoute</strong>, rien n’est écrasé, la plus récente <strong>fait foi</strong>. Le logiciel <strong>ne recalcule rien</strong> : il cite le document tel que déposé, avec ses propres écarts.</p>
 <div class="tache">
 <p class="but">Vous importez la liasse déposée (ou le classeur de baseline), puis vous contrôlez ce qui fait foi.</p>
-<p class="prerequis">le geste réservé « Importer ou archiver la liasse fiscale déposée et le classeur de baseline » (d’origine : le Comptable et la DAF, réglable dans la fiche de rôle), <strong>sur le poste mère</strong>.</p>
+<p class="prerequis">le geste réservé « Importer ou archiver la liasse fiscale déposée et le classeur de baseline » (d’origine : le Comptable et la DAF, réglable dans la fiche de rôle), <strong>sur le poste mère</strong> ou, depuis la livraison v32, <strong>sur un poste fileul</strong> (la demande est alors transmise à la mère).</p>
 <p class="chemin">Financier ➔ Comptabilité SYSCOHADA ➔ Import de la liasse fiscale</p>
 <ol class="etapes">
   <li>Ouvrez <strong>Import de la liasse fiscale</strong>. La carte <strong>Ce qui fait foi</strong> dit, pour la liasse et pour le classeur, l’exercice, la date de dépôt, la source et qui l’a importée. S’il n’y en a pas, elle écrit « Aucune liasse déposée n’est importée » : jamais un zéro ni un chiffre inventé.</li>
@@ -1170,12 +1225,24 @@
 <ul>
   <li><strong>Un dépôt rectifié le même jour</strong> est une version de plus, qui garde un identifiant distinct (« -r02 ») : l’identité d’une version archivée ne se recycle pas.</li>
   <li><strong>Archiver une version.</strong> Cliquez sur <strong>Archiver</strong> sur sa ligne, écrivez le <strong>Motif de l’archivage (obligatoire)</strong>, puis <strong>Confirmer l’archivage</strong>. Elle ne fait plus foi mais reste lisible ; si c’était la plus récente, la précédente reprend. Rien n’est supprimé.</li>
-  <li><strong>Sur un poste fileul</strong>, l’écran se lit seulement : une note dit « Réglé sur la mère ». L’import et l’archivage se font sur la mère ; les versions arrivent aux postes par la synchronisation. Ces documents financiers ne vont jamais vers un téléphone.</li>
+  <li><strong>Sur un poste fileul</strong>, vous pouvez importer si vous détenez le geste : le document est <strong>vérifié sur votre poste</strong> (même contrôle strict), puis la demande est <strong>transmise à la mère</strong>. Voir « Importer depuis un poste fileul » ci-dessous. L’archivage d’une version reste à la mère. Ces documents financiers ne vont jamais vers un téléphone.</li>
   <li><strong>Le journal d’audit</strong> garde qui a importé quoi, la source et des nombres de lignes, jamais un montant.</li>
 </ul>
 <figure class="capture" data-capture="captures/197-liasse-refus" data-recadrage="0,520,1440,360">
   <figcaption>Un fichier qui n’est pas un document d’import (ici, un fichier CSV) est refusé en le nommant : <strong>JSON_ILLISIBLE</strong>. Rien n’est écrit.</figcaption>
 </figure>
+<p>Chaque refus se lit en une phrase : <span class="touche">CODE : motif (endroit fautif). Geste à faire.</span> Le point final n’est posé qu’une fois, quelle que soit la cause.</p>
+<h3>Importer depuis un poste fileul</h3>
+<p>Le fileul <strong>dépose</strong> la demande, la mère la <strong>rejoue</strong> : elle refait la vérification stricte sur le contenu reçu (aucune confiance dans la lecture d’un autre poste), vérifie le geste du compte signataire, puis écrit la version sous votre nom. Tant qu’elle n’a pas répondu, rien n’est importé.</p>
+<ol class="etapes">
+  <li>Vérifiez le fichier comme sur la mère, puis cliquez sur <strong>Importer ce document</strong>. La note verte dit « … demande d’import transmise à la mère, en attente ». Un document ne peut pas dépasser la taille réglée par la clinique (512 Ko d’après la valeur d’attente) : la note de l’écran l’affiche.</li>
+  <li>La carte <strong>Demandes d’import transmises</strong> liste vos demandes : <strong>Transmise à la mère, en attente</strong>, <strong>Appliquée par la mère</strong> (avec la référence de la version écrite), <strong>Déjà faite</strong> ou <strong>Refusée par la mère</strong>. Un refus affiche son <strong>Verdict</strong> nommé (code, motif, geste).</li>
+  <li>Quand la mère a appliqué, la version arrive dans <strong>Versions de la liasse déposée</strong> par la synchronisation.</li>
+</ol>
+<figure class="capture" data-capture="captures/206-liasse-fileul-attente" data-recadrage="0,840,1440,250">
+  <figcaption>Sur un poste fileul, après <strong>Importer ce document</strong> : la demande est <strong>Transmise à la mère, en attente</strong>. Aucune version nouvelle n’est écrite avant la confirmation.</figcaption>
+</figure>
+<p>Une demande déposée mère coupée reste en attente, sans rien perdre ni se dupliquer à la reprise. Au-delà du délai réglé par la clinique (4 heures d’après la valeur d’attente), une alerte part vers ceux qui détiennent le geste et vers l’administrateur. Le contenu du document n’est pas conservé dans le registre des demandes après le verdict : seules l’identité et des nombres de lignes restent, jamais un montant.</p>
 <table class="simple">
   <tr><th style="width:34%">Refus affiché</th><th>Cause et geste</th></tr>
   <tr><td><strong>FICHIER_VIDE</strong>, <strong>JSON_ILLISIBLE</strong>, <strong>RACINE_NON_OBJET</strong>, <strong>GENRE_INDETERMINE</strong></td><td>Le fichier est vide, n’est pas un JSON lisible, ou ne ressemble ni à une liasse (en-tête « DEPOT ») ni à un classeur (année). Importez le document tel que remis, au format JSON.</td></tr>
@@ -1183,7 +1250,7 @@
   <tr><td><strong>IFU_INVALIDE</strong>, <strong>DATE_DEPOT_…</strong></td><td>L’IFU du dépôt n’a pas 13 chiffres, ou la date de dépôt est invalide, absente, dans le futur, antérieure à la fin de l’exercice ou différente de celle que le document porte.</td></tr>
   <tr><td><strong>SOURCE_ABSENTE</strong>, <strong>AUTEUR_ABSENT</strong></td><td>Une version porte toujours sa source et son auteur : saisissez la source.</td></tr>
   <tr><td><strong>TOTAL_…_INCOHERENT</strong></td><td>Un classeur dont les totaux ne se recoupent pas est refusé : corrigez le document. La <strong>liasse</strong>, elle, n’est <strong>pas recalculée</strong> : ses écarts internes sont ceux du document déposé.</td></tr>
-  <tr><td><strong>GESTE_RESERVE</strong>, <strong>REGLE_SUR_LA_MERE</strong></td><td>Votre rôle n’a pas le geste d’importer, ou vous êtes sur un poste rattaché. Importez sur le poste mère, avec un rôle qui détient le geste.</td></tr>
+  <tr><td><strong>GESTE_RESERVE</strong>, <strong>REGLE_SUR_LA_MERE</strong></td><td>Votre rôle n’a pas le geste d’importer. Importez avec un rôle qui détient le geste (sur la mère, ou sur un fileul où la mère rejoue la demande). <strong>REGLE_SUR_LA_MERE</strong> ne se rencontre plus à l’import : l’archivage seul reste à la mère.</td></tr>
 </table>
 
 <!-- ============================================================== 12. PILOTAGE -->
@@ -1422,7 +1489,7 @@
 </div>
 <div class="tache">
 <p class="but">Vous relisez une fiche proposée et vous la validez : l’Assistant la citera.</p>
-<p class="prerequis">le geste réservé « Valider une fiche d’aide de l’assistant » (d’origine : la Direction et la DAF, réglable dans la fiche de rôle). <strong>Vous ne pouvez pas valider une fiche dont vous êtes l’auteur.</strong></p>
+<p class="prerequis">le geste réservé « Valider une fiche d’aide de l’assistant » (d’origine : la Direction et la DAF, réglable dans la fiche de rôle), <strong>sur la mère ou sur un poste fileul</strong>. <strong>Vous ne pouvez pas valider une fiche dont vous êtes l’auteur.</strong></p>
 <p class="chemin">Système ➔ Configuration Clinique ➔ Fiches d’aide de l’assistant ➔ Fiches écrites ➔ Valider</p>
 <ol class="etapes">
   <li>Dans <strong>Fiches écrites</strong>, cliquez sur <strong>Valider</strong> sur la ligne de la fiche proposée.</li>
@@ -1459,7 +1526,17 @@
   <tr><td><strong>ROLE_INCONNU</strong></td><td>Un rôle choisi n’existe plus dans la matrice des droits. Choisissez les rôles dans la liste.</td></tr>
   <tr><td><strong>MOTIF_ABSENT</strong></td><td>Archiver se motive : saisissez le motif.</td></tr>
 </table>
-<div class="encadre info"><span class="titre">Information</span><p>Sur un <strong>poste fileul</strong>, vous pouvez écrire et modifier des fiches : elles rejoignent la mère. La <strong>validation se fait sur le poste mère</strong> : la commande <strong>Valider</strong> y est absente et la mère refuse sinon. Les fiches d’aide ne vont jamais vers un téléphone.</p></div>
+<h3>Valider depuis un poste fileul</h3>
+<p>Sur un <strong>poste fileul</strong>, vous pouvez écrire, modifier <strong>et valider</strong> des fiches. Une validation y est <strong>transmise à la mère</strong> : elle la rejoue avec ses propres contrôles (votre geste réservé, que vous n’êtes pas l’auteur, le professionnel nommé) et vous répond sur la fiche. <strong>Tant qu’elle n’a pas répondu, la fiche reste « proposée »</strong> : elle n’est jamais « validée » sur un simple dépôt, et l’Assistant ne la cite pas.</p>
+<ol class="etapes">
+  <li>Cliquez sur <strong>Valider</strong>, relisez la fiche, puis sur <strong>Valider la fiche</strong>. Le message dit « Validation transmise à la mère. La fiche reste « proposée » tant que la mère n’a pas confirmé. »</li>
+  <li>Dans <strong>Fiches écrites</strong>, la fiche porte le badge <strong>Validation transmise à la mère, en attente</strong> avec le nom du demandeur. Les commandes <strong>Valider</strong> et <strong>Modifier</strong> disparaissent : on ne réécrit pas ce que le validateur vient de lire, et on ne fait pas de second geste.</li>
+  <li>Si la mère refuse, la fiche affiche « Validation refusée par la mère : » suivie du code, du motif et du geste, et la commande <strong>Valider</strong> revient. Si elle confirme, la fiche passe à <strong>Validée</strong> (la mère l’écrit sous votre nom, à la date de votre geste).</li>
+</ol>
+<figure class="capture" data-capture="captures/205-fiche-aide-attente" data-recadrage="0,1260,1440,340">
+  <figcaption>Une validation déposée depuis un poste fileul : la fiche reste <strong>Proposée</strong> et porte le badge <strong>Validation transmise à la mère, en attente</strong>. La fiche de la capture est un texte d’illustration.</figcaption>
+</figure>
+<p><strong>On valide ce qu’on a lu.</strong> La demande porte l’empreinte du contenu que vous avez relu : si la fiche a été réécrite entre-temps, la mère refuse <strong>FICHE_MODIFIEE</strong> (« La fiche a été modifiée depuis la relecture du validateur ») ; relisez la fiche telle qu’elle est maintenant, puis redemandez. Une fiche inconnue ou archivée est aussi refusée en le nommant. Une demande déposée mère coupée reste en attente sans rien perdre ; au-delà du délai réglé (4 heures d’après la valeur d’attente), une alerte part vers les détenteurs du geste. Les fiches d’aide ne vont jamais vers un téléphone.</p>
 <div class="encadre attention"><span class="titre">Attention</span><p>Ce manuel ne fournit <strong>aucun contenu de fiche</strong> : les neuf fiches attendues sont à écrire, puis à faire valider, par la Direction. Tant qu’aucune n’est validée, l’Assistant répond « Pas de fiche validée pour cette question ».</p></div>
 
 <!-- ============================================================== SATISFACTION EN LIGNE -->
@@ -1655,7 +1732,7 @@
 </figure>
 </div>
 <div class="encadre attention"><span class="titre">Attention</span><p>Le code ne s’affiche qu’<strong>une seule fois</strong> : fermé, il ne se relit plus. Il ne sert qu’une fois et n’est <strong>jamais écrit au journal</strong> : seuls le poste repris et l’échéance le sont. S’il est perdu, générez-en un nouveau ; l’ancien reste valable jusqu’à son expiration ou son usage. <strong>Ne l’envoyez pas</strong> dans un message : donnez-le de vive voix ou recopiez-le sur le poste neuf.</p></div>
-<div class="encadre info"><span class="titre">Information</span><p><strong>Un poste ne se reprend qu’une fois.</strong> Une fois repris, ses plages ne sont plus les siennes : pour le remplacer à son tour, reprenez le poste qui l’a remplacé. Les écrans <strong>Appareils et appairage</strong> et <strong>Clé de clinique</strong> annoncent encore « 15 minutes » : c’est la durée du code d’appairage ordinaire. Celle du code de reprise est annoncée par la mère quand elle l’émet ; si elle n’en annonce pas, l’écran écrit « non communiquée ».</p></div>
+<div class="encadre info"><span class="titre">Information</span><p><strong>Un poste ne se reprend qu’une fois.</strong> Une fois repris, ses plages ne sont plus les siennes : pour le remplacer à son tour, reprenez le poste qui l’a remplacé. La durée de validité du code de reprise est celle que la mère annonce quand elle l’émet : c’est un réglage de la clinique, jamais une valeur écrite dans l’écran.</p></div>
 <p>Chaque refus est nommé, avec sa cause et le geste qui le corrige. Il s’affiche sur l’écran de la mère comme sur <strong>Rejoindre une clinique</strong> :</p>
 <table class="simple">
   <tr><th style="width:30%">Refus affiché</th><th>Cause et geste</th></tr>
@@ -1716,7 +1793,7 @@
 <h2 id="appairage">Appairer le téléphone</h2>
 <div class="tache">
 <p class="but">Vous reliez votre téléphone à la clinique. Cette opération se fait une seule fois.</p>
-<p class="prerequis">un <strong>code d’appairage</strong> à usage unique, demandé à la mère (DAF ou administrateur), et la <strong>clé de clinique</strong> (QR code).</p>
+<p class="prerequis">un <strong>code d’appairage</strong> à usage unique, demandé à la mère (DAF ou administrateur) et valable le temps que la mère annonce en l’émettant, et la <strong>clé de clinique</strong> (QR code).</p>
 <ol class="etapes">
   <li>Ouvrez l’application. Saisissez le <strong>Code d’appairage</strong>.</li>
   <li>Scannez ou saisissez la <strong>Clé de clinique (QR)</strong>.</li>
@@ -1778,7 +1855,7 @@
 <ol class="etapes">
   <li>Dans le dossier, appuyez sur <strong>Saisir les constantes</strong>.</li>
   <li>Remplissez la <strong>Température (°C)</strong> (obligatoire) et les autres valeurs : tension systolique et diastolique, pouls, fréquence respiratoire, SpO₂, poids.</li>
-  <li>Appuyez sur <strong>Enregistrer</strong>. Une valeur improbable est refusée en nommant le champ et la plage admise.</li>
+  <li>Appuyez sur <strong>Enregistrer</strong>. Une valeur improbable est refusée en nommant le champ et la plage admise <strong>en vigueur</strong> (par exemple « valeur improbable (30 à 47) ») : ces bornes sont des réglages de la clinique, reçus à la synchronisation. Sans réglage reçu, ce sont les valeurs d’attente.</li>
 </ol>
 <figure class="capture telephone" data-capture="captures/m07-constantes" data-recadrage="0,0,412,560" data-cibles='[{"cle":"champ-temperature","de":"bas","long":40,"num":2},{"cle":"enregistrer","de":"bas","long":40,"num":3}]'>
   <figcaption>La saisie des constantes.</figcaption>
@@ -1913,9 +1990,13 @@
   <tr><td><strong>FEFO</strong></td><td>« Premier périmé, premier sorti » : le lot qui se périme le premier sort le premier.</td></tr>
   <tr><td><strong>Fileul (poste)</strong></td><td>Poste de travail relié au poste mère.</td></tr>
   <tr><td><strong>IFU</strong></td><td>Identifiant fiscal unique.</td></tr>
+  <tr><td><strong>code=Libellé</strong></td><td>Format d’une liste de libellés réglable : le code, que la logique lit et qui ne change pas, puis le libellé affiché, par exemple <span class="touche">especes=Espèces; tpe=TPE (carte bancaire)</span>.</td></tr>
   <tr><td><strong>Journal d’audit</strong></td><td>Registre de toutes les actions : qui, quand, sur quoi, avant et après.</td></tr>
-  <tr><td><strong>Liasse fiscale</strong></td><td>Ensemble des états financiers remis à l’administration. L’écran <strong>Import de la liasse fiscale</strong> en tient les versions datées : la plus récente <em>fait foi</em>, une version se retire par archivage motivé, rien n’est supprimé.</td></tr>
+  <tr><td><strong>Liasse fiscale</strong></td><td>Ensemble des états financiers remis à l’administration. L’écran <strong>Import de la liasse fiscale</strong> en tient les versions datées : la plus récente <em>fait foi</em>, une version se retire par archivage motivé, rien n’est supprimé. Un fileul peut en déposer l’import ; la mère l’applique.</td></tr>
+  <tr><td><strong>Non calculable</strong></td><td>Se dit d’un chiffre que les données du logiciel ne permettent pas de produire (par exemple le lot « chroniques » du plan de numérisation). Ce n’est pas zéro : l’écran n’en invente aucun.</td></tr>
   <tr><td><strong>MECeF</strong></td><td>Dispositif de certification des factures normalisées exigé par l’administration fiscale.</td></tr>
+  <tr><td><strong>Plan de numérisation</strong></td><td>Suivi calculé de la reprise des dossiers papier : numérisés, actifs prioritaires, lots. Seul le fonds papier est un chiffre déclaré (réglage).</td></tr>
+  <tr><td><strong>Réglage (de la clinique)</strong></td><td>Valeur, borne, durée ou liste de libellés que la clinique fixe elle-même, à partir d’une date d’effet, sans que le logiciel l’écrive en dur. Une <em>valeur d’attente</em> est livrée en attendant le réglage.</td></tr>
   <tr><td><strong>Mère (poste)</strong></td><td>Ordinateur central de la clinique, qui reçoit et redistribue les données des postes.</td></tr>
   <tr><td><strong>Module</strong></td><td>Ensemble d’écrans d’un même métier (Laboratoire, Pharmacie &amp; Stocks…). Une ligne du panneau du ruban.</td></tr>
   <tr><td><strong>Plan de travail annuel (PTA)</strong></td><td>Programme des actions de la clinique pour un exercice : brouillon, soumis, adopté, en exécution, clôturé.</td></tr>
@@ -1976,10 +2057,15 @@
   <tr><td>Ma demande d’émission, d’avoir ou de transmission d’une facture à une entreprise reste « en attente » (fileul).</td><td>La mère ne l’a pas encore appliquée. Si elle l’a refusée, la note rouge donne le code et le motif (par exemple RELEVE_VIDE) : corrigez, puis redéposez.</td></tr>
   <tr><td>Je suis Surveillant et le bouton <strong>Déroger</strong> du planning individuel est absent.</td><td>Vous n’avez pas le geste « Écrire le planning individuel d’un agent », ou pas le droit d’écrire <strong>Planning &amp; gardes</strong>. Demandez à l’administrateur de l’accorder à votre rôle.</td></tr>
   <tr><td>L’Assistant répond « Pas de fiche validée pour cette question ».</td><td>Aucune fiche d’aide n’a encore été écrite et validée par la Direction. Reportez-vous à ce manuel. Une fiche seulement <em>proposée</em> n’est jamais citée : elle attend sa validation à l’écran <strong>Fiches d’aide de l’assistant</strong>.</td></tr>
-  <tr><td>Je ne peux pas valider une fiche d’aide : AUTEUR_NE_VALIDE_PAS, ou le bouton <strong>Valider</strong> est absent.</td><td>On ne valide pas sa propre fiche : une autre personne qui détient le geste « Valider une fiche d’aide de l’assistant » la relit. Sur un poste fileul la validation se fait sur la mère. Pour la check-liste du bloc, il faut aussi le nom du professionnel et la date de sa validation.</td></tr>
+  <tr><td>Je ne peux pas valider une fiche d’aide : AUTEUR_NE_VALIDE_PAS, ou le bouton <strong>Valider</strong> est absent.</td><td>On ne valide pas sa propre fiche : une autre personne qui détient le geste « Valider une fiche d’aide de l’assistant » la relit. Sur un poste fileul, la validation est transmise à la mère et la fiche reste « proposée » jusqu’à sa confirmation ; un refus de la mère s’affiche sur la fiche (FICHE_MODIFIEE : la fiche a changé depuis votre relecture, relisez-la). Pour la check-liste du bloc, il faut aussi le nom du professionnel et la date de sa validation.</td></tr>
+  <tr><td>Ma validation d’une fiche d’aide, faite sur un poste fileul, ne passe pas : la fiche reste « proposée » avec le badge « Validation transmise à la mère, en attente ».</td><td>La mère ne l’a pas encore appliquée (elle est coupée, ou n’a pas synchronisé). Rien n’est perdu et vous pouvez continuer de travailler. Si elle la refuse, le code et le motif s’affichent sur la fiche (par exemple FICHE_MODIFIEE : la fiche a changé depuis votre relecture) ; relisez, puis validez à nouveau.</td></tr>
   <tr><td>Je ne peux pas modifier une fiche d’aide.</td><td>Une fiche validée ne se réécrit pas. Cliquez sur <strong>Réviser</strong> : une fiche nouvelle la remplacera quand elle sera validée.</td></tr>
   <tr><td>L’import de la liasse est refusé : JSON_ILLISIBLE, CLE_INCONNUE, TOTAL_…_INCOHERENT, GESTE_RESERVE…</td><td>Le refus nomme la cause et <strong>l’endroit fautif</strong> du document ; rien n’est écrit. Corrigez le document, ou demandez le geste d’import. Sur un poste fileul, l’import se fait sur la mère.</td></tr>
   <tr><td>L’import de la liasse dit « Aucune liasse déposée n’est importée », ou porte la mention « Données de démonstration ».</td><td>C’est exact : aucune liasse réelle n’a été importée, ou c’est celle de démonstration qui est en force. Un comptable ou la DAF importe la liasse réellement déposée ; elle fait alors foi.</td></tr>
+  <tr><td>J’ai importé la liasse sur un poste fileul, mais elle n’apparaît pas dans les versions.</td><td>Votre demande est « Transmise à la mère, en attente » (carte <strong>Demandes d’import transmises</strong>) : la version n’existe qu’après l’application par la mère et la synchronisation. Un refus de la mère s’y lit en <strong>Verdict</strong> avec son code et son geste.</td></tr>
+  <tr><td>Un code d’appairage ou de reprise annonce une durée différente de celle que je connaissais, ou « La durée de validité n’est pas communiquée par la mère ».</td><td>La durée est un réglage de la clinique, relu par la mère à chaque émission : l’écran affiche celle qu’elle annonce. Si elle n’en annonce aucune, le code expire quand elle le décide ; générez-en un nouveau au besoin.</td></tr>
+  <tr><td>Le plan de numérisation affiche des pourcentages très bas, ou « non calculable » pour un lot.</td><td>Les chiffres sont calculés depuis les fichiers réellement déposés : peu de dossiers en portent encore. Le lot « chroniques » est <em>non calculable</em> : aucun champ ne marque une affection chronique. Seul le fonds papier se règle (Paramètres, « Numérisation des dossiers papier »).</td></tr>
+  <tr><td>Le terme d’un certificat de grossesse est refusé, ou une valeur est refusée sur le téléphone (« valeur improbable »).</td><td>Les bornes de saisie sont des réglages de la clinique (terme maximal du certificat, bornes du téléphone) : le refus nomme la borne en vigueur. Si la valeur est exacte, demandez à l’administrateur de régler la borne, à partir d’une date.</td></tr>
   <tr><td>Le poste affiche « SECRET_ADMIN_FAIBLE » ou « META_ILLISIBLE » au lieu de s’ouvrir.</td><td>Ce n’est pas une panne d’écran : le logiciel refuse de démarrer plutôt que de risquer vos données ou la sécurité de la mère. Rien n’a été modifié. Ne supprimez rien ; prévenez l’administrateur (voir « Quand le poste refuse de démarrer »).</td></tr>
   <tr><td>Contactez l’éditeur affiche « Non renseigné », et mon message n’est pas parti.</td><td>La clinique n’a pas saisi les coordonnées de l’éditeur. Votre message est <strong>enregistré dans le logiciel</strong> avec sa référence, mais aucun courriel n’est envoyé. Demandez à l’administrateur de saisir l’adresse de l’éditeur et de configurer la messagerie.</td></tr>
   <tr><td>Le panneau du relais refuse mon mot de passe de superadministrateur.</td><td>Il doit compter <strong>12 caractères au moins</strong> (le relais est exposé sur Internet). Un mot de passe de 8 caractères, suffisant pour un compte de poste, n’y est pas accepté.</td></tr>

@@ -235,6 +235,21 @@ void _ficheAideProposee(Magasin m, {bool pro = false}) {
   m.collection('fichesAide').inserer(r.fiche!, prefixe: 'FAI');
 }
 
+/// Ouvre la modale « Régler à partir d'une date » de la carte d'un réglage, repérée par son titre (le panneau des paramètres en porte une par réglage).
+Geste reglerCarte(String titre) => (t) async {
+      final carte = find.ancestor(of: find.text(titre), matching: find.byType(CarteSigh));
+      if (carte.evaluate().isEmpty) return;
+      final bouton = find.descendant(of: carte.first, matching: find.widgetWithText(BoutonSigh, 'Régler à partir d’une date'));
+      if (bouton.evaluate().isEmpty) return;
+      await t.ensureVisible(bouton.first);
+      await t.pump();
+      await t.tap(bouton.first, warnIfMissed: false);
+      await _pomper(t, 6);
+    };
+
+/// Un poste RATTACHÉ à une mère (fileul) : ses validations et ses imports sont déposés, la mère les applique.
+Future<void> _rattache(Magasin m) => ServiceInstallation.de(m).attacher(StockageMemoire(), const ParametresPoste(uuidPoste: 'poste-fileul-demo', rejoint: true));
+
 const _secretDemo = 'Demonstration#Parakou26';
 
 /// La création du premier administrateur sur un poste neuf (nom fictif), jusqu'à l'affichage du code de secours.
@@ -515,6 +530,16 @@ final _captures = <_Cap>[
   _Cap('200-fiche-validation', 'cfg-fiches-aide', role: 'direction', taille: Size(1440, 2300), preparer: _ficheAideProposee, gestes: [toucherClePrefixe('aide:valider:')]),
   _Cap('201-fiche-professionnel', 'cfg-fiches-aide', role: 'direction', taille: Size(1440, 2300), preparer: (m) => _ficheAideProposee(m, pro: true), gestes: [toucherClePrefixe('aide:valider:')]),
   _Cap('202-contact-editeur', 'contact-editeur', role: 'reception', taille: Size(1440, 1100)),
+  _Cap('203-parametre-regler', 'cfg-systeme', role: 'admin', mode: ModePoste.mere, taille: Size(1440, 1100), gestes: [toucherTexte('Paramètres'), reglerCarte('Modes de paiement')]),
+  _Cap('204-numerisation', 'm1-numerisation', role: 'direction', taille: Size(1440, 1500)),
+  _Cap('205-fiche-aide-attente', 'cfg-fiches-aide', role: 'direction', taille: Size(1440, 2100), preparer: (m) async {
+    _ficheAideProposee(m);
+    await _rattache(m);
+  }, gestes: [toucherClePrefixe('aide:valider:'), toucherCle('aide:valider-ok'), attendre(4)]),
+  _Cap('206-liasse-fileul-attente', 'm12-liasse-import', role: 'comptable', taille: Size(1440, 1700), preparer: (m) async {
+    _liasseAntidatee(m);
+    await _rattache(m);
+  }, gestes: [saisir('liasse:fichier', 'tool/donnees/liasse_2025_demo.json'), toucherCle('liasse:verifier'), attendre(2), toucherCle('liasse:importer'), attendre(2)]),
   // ---- SMS (poste mère).
   _Cap('140-sms-passerelle', 'mere-sms-passerelle', mode: ModePoste.mere, preparer: (_) => _relaisSms('twilio'), taille: Size(1440, 1500)),
   _Cap('142-sms-parametres-manquants', 'mere-sms-passerelle', mode: ModePoste.mere, preparer: (_) => _relaisSms('vonage', manquants: ['RELAIS_SMS_VONAGE_SECRET']), taille: Size(1440, 1500)),
